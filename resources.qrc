@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/sprite_sheets">
+        <file>res/sprite_sheets/dungeon_sheet.png</file>
+        <file>res/sprite_sheets/knight_anim_sheet.png</file>
+        <file>res/sprite_sheets/knight_turn_sheet.png</file>
+    </qresource>
+</RCC>
