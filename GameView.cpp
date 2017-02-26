@@ -4,18 +4,25 @@
 GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 {
     this->setScene(&scene);
-    //    scene->setSceneRect(0, 0, 800, 600);
+    scene.setSceneRect(0, 0, 16*30, 9*30);
+    this->fitInView(scene.sceneRect(), Qt::KeepAspectRatio);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    this->setFixedSize(800, 600);
+
 
     Button * btn = new Button();
-    btn->setRect(0, 0, 300, 300);
+    btn->setRect(0, 0, 16, 16);
     scene.addItem(btn);
+
+    door = new DoorSprite();
+    scene.addItem(door);
+    door->setPos(16*22, 16*4);
+    door->open();
 
     player = new PlayerSprite();
     scene.addItem(player);
-    player->setPos(300, 300);
+    player->setPos(16*22, 16*4);
+
 
 }
 
@@ -38,4 +45,6 @@ void GameView::movePlayer(Direction direction)
 {
     qDebug() << "GameView: Player is moving";
     player->move(direction);
+
+    door->open();   // TODO: move to separate slot when model has logic to emit a signal to the controller
 }

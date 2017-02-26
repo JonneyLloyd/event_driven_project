@@ -4,6 +4,8 @@
 #include <QMainWindow>
 
 #include "GameController.h"
+#include "GameModel.h"
+#include "GameView.h"
 
 class MainWindow : public QMainWindow
 {
@@ -12,12 +14,15 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void resizeEvent(QResizeEvent *);
 
 public slots:
 
 
 private:
-    GameController gameController;
+    GameController * gameController;
+    GameModel * gameModel;
+    GameView * gameView;
 
 };
 

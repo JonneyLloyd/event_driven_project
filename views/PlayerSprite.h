@@ -43,12 +43,12 @@ public:
                QWidget *widget);
 
 private:
-    int spriteSize = 32;    // Width and height of the sprite, amount sprite moves in one step
-    int spriteFramesPerAnimation = 8;   // Animate with 8 frames
+    int spriteSize = 16;    // Width and height of the sprite, amount sprite moves in one step
+    int spriteFramesPerAnimation = 4;   // Animate with 8 frames, but return to the original
     int spriteFrame = 0;                                // The current frame of the animation
     int numberOfFrames = 3;                             // Number of frames in the sprite sheet
     Direction spriteDirection = Direction::SOUTH;             // The initial heading
-    std::vector<int> spriteOffset = {3, 1, 0, 4};       // The positional offset in of each sprite
+    std::vector<int> spriteOffset = {2, 1, 0, 3};       // The positional offset in of each sprite
                                                         // facing north, east, south, west
 
     QPixmap * sprite_sheet;     // Source of sprite

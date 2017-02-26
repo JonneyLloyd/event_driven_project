@@ -1,6 +1,6 @@
 #include <QPainter>
 
-#include "PlayerSprite.h"
+#include "views/PlayerSprite.h"
 
 #include <QDebug>
 
@@ -12,10 +12,11 @@
 
 PlayerSprite::PlayerSprite(QGraphicsItem *parent)
 {
-    sprite_sheet = new QPixmap(":/sprite_sheets/res/sprite_sheets/knight_anim_sheet.png");
+    sprite_sheet = new QPixmap(":/sprite_sheets/res/sprite_sheets/knight_16x16_sheet.png");
 
-    timeLine = new QTimeLine(1000);
-    timeLine->setFrameRange(0, spriteFramesPerAnimation);
+    timeLine = new QTimeLine(500);
+    timeLine->setCurrentTime(500);  // required to avoid a known bug skipping frames
+    timeLine->setFrameRange(1, spriteFramesPerAnimation);
     timeLine->setCurveShape(QTimeLine::CurveShape::LinearCurve);
     QObject::connect(timeLine, SIGNAL(frameChanged(int)), this, SLOT(animatedMove(int)));
 

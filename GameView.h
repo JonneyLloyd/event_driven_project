@@ -7,7 +7,8 @@
 #include <QGraphicsScene>
 
 #include "DirectionEnum.h"
-#include "PlayerSprite.h"
+#include "views/PlayerSprite.h"
+#include "views/DoorSprite.h"
 
 /*
  * GameView handles visuals and interacts with widgets/items.
@@ -19,6 +20,8 @@ class GameView : public QGraphicsView
     Q_OBJECT
 
 public:
+    QGraphicsScene scene;
+
     /*
      * Constructor
      *
@@ -27,11 +30,8 @@ public:
     explicit GameView(QWidget *parent = 0);
 
 private:
-    QGraphicsScene scene;   // Opted to contain the scene rather than inherit
-                            // from it as the other attributes/items will be
-                            // added to it. It would be odd to add something
-                            // to something it is already in.
     PlayerSprite * player;
+    DoorSprite * door;
 
 
 protected:

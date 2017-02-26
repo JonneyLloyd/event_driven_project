@@ -2,8 +2,6 @@
 #define GAMECONTROLLER_H
 
 #include <QObject>
-#include <QMainWindow>
-#include <QGraphicsView>
 
 #include "GameModel.h"
 #include "GameView.h"
@@ -22,12 +20,11 @@ public:
      *
      * param mainWindow   The main window to add content to
      */
-    explicit GameController(QMainWindow &mainWindow, QObject *parent = 0);
+    explicit GameController(GameModel *gameModel, GameView *gameView, QObject *parent = 0);
 
 private:
-    QMainWindow mainWindow;
-    GameModel gameModel;
-    GameView gameView;
+    GameModel * gameModel;
+    GameView * gameView;
 
 signals:
 

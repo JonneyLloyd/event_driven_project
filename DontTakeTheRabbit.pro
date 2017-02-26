@@ -29,7 +29,8 @@ SOURCES += main.cpp \
     GameModel.cpp \
     GameController.cpp \
     GameView.cpp \
-    PlayerSprite.cpp
+    views/PlayerSprite.cpp \
+    views/DoorSprite.cpp
 
 HEADERS  += \
     Button.h \
@@ -38,7 +39,8 @@ HEADERS  += \
     GameView.h \
     DirectionEnum.h \
     MainWindow.h \
-    PlayerSprite.h
+    views/PlayerSprite.h \
+    views/DoorSprite.h
 
 FORMS    +=
 
