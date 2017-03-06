@@ -24,17 +24,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp \
-    GameMenuMain.cpp \
-    GameScene.cpp \
-    MainWindow.cpp
+    MainWindow.cpp \
+    Button.cpp \
+    GameModel.cpp \
+    GameController.cpp \
+    GameView.cpp \
+    views/PlayerSprite.cpp \
+    views/DoorSprite.cpp
 
 HEADERS  += \
-    gamemenumain.h \
-    gamescene.h \
-    mainwindow.h
+    Button.h \
+    GameModel.h \
+    GameController.h \
+    GameView.h \
+    DirectionEnum.h \
+    MainWindow.h \
+    views/PlayerSprite.h \
+    views/DoorSprite.h
 
-FORMS    += \
-    mainwindow.ui
+FORMS    +=
 
 RESOURCES += \
     resources.qrc
