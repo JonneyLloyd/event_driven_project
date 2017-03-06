@@ -16,7 +16,7 @@ PlayerSprite::PlayerSprite(QGraphicsItem *parent)
 
     timeLine = new QTimeLine(500);
     timeLine->setCurrentTime(500);  // required to avoid a known bug skipping frames
-    timeLine->setFrameRange(1, spriteFramesPerAnimation);
+    timeLine->setFrameRange(1, spriteFramesPerAnimation);   // May need adjusting
     timeLine->setCurveShape(QTimeLine::CurveShape::LinearCurve);
     QObject::connect(timeLine, SIGNAL(frameChanged(int)), this, SLOT(animatedMove(int)));
 
