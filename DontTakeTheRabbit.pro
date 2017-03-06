@@ -30,7 +30,9 @@ SOURCES += main.cpp \
     GameController.cpp \
     GameView.cpp \
     views/PlayerSprite.cpp \
-    views/DoorSprite.cpp
+    views/DoorSprite.cpp \
+    views/Tile.cpp \
+    views/AnimatedTile.cpp
 
 HEADERS  += \
     Button.h \
@@ -40,7 +42,9 @@ HEADERS  += \
     DirectionEnum.h \
     MainWindow.h \
     views/PlayerSprite.h \
-    views/DoorSprite.h
+    views/DoorSprite.h \
+    views/Tile.h \
+    views/AnimatedTile.h
 
 FORMS    +=
 

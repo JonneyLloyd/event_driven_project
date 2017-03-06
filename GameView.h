@@ -10,6 +10,10 @@
 #include "views/PlayerSprite.h"
 #include "views/DoorSprite.h"
 
+// temp
+#include "views/Tile.h"
+#include "views/AnimatedTile.h"
+
 /*
  * GameView handles visuals and interacts with widgets/items.
  * Following MVC it is controlled externally.
@@ -32,6 +36,10 @@ public:
 private:
     PlayerSprite * player;
     DoorSprite * door;
+
+    // temp
+    Tile * testTile;
+    AnimatedTile * testAnimatedTile;
 
 
 protected:
