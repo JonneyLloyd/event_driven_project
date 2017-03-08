@@ -1,6 +1,6 @@
 #include <QPainter>
 
-#include "views/DoorSprite.h"
+#include "views/OldDoorSprite.h"
 
 #include <QDebug>
 

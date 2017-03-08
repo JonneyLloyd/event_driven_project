@@ -1,8 +1,8 @@
 #include <QPainter>
 
-#include "Tile.h"
+#include "GraphicsTile.h"
 
-Tile::Tile(QPixmap * textureSheet, int tileRow, int tileCol, int tileSize, QGraphicsItem *parent)
+GraphicsTile::GraphicsTile(QPixmap * textureSheet, int tileRow, int tileCol, int tileSize, QGraphicsItem *parent)
     : textureSheet{textureSheet},
       tileSize{tileSize},
       tileRow{tileRow},
@@ -11,17 +11,17 @@ Tile::Tile(QPixmap * textureSheet, int tileRow, int tileCol, int tileSize, QGrap
 
 }
 
-Tile::~Tile()
+GraphicsTile::~GraphicsTile()
 {
 
 }
 
-QRectF Tile::boundingRect() const
+QRectF GraphicsTile::boundingRect() const
 {
     return QRectF(0, 0, tileSize, tileSize);
 }
 
-void Tile::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void GraphicsTile::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     painter->drawPixmap(0, 0, *textureSheet,    // x, y position, sprite sheet
                         tileCol*tileSize,       // col,
@@ -29,47 +29,47 @@ void Tile::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
                         tileSize, tileSize);    // width, height
 }
 
-void Tile::setGridPos(int x, int y)
+void GraphicsTile::setGridPos(int x, int y)
 {
     setPos(x * tileSize, y * tileSize);
 }
 
-int Tile::gridX() const
+int GraphicsTile::gridX() const
 {
     return (int) x() / tileSize;
 }
 
-void Tile::setGridX(int x)
+void GraphicsTile::setGridX(int x)
 {
     setX(x * tileSize);
 }
 
-int Tile::gridY() const
+int GraphicsTile::gridY() const
 {
     return (int) y() / tileSize;
 }
 
-void Tile::setGridY(int y)
+void GraphicsTile::setGridY(int y)
 {
     setX(y * tileSize);
 }
 
-int Tile::getTileRow() const
+int GraphicsTile::getTileRow() const
 {
     return tileRow;
 }
 
-void Tile::setTileRow(int value)
+void GraphicsTile::setTileRow(int value)
 {
     tileRow = value;
 }
 
-int Tile::getTileCol() const
+int GraphicsTile::getTileCol() const
 {
     return tileCol;
 }
 
-void Tile::setTileCol(int value)
+void GraphicsTile::setTileCol(int value)
 {
     tileCol = value;
 }

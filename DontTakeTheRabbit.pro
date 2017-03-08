@@ -29,10 +29,11 @@ SOURCES += main.cpp \
     GameModel.cpp \
     GameController.cpp \
     GameView.cpp \
-    views/PlayerSprite.cpp \
-    views/DoorSprite.cpp \
-    views/Tile.cpp \
-    views/AnimatedTile.cpp
+    views/OldDoorSprite.cpp \
+    views/OldPlayerSprite.cpp \
+    views/TileLoader.cpp \
+    views/GraphicsTile.cpp \
+    views/AnimatedGraphicsTile.cpp
 
 HEADERS  += \
     Button.h \
@@ -41,10 +42,12 @@ HEADERS  += \
     GameView.h \
     DirectionEnum.h \
     MainWindow.h \
-    views/PlayerSprite.h \
-    views/DoorSprite.h \
-    views/Tile.h \
-    views/AnimatedTile.h
+    views/OldDoorSprite.h \
+    views/OldPlayerSprite.h \
+    views/TileLoader.h \
+    TileTypeEnum.h \
+    views/GraphicsTile.h \
+    views/AnimatedGraphicsTile.h
 
 FORMS    +=
 

@@ -5,7 +5,7 @@
 #include <QGraphicsObject>
 
 
-class Tile: public QGraphicsObject
+class GraphicsTile: public QGraphicsObject
 {
     Q_OBJECT
 
@@ -13,8 +13,8 @@ public:
     /*
      * Constructor
      */
-    Tile(QPixmap * textureSheet, int tileRow=0, int tileCol=0, int tileSize=16, QGraphicsItem * parent=0);
-    ~Tile();
+    GraphicsTile(QPixmap * textureSheet, int tileRow=0, int tileCol=0, int tileSize=16, QGraphicsItem * parent=0);
+    ~GraphicsTile();
 
     /*
      * Overrided virtual function

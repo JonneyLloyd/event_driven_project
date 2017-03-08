@@ -1,6 +1,6 @@
 #include <QPainter>
 
-#include "views/PlayerSprite.h"
+#include "views/OldPlayerSprite.h"
 
 #include <QDebug>
 
