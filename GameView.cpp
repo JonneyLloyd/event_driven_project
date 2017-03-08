@@ -33,7 +33,15 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     // on/off or opened/closed objects should probably be wrapped in their own classes or at least a StateAnimatedTile
     testAnimatedTile = new AnimatedTile(textureSheet, 7, 8, 6);
     scene.addItem(testAnimatedTile);
-    testAnimatedTile->setPos(16*4, 16*2);
+    testAnimatedTile->setGridPos(4, 2);
+
+    testAnimatedTile2 = new AnimatedTile(textureSheet, 7, 4, 4);
+    scene.addItem(testAnimatedTile2);
+    testAnimatedTile2->setGridPos(7, 2);
+
+    testAnimatedTile3 = new AnimatedTile(textureSheet, 5, 0, 7);
+    scene.addItem(testAnimatedTile3);
+    testAnimatedTile3->setGridPos(7, 6);
 
     // Note: the above classes are only visual representations, all logic should reside in models
 
@@ -79,4 +87,6 @@ void GameView::movePlayer(Direction direction)
     // temp
     door->open();   // TODO: move to separate slot when model has logic to emit a signal to the controller
     testAnimatedTile->start();
+    testAnimatedTile2->start();
+    testAnimatedTile3->start();
 }
