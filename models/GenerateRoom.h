@@ -1,10 +1,9 @@
 #ifndef GENERATEROOM_H
 #define GENERATEROOM_H
 
-#include <unordered_map>
-#include <list>
-#include <QVector>
+
 #include <QHash>
+#include "Tile.h"
 
 class GenerateRoom
 {
@@ -22,8 +21,9 @@ public:
     int getPreset();
     int getLength();
     int getWidth();
-    QHash<std::pair<int, int>, int> *generateRoom();
-    QHash<std::pair<int, int>, int> *generateItems();
+    QHash<std::pair<int, int>, Tile*> *generateRoom();
+    QHash<std::pair<int, int>, Tile*> *generateItems();
+    QHash<std::pair<int, int>, Tile*> *generateFloor();
 
 
 private:
