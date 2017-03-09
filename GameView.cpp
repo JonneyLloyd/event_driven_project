@@ -2,6 +2,8 @@
 #include "Button.h"
 #include "views/TileLoader.h"
 #include "TileTypeEnum.h"
+#include "models/GenerateRoom.h"
+#include <QHash>
 
 GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 {
@@ -74,7 +76,10 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     //  Check if the tile in front can be interacted with (activated, walked on)
     //  Move rooms
 
-
+    //testing map
+    GenerateRoom * test = new GenerateRoom(2,16,16);
+    QHash<std::pair<int, int>, int> * result = test->generateRoom();
+    qDebug() << "map 0,1: " << result->value(std::make_pair(2,0));
 }
 
 void GameView::keyPressEvent(QKeyEvent *event)
