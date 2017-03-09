@@ -5,7 +5,7 @@
 #include <QGraphicsObject>
 
 
-class Tile: public QGraphicsObject
+class GraphicsTile: public QGraphicsObject
 {
     Q_OBJECT
 
@@ -13,8 +13,8 @@ public:
     /*
      * Constructor
      */
-    Tile(QPixmap * textureSheet, int tileRow=0, int tileCol=0, int tileSize=16, QGraphicsItem * parent=0);
-    ~Tile();
+    GraphicsTile(QPixmap * textureSheet, int tileRow=0, int tileCol=0, int tileSize=16, QGraphicsItem * parent=0);
+    ~GraphicsTile();
 
     /*
      * Overrided virtual function
@@ -30,6 +30,27 @@ public:
      */
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget);
+
+    /*
+     * Set the position of the tile on the grid based on the tile size.
+     */
+    void setGridPos(int x, int y);
+    /*
+     * Get the position of the tile on the grid based on the tile size.
+     */
+    int gridX() const;
+    /*
+     * Set the x position of the tile on the grid based on the tile size.
+     */
+    void setGridX(int x);
+    /*
+     * Get the y position of the tile on the grid based on the tile size.
+     */
+    int gridY() const;
+    /*
+     * Set the y position of the tile on the grid based on the tile size.
+     */
+    void setGridY(int y);
 
     int getTileRow() const;
     void setTileRow(int value);

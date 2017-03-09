@@ -1,17 +1,17 @@
 #ifndef ANIMATEDTILE_H
 #define ANIMATEDTILE_H
 
-#include "views/Tile.h"
+#include "views/GraphicsTile.h"
 
 #include <QTimeLine>
 
-class AnimatedTile : public Tile
+class AnimatedGraphicsTile : public GraphicsTile
 {
     Q_OBJECT
 
 public:
-    AnimatedTile(QPixmap * textureSheet, int tileRow=0, int tileCol=0, int numberOfFrames=1, int duration=500, int tileSize=16, QGraphicsItem * parent=0);
-    ~AnimatedTile();
+    AnimatedGraphicsTile(QPixmap * textureSheet, int tileRow=0, int tileCol=0, int numberOfFrames=1, int duration=500, int tileSize=16, QGraphicsItem * parent=0);
+    ~AnimatedGraphicsTile();
 
     void start(bool reverse=false);
 

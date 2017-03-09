@@ -1,5 +1,7 @@
 #include "GameView.h"
 #include "Button.h"
+#include "views/TileLoader.h"
+#include "TileTypeEnum.h"
 #include "models/GenerateRoom.h"
 #include <QHash>
 
@@ -11,6 +13,7 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+    this->setBackgroundBrush(QBrush(QColor(47,40,58), Qt::SolidPattern));
 
     Button * btn = new Button();
     btn->setRect(0, 0, 16, 16);
@@ -26,23 +29,41 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     player->setPos(16*22, 16*4);
 
 
+    TileLoader tileLoader = TileLoader::getInstance();
+
     QPixmap * textureSheet = new QPixmap(":/sprite_sheets/res/sprite_sheets/dungeon_sheet.png");
     // Example of loading a basic tile (since behaviour of e.g. floor and walls never changes they can use the same class)
-    testTile = new Tile(textureSheet, 7, 8);
+    testTile = new GraphicsTile(textureSheet, 7, 8);
     scene.addItem(testTile);
     testTile->setPos(16*2, 16*2);
 
+    GraphicsTile * wall = new GraphicsTile(textureSheet, 0, 5);
+    scene.addItem(wall);
+    wall->setPos(16*10, 16*10);
+
     // on/off or opened/closed objects should probably be wrapped in their own classes or at least a StateAnimatedTile
-    testAnimatedTile = new AnimatedTile(textureSheet, 7, 8, 6);
+    testAnimatedTile = tileLoader.get(TileType::CHEST);
     scene.addItem(testAnimatedTile);
-    testAnimatedTile->setPos(16*4, 16*2);
+    testAnimatedTile->setGridPos(4, 2);
+
+    testAnimatedTile2 = tileLoader.get(TileType::SWITCH);
+    scene.addItem(testAnimatedTile2);
+    testAnimatedTile2->setGridPos(7, 2);
+
+    testAnimatedTile3 = tileLoader.get(TileType::DOOR);
+    scene.addItem(testAnimatedTile3);
+    testAnimatedTile3->setGridPos(7, 6);
+
+    for (int t = DOOR; t <= ORB_GREY; t++) {
+        GraphicsTile * tile = tileLoader.get(static_cast<TileType>(t));
+        scene.addItem(tile);
+        tile->setGridPos(t, 12);
+    }
 
     // Note: the above classes are only visual representations, all logic should reside in models
 
     // TODO (views):
-    //  Add setGridPos to abstract away coordinates in favour of tile units
     //  Modify Door and Player to use new Tile classes
-    //  Add singleton resource loaders for both sprite sheets so as not to pass them everywhere, optionally use it from within specific classes
     //  Introduce layering
     //  Draw map/layers using model output - there is a method to do all painting in one go
     //  Add menu widgets
@@ -82,6 +103,10 @@ void GameView::movePlayer(Direction direction)
     player->move(direction);
 
     // temp
+    static int n = 0;
     door->open();   // TODO: move to separate slot when model has logic to emit a signal to the controller
-    testAnimatedTile->start();
+    static_cast<AnimatedGraphicsTile*>(testAnimatedTile)->start(n%2 == 0 ? false:true);
+    static_cast<AnimatedGraphicsTile*>(testAnimatedTile2)->start(n%2 == 0 ? false:true);
+    static_cast<AnimatedGraphicsTile*>(testAnimatedTile3)->start(n%2 == 0 ? false:true);
+    n++;
 }
