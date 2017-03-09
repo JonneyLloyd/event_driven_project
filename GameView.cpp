@@ -3,7 +3,7 @@
 #include "views/TileLoader.h"
 #include "TileTypeEnum.h"
 #include "models/GenerateRoom.h"
-#include <QHash>
+//#include <QHash>
 
 GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 {
@@ -78,8 +78,9 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 
     //testing map
     GenerateRoom * test = new GenerateRoom(2,16,16);
-    QHash<std::pair<int, int>, int> * result = test->generateRoom();
-    qDebug() << "map 0,1: " << result->value(std::make_pair(2,0));
+    QHash<std::pair<int, int>, Tile*> * result = test->generateRoom();
+    qDebug() << "map 0,1: " << result->value(std::make_pair(2,0))->getId();
+
 }
 
 void GameView::keyPressEvent(QKeyEvent *event)

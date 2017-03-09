@@ -1,5 +1,5 @@
-#ifndef TILE_H
-#define TILE_H
+#ifndef GRAPHICSTILE_H
+#define GRAPHICSTILE_H
 
 #include <QObject>
 #include <QGraphicsObject>
@@ -67,4 +67,4 @@ private:
 
 };
 
-#endif // TILE_H
+#endif // GRAPHICSTILE_H
