@@ -24,9 +24,7 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     door->setPos(16*22, 16*4);
     door->open();
 
-    player = new PlayerSprite();
-    scene.addItem(player);
-    player->setPos(16*22, 16*4);
+
 
 
     TileLoader tileLoader = TileLoader::getInstance();
@@ -40,6 +38,26 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     GraphicsTile * wall = new GraphicsTile(textureSheet, 0, 5);
     scene.addItem(wall);
     wall->setPos(16*10, 16*10);
+
+    //testing map
+    //just generating floor for now
+    //not sure why yet but seems to be splitting floor into even squares
+    GenerateRoom * test = new GenerateRoom(2,32,16);
+    QHash<std::pair<int, int>, Tile*> * result = test->generateFloor();
+
+    QHash<std::pair<int, int>, Tile*>::iterator i;
+    for (i = result->begin(); i != result->end(); ++i){
+        if(i.value()->getId()==9){
+            GraphicsTile * floor = new GraphicsTile(textureSheet, 2, 6);
+            scene.addItem(floor);
+            floor->setPos(16*i.key().first, 16*i.key().second);
+        }
+
+    }
+
+    player = new PlayerSprite();
+    scene.addItem(player);
+    player->setPos(16*22, 16*4);
 
     // on/off or opened/closed objects should probably be wrapped in their own classes or at least a StateAnimatedTile
     testAnimatedTile = tileLoader.get(TileType::CHEST);
@@ -76,10 +94,8 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     //  Check if the tile in front can be interacted with (activated, walked on)
     //  Move rooms
 
-    //testing map
-    GenerateRoom * test = new GenerateRoom(2,16,16);
-    QHash<std::pair<int, int>, Tile*> * result = test->generateRoom();
-    qDebug() << "map 0,1: " << result->value(std::make_pair(2,0))->getId();
+
+
 
 }
 
