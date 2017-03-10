@@ -19,25 +19,11 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     btn->setRect(0, 0, 16, 16);
     scene.addItem(btn);
 
-    door = new DoorSprite();
-    scene.addItem(door);
-    door->setPos(16*22, 16*4);
-    door->open();
-
-
 
 
     TileLoader tileLoader = TileLoader::getInstance();
 
     QPixmap * textureSheet = new QPixmap(":/sprite_sheets/res/sprite_sheets/dungeon_sheet.png");
-    // Example of loading a basic tile (since behaviour of e.g. floor and walls never changes they can use the same class)
-    testTile = new GraphicsTile(textureSheet, 7, 8);
-    scene.addItem(testTile);
-    testTile->setPos(16*2, 16*2);
-
-    GraphicsTile * wall = new GraphicsTile(textureSheet, 0, 5);
-    scene.addItem(wall);
-    wall->setPos(16*10, 16*10);
 
     //testing map
     //just generating floor for now
@@ -55,7 +41,19 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 
     }
 
-    player = new PlayerSprite();
+
+    // Example of loading a basic tile (since behaviour of e.g. floor and walls never changes they can use the same class)
+    testTile = new GraphicsTile(textureSheet, 7, 8);
+    scene.addItem(testTile);
+    testTile->setPos(16*2, 16*2);
+
+    GraphicsTile * wall = new GraphicsTile(textureSheet, 0, 5);
+    scene.addItem(wall);
+    wall->setPos(16*10, 16*10);
+
+
+
+    player = new PlayerSprite(new QPixmap(":/sprite_sheets/res/sprite_sheets/knight_16x16_sheet.png"));
     scene.addItem(player);
     player->setPos(16*22, 16*4);
 
@@ -85,6 +83,7 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     //  Introduce layering
     //  Draw map/layers using model output - there is a method to do all painting in one go
     //  Add menu widgets
+    //  Figure out if QGraphicsItem * parent is needed/wanted and adjust tile objects (since it is the last param)
 
     // TODO (models):
     //  Representations for player, interactable objects, world, layers, tiles
@@ -121,7 +120,6 @@ void GameView::movePlayer(Direction direction)
 
     // temp
     static int n = 0;
-    door->open();   // TODO: move to separate slot when model has logic to emit a signal to the controller
     static_cast<AnimatedGraphicsTile*>(testAnimatedTile)->start(n%2 == 0 ? false:true);
     static_cast<AnimatedGraphicsTile*>(testAnimatedTile2)->start(n%2 == 0 ? false:true);
     static_cast<AnimatedGraphicsTile*>(testAnimatedTile3)->start(n%2 == 0 ? false:true);

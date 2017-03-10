@@ -31,7 +31,7 @@ private:
     QTimeLine * timeLine;
 
 public slots:
-    void onFrameChanged(int frame);
+    virtual void onFrameChanged(int frame);
 
 };
 
