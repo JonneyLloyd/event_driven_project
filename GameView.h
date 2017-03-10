@@ -7,12 +7,11 @@
 #include <QGraphicsScene>
 
 #include "DirectionEnum.h"
-#include "views/OldPlayerSprite.h"
-#include "views/OldDoorSprite.h"
 
 // temp
 #include "views/GraphicsTile.h"
 #include "views/AnimatedGraphicsTile.h"
+#include "views/PlayerSprite.h"
 
 /*
  * GameView handles visuals and interacts with widgets/items.
@@ -35,7 +34,6 @@ public:
 
 private:
     PlayerSprite * player;
-    DoorSprite * door;
 
     // temp
     GraphicsTile * testTile;
