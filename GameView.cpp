@@ -43,63 +43,42 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     }
 
     QHash<std::pair<int, int>, Tile*> * layer2 = test->generateRoom();
+    GraphicsTile * tile;
     for (i = layer2->begin(); i != layer2->end(); ++i){
         if(i.value()->getId()==6){ //east wall
-            GraphicsTile * wall = new GraphicsTile(textureSheet, 2, 7);
-            wall->setTraversable(i.value()->getTraversable());
-            scene.addItem(wall);
-            wall->setPos(16*i.key().first, 16*i.key().second);
+            tile = tileLoader.get(TileType::WALL_E_U);
         }
 
         else if(i.value()->getId()==5){ //west wall
-            GraphicsTile * wall = new GraphicsTile(textureSheet, 2, 5);
-            wall->setTraversable(i.value()->getTraversable());
-            scene.addItem(wall);
-            wall->setPos(16*i.key().first, 16*i.key().second);
+            tile = tileLoader.get(TileType::WALL_W_U);
         }
 
         else if(i.value()->getId()==7){ //north wall
-            GraphicsTile * wall = new GraphicsTile(textureSheet, 1, 6);
-            wall->setTraversable(i.value()->getTraversable());
-            scene.addItem(wall);
-            wall->setPos(16*i.key().first, 16*i.key().second);
+            tile = tileLoader.get(TileType::WALL_N_L);
         }
 
         else if(i.value()->getId()==8){ //south wall
-            GraphicsTile * wall = new GraphicsTile(textureSheet, 3, 6);
-            wall->setTraversable(i.value()->getTraversable());
-            scene.addItem(wall);
-            wall->setPos(16*i.key().first, 16*i.key().second);
+            tile = tileLoader.get(TileType::WALL_S_U);
         }
 
         else if(i.value()->getId()==1){ //northwest corner
-            GraphicsTile * corner = new GraphicsTile(textureSheet, 1, 5);
-            corner->setTraversable(i.value()->getTraversable());
-            scene.addItem(corner);
-            corner->setPos(16*i.key().first, 16*i.key().second);
+            tile = tileLoader.get(TileType::WALL_NW_CORNER_L);
         }
 
         else if(i.value()->getId()==2){ //northeast corner
-            GraphicsTile * corner = new GraphicsTile(textureSheet, 1, 7);
-            corner->setTraversable(i.value()->getTraversable());
-            scene.addItem(corner);
-            corner->setPos(16*i.key().first, 16*i.key().second);
+            tile = tileLoader.get(TileType::WALL_NE_CORNER_L);
         }
 
         else if(i.value()->getId()==3){ //southwest corner
-            GraphicsTile * corner = new GraphicsTile(textureSheet, 3, 5);
-            corner->setTraversable(i.value()->getTraversable());
-            scene.addItem(corner);
-            corner->setPos(16*i.key().first, 16*i.key().second);
+            tile = tileLoader.get(TileType::WALL_SW_CORNER_U);
         }
 
         else if(i.value()->getId()==4){ //southeast corner
-            GraphicsTile * corner = new GraphicsTile(textureSheet, 3, 7);
-            corner->setTraversable(i.value()->getTraversable());
-            scene.addItem(corner);
-            corner->setPos(16*i.key().first, 16*i.key().second);
+            tile = tileLoader.get(TileType::WALL_SE_CORNER_U);
         }
-
+        tile->setTraversable(i.value()->getTraversable());
+        scene.addItem(tile);
+        tile->setPos(16*i.key().first, 16*i.key().second);
     }
 
 
