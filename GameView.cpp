@@ -41,6 +41,61 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 
     }
 
+    QHash<std::pair<int, int>, Tile*> * layer2 = test->generateRoom();
+    for (i = layer2->begin(); i != layer2->end(); ++i){
+        if(i.value()->getId()==6){ //east wall
+            GraphicsTile * wall = new GraphicsTile(textureSheet, 2, 7);
+            scene.addItem(wall);
+            wall->setPos(16*i.key().first, 16*i.key().second);
+        }
+
+        else if(i.value()->getId()==5){ //west wall
+            GraphicsTile * wall = new GraphicsTile(textureSheet, 2, 5);
+            scene.addItem(wall);
+            wall->setPos(16*i.key().first, 16*i.key().second);
+        }
+
+        else if(i.value()->getId()==7){ //north wall
+            GraphicsTile * wall = new GraphicsTile(textureSheet, 1, 6);
+            scene.addItem(wall);
+            wall->setPos(16*i.key().first, 16*i.key().second);
+        }
+
+        else if(i.value()->getId()==8){ //south wall
+            GraphicsTile * wall = new GraphicsTile(textureSheet, 3, 6);
+            scene.addItem(wall);
+            wall->setPos(16*i.key().first, 16*i.key().second);
+        }
+
+        else if(i.value()->getId()==1){ //northwest corner
+            GraphicsTile * wall = new GraphicsTile(textureSheet, 1, 5);
+            scene.addItem(wall);
+            wall->setPos(16*i.key().first, 16*i.key().second);
+        }
+
+        else if(i.value()->getId()==2){ //northeast corner
+            GraphicsTile * wall = new GraphicsTile(textureSheet, 1, 7);
+            scene.addItem(wall);
+            wall->setPos(16*i.key().first, 16*i.key().second);
+        }
+
+        else if(i.value()->getId()==3){ //southwest corner
+            GraphicsTile * wall = new GraphicsTile(textureSheet, 3, 5);
+            scene.addItem(wall);
+            wall->setPos(16*i.key().first, 16*i.key().second);
+        }
+
+        else if(i.value()->getId()==4){ //southeast corner
+            GraphicsTile * wall = new GraphicsTile(textureSheet, 3, 7);
+            scene.addItem(wall);
+            wall->setPos(16*i.key().first, 16*i.key().second);
+        }
+
+
+
+    }
+
+
 
     // Example of loading a basic tile (since behaviour of e.g. floor and walls never changes they can use the same class)
     testTile = new GraphicsTile(textureSheet, 7, 8);

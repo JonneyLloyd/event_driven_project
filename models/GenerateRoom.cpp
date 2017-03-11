@@ -61,60 +61,45 @@ QHash<std::pair<int, int>, Tile*>  *GenerateRoom::generateRoom()
     id = 8;
     Tile * eastWall = new Tile(traversable, id);
     id = 9;
-    traversable = true;
-    Tile * floor = new Tile(traversable, id);
 
-    for(int i = 0; i < getRows(); i++){
-        for(int j = 0; j < getColumns(); j++){
-            if(i == 0 || j == 0 || i == getColumns()-1 || j == getRows()-1)
+    for(int i = 0; i < this->getRows(); i++){
+        for(int j = 0; j < this->getColumns(); j++){
+            if(i ==0 && j ==0)                          //northwest corner
             {
-                if(i ==0 && j ==0)                          //northwest corner
-                {
-                    traversable = false;
-                    id = 1;
-                    result->insert(std::make_pair(i,j), new Tile(traversable, id));
-                }
-                else if(i == this->getRows()-1 && j ==0)   //southwest corner
-                {
-                    traversable = false;
-                    id = 2;
-                    result->insert(std::make_pair(i,j), new Tile(traversable, id));
-                }
-                else if(i == 0 && j ==this->getColumns()-1)         // north east corner
-                {
-                    traversable = false;
-                    id = 3;
-
-                    result->insert(std::make_pair(i,j), new Tile(traversable, id));
-                }
-                else if(i == this->getColumns()-1 && j == this->getRows()-1) //south east corner
-                {
-                    traversable = false;
-                    id = 4;
-                    result->insert(std::make_pair(i,j), new Tile(traversable, id));
-                }
-                else if(i ==0)                              //north wall
-                {
-                    result->insert(std::make_pair(i,j), northWall);
-                }
-                else if(i ==this->getRows()-1)             //south wall
-                {
-                    result->insert(std::make_pair(i,j), southWall);
-                }
-                else if(j ==0)                              //west wall
-                {
-                    result->insert(std::make_pair(i,j), westWall);
-                }
-                else if(j == getColumns()-1)                 //east Wall
-                {
-                    result->insert(std::make_pair(i,j), eastWall);
-                }
+                id = 1;
+                result->insert(std::make_pair(i,j), new Tile(traversable, id));
             }
-            else                                        //floor
+            else if(i == this->getRows()-1 && j ==0)   //southwest corner
             {
-                result->insert(std::make_pair(i,j), floor);
+                id = 2;
+                result->insert(std::make_pair(i,j), new Tile(traversable, id));
             }
-
+            else if(i == 0 && j ==this->getColumns()-1)         // north east corner
+            {
+                id = 3;
+                result->insert(std::make_pair(i,j), new Tile(traversable, id));
+            }
+            else if(i == this->getRows()-1 && j == this->getColumns()-1) //south east corner
+            {
+                id = 4;
+                result->insert(std::make_pair(i,j), new Tile(traversable, id));
+            }
+            else if(i ==0)                              //north wall
+            {
+                result->insert(std::make_pair(i,j), northWall);
+            }
+            else if(i ==this->getRows()-1)             //south wall
+            {
+                result->insert(std::make_pair(i,j), southWall);
+            }
+            else if(j ==0)                              //west wall
+            {
+                result->insert(std::make_pair(i,j), westWall);
+            }
+            else if(j == getColumns()-1)                 //east Wall
+            {
+                result->insert(std::make_pair(i,j), eastWall);
+            }
 
         }
     }
