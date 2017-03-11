@@ -35,6 +35,7 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     for (i = result->begin(); i != result->end(); ++i){
         if(i.value()->getId()==9){
             GraphicsTile * floor = new GraphicsTile(textureSheet, 2, 6);
+            floor->setTraversable(i.value()->getTraversable());
             scene.addItem(floor);
             floor->setPos(16*i.key().first, 16*i.key().second);
         }
@@ -45,53 +46,59 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     for (i = layer2->begin(); i != layer2->end(); ++i){
         if(i.value()->getId()==6){ //east wall
             GraphicsTile * wall = new GraphicsTile(textureSheet, 2, 7);
+            wall->setTraversable(i.value()->getTraversable());
             scene.addItem(wall);
             wall->setPos(16*i.key().first, 16*i.key().second);
         }
 
         else if(i.value()->getId()==5){ //west wall
             GraphicsTile * wall = new GraphicsTile(textureSheet, 2, 5);
+            wall->setTraversable(i.value()->getTraversable());
             scene.addItem(wall);
             wall->setPos(16*i.key().first, 16*i.key().second);
         }
 
         else if(i.value()->getId()==7){ //north wall
             GraphicsTile * wall = new GraphicsTile(textureSheet, 1, 6);
+            wall->setTraversable(i.value()->getTraversable());
             scene.addItem(wall);
             wall->setPos(16*i.key().first, 16*i.key().second);
         }
 
         else if(i.value()->getId()==8){ //south wall
             GraphicsTile * wall = new GraphicsTile(textureSheet, 3, 6);
+            wall->setTraversable(i.value()->getTraversable());
             scene.addItem(wall);
             wall->setPos(16*i.key().first, 16*i.key().second);
         }
 
         else if(i.value()->getId()==1){ //northwest corner
-            GraphicsTile * wall = new GraphicsTile(textureSheet, 1, 5);
-            scene.addItem(wall);
-            wall->setPos(16*i.key().first, 16*i.key().second);
+            GraphicsTile * corner = new GraphicsTile(textureSheet, 1, 5);
+            corner->setTraversable(i.value()->getTraversable());
+            scene.addItem(corner);
+            corner->setPos(16*i.key().first, 16*i.key().second);
         }
 
         else if(i.value()->getId()==2){ //northeast corner
-            GraphicsTile * wall = new GraphicsTile(textureSheet, 1, 7);
-            scene.addItem(wall);
-            wall->setPos(16*i.key().first, 16*i.key().second);
+            GraphicsTile * corner = new GraphicsTile(textureSheet, 1, 7);
+            corner->setTraversable(i.value()->getTraversable());
+            scene.addItem(corner);
+            corner->setPos(16*i.key().first, 16*i.key().second);
         }
 
         else if(i.value()->getId()==3){ //southwest corner
-            GraphicsTile * wall = new GraphicsTile(textureSheet, 3, 5);
-            scene.addItem(wall);
-            wall->setPos(16*i.key().first, 16*i.key().second);
+            GraphicsTile * corner = new GraphicsTile(textureSheet, 3, 5);
+            corner->setTraversable(i.value()->getTraversable());
+            scene.addItem(corner);
+            corner->setPos(16*i.key().first, 16*i.key().second);
         }
 
         else if(i.value()->getId()==4){ //southeast corner
-            GraphicsTile * wall = new GraphicsTile(textureSheet, 3, 7);
-            scene.addItem(wall);
-            wall->setPos(16*i.key().first, 16*i.key().second);
+            GraphicsTile * corner = new GraphicsTile(textureSheet, 3, 7);
+            corner->setTraversable(i.value()->getTraversable());
+            scene.addItem(corner);
+            corner->setPos(16*i.key().first, 16*i.key().second);
         }
-
-
 
     }
 
@@ -130,6 +137,7 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
         scene.addItem(tile);
         tile->setGridPos(t, 12);
     }
+
 
     // Note: the above classes are only visual representations, all logic should reside in models
 
@@ -170,8 +178,44 @@ void GameView::keyPressEvent(QKeyEvent *event)
 
 void GameView::movePlayer(Direction direction)
 {
+    /*
+     * Code checks next tile before movement
+     * Will not move to intraversable tiles
+     * WARNING if for some reason the next tile over is empty/void this will cause crash
+    */
     qDebug() << "GameView: Player is moving";
-    player->move(direction);
+    GraphicsTile * nextTile;
+
+    switch (direction){
+        case Direction::WEST:
+        nextTile = dynamic_cast<GraphicsTile*>(scene.itemAt(QPointF(player->pos().x()-16,player->pos().y()), QTransform())) ;
+        if (nextTile->getTraversable()==true)
+            player->move(direction);
+        break;
+
+        case Direction::EAST:
+        nextTile = dynamic_cast<GraphicsTile*>(scene.itemAt(QPointF(player->pos().x()+16,player->pos().y()), QTransform())) ;
+        if (nextTile->getTraversable()==true)
+            player->move(direction);
+        break;
+
+        case Direction::NORTH:
+        nextTile = dynamic_cast<GraphicsTile*>(scene.itemAt(QPointF(player->pos().x(),player->pos().y()-16), QTransform())) ;
+        if (nextTile->getTraversable()==true)
+            player->move(direction);
+        break;
+
+        case Direction::SOUTH:
+        nextTile = dynamic_cast<GraphicsTile*>(scene.itemAt(QPointF(player->pos().x(),player->pos().y()+16), QTransform())) ;
+        if (nextTile->getTraversable()==true)
+            player->move(direction);
+        break;
+
+        default:            qDebug() << "NO MOVEMENT"; return;
+    }
+
+
+
 
     // temp
     static int n = 0;
