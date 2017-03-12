@@ -26,8 +26,6 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     QPixmap * textureSheet = new QPixmap(":/sprite_sheets/res/sprite_sheets/dungeon_sheet.png");
 
     //testing map
-    //just generating floor for now
-    //not sure why yet but seems to be splitting floor into even squares
     GenerateRoom * test = new GenerateRoom(2,32,16);
     QHash<std::pair<int, int>, Tile*> * result = test->generateFloor();
 
@@ -45,12 +43,12 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     QHash<std::pair<int, int>, Tile*> * layer2 = test->generateRoom();
     GraphicsTile * tile;
     for (i = layer2->begin(); i != layer2->end(); ++i){
-        if(i.value()->getId()==6){ //east wall
-            tile = tileLoader.get(TileType::WALL_E_U);
+        if(i.value()->getId()==5){ //west wall
+                    tile = tileLoader.get(TileType::WALL_W_U);
         }
 
-        else if(i.value()->getId()==5){ //west wall
-            tile = tileLoader.get(TileType::WALL_W_U);
+        else if(i.value()->getId()==6){ //east wall
+            tile = tileLoader.get(TileType::WALL_E_U);
         }
 
         else if(i.value()->getId()==7){ //north wall
