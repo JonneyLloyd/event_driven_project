@@ -50,7 +50,6 @@ void GameModel::move(Direction direction)
     all->unite(*walls);
     std::pair<int, int> coordinates;
     QHash<std::pair<int, int>, Tile*>::iterator i;
-    //TODO Fix
 
     switch (direction){
         case Direction::WEST:

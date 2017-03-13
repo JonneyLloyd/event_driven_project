@@ -117,6 +117,8 @@ void GameView::movePlayer(Direction direction)
     n++;
 }
 
+//TODO signal to generate room graphics
+//seems to be connected but never enters the function after the emit from model
 void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor)
 {
     qDebug() << "SIGNAL RECEIVED";
