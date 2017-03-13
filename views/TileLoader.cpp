@@ -15,7 +15,6 @@ GraphicsTile * TileLoader::get(TileType tileType) const
     case TileType::DOOR:    return new AnimatedGraphicsTile(textureSheet, 7, 4, 4);
     case TileType::CHEST:   return new AnimatedGraphicsTile(textureSheet, 7, 8, 6);
     case TileType::SWITCH:  return new AnimatedGraphicsTile(textureSheet, 5, 0, 7);
-    case TileType::FLOOR:  return new GraphicsTile(textureSheet, 2, 6);
 
     case TileType::WALL_N_L:    return new GraphicsTile(textureSheet, 1, 6);
     case TileType::WALL_N_U:    return new GraphicsTile(textureSheet, 0, 6);
@@ -57,6 +56,7 @@ GraphicsTile * TileLoader::get(TileType tileType) const
     case TileType::ORB_GREEN:   return new GraphicsTile(textureSheet, 6, 21);
     case TileType::ORB_PINK:    return new GraphicsTile(textureSheet, 6, 22);
     case TileType::ORB_GREY:    return new GraphicsTile(textureSheet, 6, 23);
+    case TileType::FLOOR:       return new GraphicsTile(textureSheet, 2, 6);
     }
 
 //    return tile;
