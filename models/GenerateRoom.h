@@ -4,10 +4,11 @@
 
 #include <QHash>
 #include "Tile.h"
+#include <QObject>
 
-class GenerateRoom
+class GenerateRoom : public QObject
 {
-
+    Q_OBJECT
 public:
     /*
      * Constructor
@@ -21,15 +22,18 @@ public:
     int getPreset();
     int getRows();
     int getColumns();
-    QHash<std::pair<int, int>, Tile*> *generateRoom();
-    QHash<std::pair<int, int>, Tile*> *generateItems();
-    QHash<std::pair<int, int>, Tile*> *generateFloor();
-
+    void generateRoom();
+    void generateFloor();
+    QHash<std::pair<int, int>, Tile*> * getFloor();
+    QHash<std::pair<int, int>, Tile*> * getWalls();
 
 private:
     int preset;
     int rows;
     int columns;
+    QHash<std::pair<int, int>, Tile*>  * floor;
+    QHash<std::pair<int, int>, Tile*>  * walls;
+
 
 };
 

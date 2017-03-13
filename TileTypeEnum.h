@@ -1,7 +1,7 @@
 #ifndef TILETYPE_H
 #define TILETYPE_H
 
-enum TileType { PLAYER, DOOR, CHEST, SWITCH,
+enum TileType { PLAYER, DOOR, CHEST, SWITCH, FLOOR,
                 WALL_N_L,
                 WALL_N_U,
                 WALL_E_U,

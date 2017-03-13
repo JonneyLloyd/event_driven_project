@@ -12,6 +12,7 @@
 #include "views/GraphicsTile.h"
 #include "views/AnimatedGraphicsTile.h"
 #include "views/PlayerSprite.h"
+#include "models/Tile.h"
 
 /*
  * GameView handles visuals and interacts with widgets/items.
@@ -51,7 +52,7 @@ signals:
 public slots:
     void movePlayer(Direction direction);   // Listens for controller
                                             // Moves the player on the screen
-
+    void displayFloor(QHash<std::pair<int, int>, Tile *> * floor);
 };
 
 #endif // GAMEVIEW_H

@@ -2,7 +2,8 @@
 #include "Button.h"
 #include "views/TileLoader.h"
 #include "TileTypeEnum.h"
-#include "models/GenerateRoom.h"
+#include <QDebug>
+
 //#include <QHash>
 
 GameView::GameView(QWidget *parent) : QGraphicsView(parent)
@@ -24,61 +25,6 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     TileLoader tileLoader = TileLoader::getInstance();
 
     QPixmap * textureSheet = new QPixmap(":/sprite_sheets/res/sprite_sheets/dungeon_sheet.png");
-
-    //testing map
-    GenerateRoom * test = new GenerateRoom(2,32,16);
-    QHash<std::pair<int, int>, Tile*> * result = test->generateFloor();
-
-    QHash<std::pair<int, int>, Tile*>::iterator i;
-    for (i = result->begin(); i != result->end(); ++i){
-        if(i.value()->getId()==9){
-            GraphicsTile * floor = new GraphicsTile(textureSheet, 2, 6);
-            floor->setTraversable(i.value()->getTraversable());
-            scene.addItem(floor);
-            floor->setPos(16*i.key().first, 16*i.key().second);
-        }
-
-    }
-
-    QHash<std::pair<int, int>, Tile*> * layer2 = test->generateRoom();
-    GraphicsTile * tile;
-    for (i = layer2->begin(); i != layer2->end(); ++i){
-        if(i.value()->getId()==5){ //west wall
-                    tile = tileLoader.get(TileType::WALL_W_U);
-        }
-
-        else if(i.value()->getId()==6){ //east wall
-            tile = tileLoader.get(TileType::WALL_E_U);
-        }
-
-        else if(i.value()->getId()==7){ //north wall
-            tile = tileLoader.get(TileType::WALL_N_L);
-        }
-
-        else if(i.value()->getId()==8){ //south wall
-            tile = tileLoader.get(TileType::WALL_S_U);
-        }
-
-        else if(i.value()->getId()==1){ //northwest corner
-            tile = tileLoader.get(TileType::WALL_NW_CORNER_L);
-        }
-
-        else if(i.value()->getId()==2){ //northeast corner
-            tile = tileLoader.get(TileType::WALL_NE_CORNER_L);
-        }
-
-        else if(i.value()->getId()==3){ //southwest corner
-            tile = tileLoader.get(TileType::WALL_SW_CORNER_U);
-        }
-
-        else if(i.value()->getId()==4){ //southeast corner
-            tile = tileLoader.get(TileType::WALL_SE_CORNER_U);
-        }
-        tile->setTraversable(i.value()->getTraversable());
-        scene.addItem(tile);
-        tile->setPos(16*i.key().first, 16*i.key().second);
-    }
-
 
 
     // Example of loading a basic tile (since behaviour of e.g. floor and walls never changes they can use the same class)
@@ -161,38 +107,7 @@ void GameView::movePlayer(Direction direction)
      * WARNING if for some reason the next tile over is empty/void this will cause crash
     */
     qDebug() << "GameView: Player is moving";
-    GraphicsTile * nextTile;
-
-    switch (direction){
-        case Direction::WEST:
-        nextTile = dynamic_cast<GraphicsTile*>(scene.itemAt(QPointF(player->pos().x()-16,player->pos().y()), QTransform())) ;
-        if (nextTile->getTraversable()==true)
-            player->move(direction);
-        break;
-
-        case Direction::EAST:
-        nextTile = dynamic_cast<GraphicsTile*>(scene.itemAt(QPointF(player->pos().x()+16,player->pos().y()), QTransform())) ;
-        if (nextTile->getTraversable()==true)
-            player->move(direction);
-        break;
-
-        case Direction::NORTH:
-        nextTile = dynamic_cast<GraphicsTile*>(scene.itemAt(QPointF(player->pos().x(),player->pos().y()-16), QTransform())) ;
-        if (nextTile->getTraversable()==true)
-            player->move(direction);
-        break;
-
-        case Direction::SOUTH:
-        nextTile = dynamic_cast<GraphicsTile*>(scene.itemAt(QPointF(player->pos().x(),player->pos().y()+16), QTransform())) ;
-        if (nextTile->getTraversable()==true)
-            player->move(direction);
-        break;
-
-        default:            qDebug() << "NO MOVEMENT"; return;
-    }
-
-
-
+    player->move(direction);
 
     // temp
     static int n = 0;
@@ -200,4 +115,61 @@ void GameView::movePlayer(Direction direction)
     static_cast<AnimatedGraphicsTile*>(testAnimatedTile2)->start(n%2 == 0 ? false:true);
     static_cast<AnimatedGraphicsTile*>(testAnimatedTile3)->start(n%2 == 0 ? false:true);
     n++;
+}
+
+void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor)
+{
+    qDebug() << "SIGNAL RECEIVED";
+
+    TileLoader tileLoader = TileLoader::getInstance();
+    GraphicsTile * tile;
+    QHash<std::pair<int, int>, Tile*>::iterator i;
+    for (i = floor->begin(); i != floor->end(); ++i){
+        if(i.value()->getId()==9){
+            tile = tileLoader.get(TileType::FLOOR);
+            scene.addItem(tile);
+            tile->setPos(16*i.key().first, 16*i.key().second);
+        }
+
+    }
+/*
+    QHash<std::pair<int, int>, Tile*> * layer2 = test->generateRoom();
+    GraphicsTile * tile;
+    for (i = layer2->begin(); i != layer2->end(); ++i){
+        if(i.value()->getId()==5){ //west wall
+                    tile = tileLoader.get(TileType::WALL_W_U);
+        }
+
+        else if(i.value()->getId()==6){ //east wall
+            tile = tileLoader.get(TileType::WALL_E_U);
+        }
+
+        else if(i.value()->getId()==7){ //north wall
+            tile = tileLoader.get(TileType::WALL_N_L);
+        }
+
+        else if(i.value()->getId()==8){ //south wall
+            tile = tileLoader.get(TileType::WALL_S_U);
+        }
+
+        else if(i.value()->getId()==1){ //northwest corner
+            tile = tileLoader.get(TileType::WALL_NW_CORNER_L);
+        }
+
+        else if(i.value()->getId()==2){ //northeast corner
+            tile = tileLoader.get(TileType::WALL_NE_CORNER_L);
+        }
+
+        else if(i.value()->getId()==3){ //southwest corner
+            tile = tileLoader.get(TileType::WALL_SW_CORNER_U);
+        }
+
+        else if(i.value()->getId()==4){ //southeast corner
+            tile = tileLoader.get(TileType::WALL_SE_CORNER_U);
+        }
+        tile->setTraversable(i.value()->getTraversable());
+        scene.addItem(tile);
+        tile->setPos(16*i.key().first, 16*i.key().second);
+    }*/
+
 }
