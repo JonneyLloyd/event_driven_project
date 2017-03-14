@@ -119,7 +119,7 @@ void GameView::movePlayer(Direction direction)
 
 //TODO signal to generate room graphics
 //seems to be connected but never enters the function after the emit from model
-void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor)
+void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor, QHash<std::pair<int, int>, Tile *> * layer2)
 {
     qDebug() << "SIGNAL RECEIVED";
 
@@ -134,9 +134,7 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor)
         }
 
     }
-/*
-    QHash<std::pair<int, int>, Tile*> * layer2 = test->generateRoom();
-    GraphicsTile * tile;
+
     for (i = layer2->begin(); i != layer2->end(); ++i){
         if(i.value()->getId()==5){ //west wall
                     tile = tileLoader.get(TileType::WALL_W_U);
@@ -172,6 +170,9 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor)
         tile->setTraversable(i.value()->getTraversable());
         scene.addItem(tile);
         tile->setPos(16*i.key().first, 16*i.key().second);
-    }*/
+    }
+    player = new PlayerSprite(new QPixmap(":/sprite_sheets/res/sprite_sheets/knight_16x16_sheet.png"));
+    scene.addItem(player);
+    player->setPos(16*22, 16*4);
 
 }

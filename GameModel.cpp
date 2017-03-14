@@ -16,7 +16,7 @@ void GameModel::generateNewRoom()
     currentRoom->generateFloor();
     currentRoom->generateRoom();
     player = new Player(22,4); //TODO hardcoded for now & independent of view
-    emit displayFloorEvent(currentRoom->getFloor());
+    emit displayFloorEvent(currentRoom->getFloor(), currentRoom->getWalls());
     qDebug() << "Floor mapping emmitted. floor size: " << currentRoom->getFloor()->size();
 
 }
@@ -98,3 +98,4 @@ void GameModel::move(Direction direction)
     //query player pos and qHash to check if move is valid
     //emit movePlayerEvent(direction);
 }
+
