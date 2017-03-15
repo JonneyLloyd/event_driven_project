@@ -58,10 +58,14 @@ public:
     int getTileCol() const;
     void setTileCol(int value);
 
+    bool getTraversable();
+    void setTraversable(bool value);
+
 private:
     int tileSize;
     int tileRow;
     int tileCol;
+    bool traversable;
 
     QPixmap * textureSheet;
 

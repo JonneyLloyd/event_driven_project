@@ -2,7 +2,8 @@
 #include "Button.h"
 #include "views/TileLoader.h"
 #include "TileTypeEnum.h"
-#include "models/GenerateRoom.h"
+#include <QDebug>
+
 //#include <QHash>
 
 GameView::GameView(QWidget *parent) : QGraphicsView(parent)
@@ -19,14 +20,13 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     btn->setRect(0, 0, 16, 16);
     scene.addItem(btn);
 
-    player = new PlayerSprite(new QPixmap(":/sprite_sheets/res/sprite_sheets/knight_16x16_sheet.png"));
-    scene.addItem(player);
-    player->setPos(16*22, 16*4);
 
 
     TileLoader tileLoader = TileLoader::getInstance();
 
     QPixmap * textureSheet = new QPixmap(":/sprite_sheets/res/sprite_sheets/dungeon_sheet.png");
+
+
     // Example of loading a basic tile (since behaviour of e.g. floor and walls never changes they can use the same class)
     testTile = new GraphicsTile(textureSheet, 7, 8);
     scene.addItem(testTile);
@@ -35,6 +35,12 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     GraphicsTile * wall = new GraphicsTile(textureSheet, 0, 5);
     scene.addItem(wall);
     wall->setPos(16*10, 16*10);
+
+
+
+    player = new PlayerSprite(new QPixmap(":/sprite_sheets/res/sprite_sheets/knight_16x16_sheet.png"));
+    scene.addItem(player);
+    player->setPos(16*22, 16*4);
 
     // on/off or opened/closed objects should probably be wrapped in their own classes or at least a StateAnimatedTile
     testAnimatedTile = tileLoader.get(TileType::CHEST);
@@ -55,6 +61,7 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
         tile->setGridPos(t, 12);
     }
 
+
     // Note: the above classes are only visual representations, all logic should reside in models
 
     // TODO (views):
@@ -72,10 +79,8 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     //  Check if the tile in front can be interacted with (activated, walked on)
     //  Move rooms
 
-    //testing map
-    GenerateRoom * test = new GenerateRoom(2,16,16);
-    QHash<std::pair<int, int>, Tile*> * result = test->generateRoom();
-    qDebug() << "map 0,1: " << result->value(std::make_pair(2,0))->getId();
+
+
 
 }
 
@@ -96,6 +101,11 @@ void GameView::keyPressEvent(QKeyEvent *event)
 
 void GameView::movePlayer(Direction direction)
 {
+    /*
+     * Code checks next tile before movement
+     * Will not move to intraversable tiles
+     * WARNING if for some reason the next tile over is empty/void this will cause crash
+    */
     qDebug() << "GameView: Player is moving";
     player->move(direction);
 
@@ -105,4 +115,64 @@ void GameView::movePlayer(Direction direction)
     static_cast<AnimatedGraphicsTile*>(testAnimatedTile2)->start(n%2 == 0 ? false:true);
     static_cast<AnimatedGraphicsTile*>(testAnimatedTile3)->start(n%2 == 0 ? false:true);
     n++;
+}
+
+//TODO signal to generate room graphics
+//seems to be connected but never enters the function after the emit from model
+void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor, QHash<std::pair<int, int>, Tile *> * layer2)
+{
+    qDebug() << "SIGNAL RECEIVED";
+
+    TileLoader tileLoader = TileLoader::getInstance();
+    GraphicsTile * tile;
+    QHash<std::pair<int, int>, Tile*>::iterator i;
+    for (i = floor->begin(); i != floor->end(); ++i){
+        if(i.value()->getId()==9){
+            tile = tileLoader.get(TileType::FLOOR);
+            scene.addItem(tile);
+            tile->setPos(16*i.key().first, 16*i.key().second);
+        }
+
+    }
+
+    for (i = layer2->begin(); i != layer2->end(); ++i){
+        if(i.value()->getId()==5){ //west wall
+                    tile = tileLoader.get(TileType::WALL_W_U);
+        }
+
+        else if(i.value()->getId()==6){ //east wall
+            tile = tileLoader.get(TileType::WALL_E_U);
+        }
+
+        else if(i.value()->getId()==7){ //north wall
+            tile = tileLoader.get(TileType::WALL_N_L);
+        }
+
+        else if(i.value()->getId()==8){ //south wall
+            tile = tileLoader.get(TileType::WALL_S_U);
+        }
+
+        else if(i.value()->getId()==1){ //northwest corner
+            tile = tileLoader.get(TileType::WALL_NW_CORNER_L);
+        }
+
+        else if(i.value()->getId()==2){ //northeast corner
+            tile = tileLoader.get(TileType::WALL_NE_CORNER_L);
+        }
+
+        else if(i.value()->getId()==3){ //southwest corner
+            tile = tileLoader.get(TileType::WALL_SW_CORNER_U);
+        }
+
+        else if(i.value()->getId()==4){ //southeast corner
+            tile = tileLoader.get(TileType::WALL_SE_CORNER_U);
+        }
+        tile->setTraversable(i.value()->getTraversable());
+        scene.addItem(tile);
+        tile->setPos(16*i.key().first, 16*i.key().second);
+    }
+    player = new PlayerSprite(new QPixmap(":/sprite_sheets/res/sprite_sheets/knight_16x16_sheet.png"));
+    scene.addItem(player);
+    player->setPos(16*22, 16*4);
+
 }

@@ -6,7 +6,8 @@ GraphicsTile::GraphicsTile(QPixmap * textureSheet, int tileRow, int tileCol, int
     : textureSheet{textureSheet},
       tileSize{tileSize},
       tileRow{tileRow},
-      tileCol{tileCol}
+      tileCol{tileCol},
+      traversable{traversable}
 {
 
 }
@@ -72,4 +73,14 @@ int GraphicsTile::getTileCol() const
 void GraphicsTile::setTileCol(int value)
 {
     tileCol = value;
+}
+
+bool GraphicsTile::getTraversable()
+{
+    return traversable;
+}
+
+void GraphicsTile::setTraversable(bool value)
+{
+    traversable = value;
 }
