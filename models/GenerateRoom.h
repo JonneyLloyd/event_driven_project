@@ -4,32 +4,36 @@
 
 #include <QHash>
 #include "Tile.h"
+#include <QObject>
 
-class GenerateRoom
+class GenerateRoom : public QObject
 {
-
+    Q_OBJECT
 public:
     /*
      * Constructor
      */
-    GenerateRoom(int preset, int length = 16, int width = 16);
+    GenerateRoom(int preset, int rows = 16, int columns = 16);
     ~GenerateRoom();
     void setPreset(int preset);
-    void setLength(int length);
-    void setWidth(int width);
+    void setRows(int rows);
+    void setColumns(int columns);
 
     int getPreset();
-    int getLength();
-    int getWidth();
-    QHash<std::pair<int, int>, Tile*> *generateRoom();
-    QHash<std::pair<int, int>, Tile*> *generateItems();
-    QHash<std::pair<int, int>, Tile*> *generateFloor();
-
+    int getRows();
+    int getColumns();
+    void generateRoom();
+    void generateFloor();
+    QHash<std::pair<int, int>, Tile*> * getFloor();
+    QHash<std::pair<int, int>, Tile*> * getWalls();
 
 private:
     int preset;
-    int length;
-    int width;
+    int rows;
+    int columns;
+    QHash<std::pair<int, int>, Tile*>  * floor;
+    QHash<std::pair<int, int>, Tile*>  * walls;
+
 
 };
 

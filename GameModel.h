@@ -2,6 +2,9 @@
 #define GAMEMODEL_H
 
 #include <QObject>
+#include "models/GenerateRoom.h"
+#include "models/Player.h"
+#include "models/Tile.h"
 
 #include "DirectionEnum.h"
 
@@ -19,15 +22,23 @@ class GameModel : public QObject
 
 public:
     explicit GameModel(QObject *parent = 0);
+    void generateNewRoom();
+    GenerateRoom * getCurrentRoom();
+    void setCurrentRoom(GenerateRoom * currentRoom);
+    Player * getPlayer();
+    void setPlayer(Player * player);
 
 signals:
     void movePlayerEvent(Direction Direction);  // Notifies controller to move player
                                                 // Should this be direction or position with animation=true default flag
+    void displayFloorEvent(QHash<std::pair<int, int>, Tile *> * floor, QHash<std::pair<int, int>, Tile *> * layer2);
 
 public slots:
     void move(Direction Direction);     // Listens for controller
                                         // Moves the player in game state
-
+private:
+    GenerateRoom * currentRoom;
+    Player * player;
 };
 
 #endif // GAMEMODEL_H

@@ -2,13 +2,18 @@
 
 
 
-GenerateRoom::GenerateRoom(int preset, int length, int width)
+GenerateRoom::GenerateRoom(int preset, int rows, int columns)
 {
     if (preset <=0)
         preset = 1;
     this->preset = preset;
-    this->length = length;
-    this->width = width;
+    this->rows = rows;
+    this->columns = columns;
+}
+
+GenerateRoom::~GenerateRoom()
+{
+
 }
 
 
@@ -18,15 +23,15 @@ void GenerateRoom::setPreset(int preset)
 }
 
 
-void GenerateRoom::setLength(int length)
+void GenerateRoom::setRows(int rows)
 {
-    this->length=length;
+    this->rows=rows;
 }
 
 
-void GenerateRoom::setWidth(int width)
+void GenerateRoom::setColumns(int columns)
 {
-    this->width=width;
+    this->columns=columns;
 }
 
 
@@ -36,123 +41,94 @@ int GenerateRoom::getPreset()
 }
 
 
-int GenerateRoom::getLength()
+int GenerateRoom::getRows()
 {
-    return this->length;
+    return this->rows;
 }
 
 
-int GenerateRoom::getWidth()
+int GenerateRoom::getColumns()
 {
-    return this->width;
+    return this->columns;
 }
 
 
-QHash<std::pair<int, int>, Tile*>  *GenerateRoom::generateRoom()
+void GenerateRoom::generateRoom()
 {
-    QHash<std::pair<int, int>, Tile*> * result = new QHash<std::pair<int, int>, Tile*> ;
-    bool traversable = true;
-    int id = 0;
-    for(int i = 0; i < getLength(); i++){
-        for(int j = 0; j < getWidth(); j++){
-            if(i == 0 || j == 0 || i == getWidth()-1 || getLength()-1)
+    walls = new QHash<std::pair<int, int>, Tile*> ;
+    bool traversable = false;
+    int id = 5;
+    Tile * westWall = new Tile(traversable, id);
+    id = 6;
+    Tile * eastWall = new Tile(traversable, id);
+    id = 7;
+    Tile * northWall = new Tile(traversable, id);
+    id = 8;
+    Tile * southWall = new Tile(traversable, id);
+
+    for(int i = 0; i < this->getRows(); i++){
+        for(int j = 0; j < this->getColumns(); j++){
+            if(i ==0 && j ==0)                          //northwest corner
             {
-                if(i ==0 && j ==0)                          //northwest corner
-                {
-                    traversable = false;
-                    id = 1;
-                    result->insert(std::make_pair(i,j), new Tile(traversable, id));
-                }
-                else if(i ==this->getLength()-1 && j ==0)   //northeast corner
-                {
-                    traversable = false;
-                    id = 2;
-                    result->insert(std::make_pair(i,j), new Tile(traversable, id));
-                }
-                else if(i == getWidth()-1 && j ==0)         //southwest corner
-                {
-                    traversable = false;
-                    id = 3;
-
-                    result->insert(std::make_pair(i,j), new Tile(traversable, id));
-                }
-                else if(i == getWidth()-1 && j ==this->getLength()-1) //southeast corner
-                {
-                    traversable = false;
-                    id = 4;
-                    result->insert(std::make_pair(i,j), new Tile(traversable, id));
-                }
-                else if(i ==0)                              //north wall
-                {
-                    traversable = false;
-                    id = 5;
-                    result->insert(std::make_pair(i,j), new Tile(traversable, id));
-                }
-                else if(i ==this->getWidth()-1)             //south wall
-                {
-                    traversable = false;
-                    id = 6;
-
-                    result->insert(std::make_pair(i,j), new Tile(traversable, id));
-                }
-                else if(j ==0)                              //west wall
-                {
-                    traversable = false;
-                    id = 7;
-                    result->insert(std::make_pair(i,j), new Tile(traversable, id));
-                }
-                else if(j == getLength()-1)                 //east Wall
-                {
-                    traversable = false;
-                    id = 8;
-                    result->insert(std::make_pair(i,j), new Tile(traversable, id));
+                id = 1;
+                walls->insert(std::make_pair(i,j), new Tile(traversable, id));
             }
-            }
-            else                                        //floor
+            else if(i == this->getRows()-1 && j ==0)   //southwest corner
             {
-                traversable = true;
-                id = 9;
-                result->insert(std::make_pair(i,j), new Tile(traversable, id));
+                id = 2;
+                walls->insert(std::make_pair(i,j), new Tile(traversable, id));
             }
-
+            else if(i == 0 && j ==this->getColumns()-1)         // north east corner
+            {
+                id = 3;
+                walls->insert(std::make_pair(i,j), new Tile(traversable, id));
+            }
+            else if(i == this->getRows()-1 && j == this->getColumns()-1) //south east corner
+            {
+                id = 4;
+                walls->insert(std::make_pair(i,j), new Tile(traversable, id));
+            }
+            else if(i ==0)
+            {
+                walls->insert(std::make_pair(i,j), westWall);
+            }
+            else if(i ==this->getRows()-1)
+            {
+                walls->insert(std::make_pair(i,j), eastWall);
+            }
+            else if(j ==0)
+            {
+                walls->insert(std::make_pair(i,j), northWall);
+            }
+            else if(j == getColumns()-1)
+            {
+                walls->insert(std::make_pair(i,j), southWall);
+            }
 
         }
     }
-    return result;
 }
 
 
-QHash<std::pair<int, int>, Tile*> *GenerateRoom::generateItems()
+void GenerateRoom::generateFloor()
 {
-    QHash<std::pair<int, int>, Tile*> * result = new QHash<std::pair<int, int>, Tile*> ;
+    int id = 9;
     bool traversable = true;
-    int id = 10;
-    //inserting 4 doors, pos relative to preset
-    result->insert(std::make_pair(0,getWidth()/this->getPreset()), new Tile(traversable, id));
-    result->insert(std::make_pair(0,getLength()/this->getPreset()), new Tile(traversable, id));
-    result->insert(std::make_pair(getWidth()/this->getPreset(),0), new Tile(traversable, id));
-    result->insert(std::make_pair(getLength()/this->getPreset(),0), new Tile(traversable, id));
-
-    traversable = false;
-    id = 11;
-    //insert chest
-    result->insert(std::make_pair(getLength()/this->getPreset()+1,getWidth()/this->getPreset()), new Tile(traversable, id));
-
-    return result;
-}
-
-
-QHash<std::pair<int, int>, Tile*> *GenerateRoom::generateFloor()
-{
-    bool traversable = true;
-    int id = 10;
-    QHash<std::pair<int, int>, Tile*> * result = new QHash<std::pair<int, int>, Tile*> ;
-    for(int i = 0; i < getLength(); i++){
-        for(int j = 0; j < getWidth(); j++){
-                result->insert(std::make_pair(i,j), new Tile(traversable, id)); //floor
+    Tile * floorTile = new Tile(traversable, id);
+    floor = new QHash<std::pair<int, int>, Tile*> ;
+    for(int i = 0; i < getRows(); i++){
+        for(int j = 0; j < getColumns(); j++){
+                floor->insert(std::make_pair(i,j), floorTile); //floor
         }
     }
+}
 
+QHash<std::pair<int, int>, Tile *> * GenerateRoom::getFloor()
+{
+    return this->floor;
+}
 
-    return result;
+QHash<std::pair<int, int>, Tile *> * GenerateRoom::getWalls()
+{
+    return this->walls;
 }
