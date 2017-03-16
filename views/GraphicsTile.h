@@ -2,10 +2,11 @@
 #define GRAPHICSTILE_H
 
 #include <QObject>
+#include <QGraphicsLayoutItem>
 #include <QGraphicsObject>
 
 
-class GraphicsTile: public QGraphicsObject
+class GraphicsTile: public QGraphicsObject, public QGraphicsLayoutItem
 {
     Q_OBJECT
 
@@ -15,6 +16,10 @@ public:
      */
     GraphicsTile(QPixmap * textureSheet, int tileRow=0, int tileCol=0, int tileSize=16, QGraphicsItem * parent=0);
     ~GraphicsTile();
+
+    void setGeometry(const QRectF &geom) override;
+    QSizeF sizeHint(Qt::SizeHint which, const QSizeF &constraint = QSizeF()) const override;
+
 
     /*
      * Overrided virtual function

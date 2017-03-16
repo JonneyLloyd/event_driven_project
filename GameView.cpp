@@ -1,10 +1,9 @@
 #include "GameView.h"
 #include "Button.h"
-#include "views/TileLoader.h"
 #include "TileTypeEnum.h"
+#include "views/TileLoader.h"
+#include "views/GraphicsInventory.h"
 #include <QDebug>
-
-//#include <QHash>
 
 GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 {
@@ -40,7 +39,7 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 
     player = new PlayerSprite(new QPixmap(":/sprite_sheets/res/sprite_sheets/knight_16x16_sheet.png"));
     scene.addItem(player);
-    player->setPos(16*22, 16*4);
+    player->setPos(16*10, 16*4);
 
     // on/off or opened/closed objects should probably be wrapped in their own classes or at least a StateAnimatedTile
     testAnimatedTile = tileLoader.get(TileType::CHEST);
@@ -65,11 +64,11 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     // Note: the above classes are only visual representations, all logic should reside in models
 
     // TODO (views):
-    //  Modify Door and Player to use new Tile classes
     //  Introduce layering
     //  Draw map/layers using model output - there is a method to do all painting in one go
     //  Add menu widgets
     //  Figure out if QGraphicsItem * parent is needed/wanted and adjust tile objects (since it is the last param)
+    //  Fix memory problems!!
 
     // TODO (models):
     //  Representations for player, interactable objects, world, layers, tiles
@@ -78,9 +77,18 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     //  Validate player moves
     //  Check if the tile in front can be interacted with (activated, walked on)
     //  Move rooms
+    //  Blocking calls/game loop
 
 
 
+
+
+    GraphicsInventory *inventory = new GraphicsInventory;
+    inventory->setPos(16*12, 16*14);
+    scene.addItem(inventory);
+    inventory->addInventoryItem(0, TileType::DOOR);
+    inventory->addInventoryItem(1, TileType::DOOR); // NB these index values should match the model
+//    inventory->removeInventoryItem(0, TileType::DOOR);
 
 }
 
@@ -129,6 +137,7 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor, QHash<st
     for (i = floor->begin(); i != floor->end(); ++i){
         if(i.value()->getId()==9){
             tile = tileLoader.get(TileType::FLOOR);
+            tile->setZValue(-1);  // temp, everything may be added to a 'layer/group' (maybe use enums rather than numbers?): http://stackoverflow.com/questions/18074798/layers-on-qgraphicsview
             scene.addItem(tile);
             tile->setPos(16*i.key().first, 16*i.key().second);
         }
@@ -171,8 +180,8 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor, QHash<st
         scene.addItem(tile);
         tile->setPos(16*i.key().first, 16*i.key().second);
     }
-    player = new PlayerSprite(new QPixmap(":/sprite_sheets/res/sprite_sheets/knight_16x16_sheet.png"));
-    scene.addItem(player);
-    player->setPos(16*22, 16*4);
+//    player = new PlayerSprite(new QPixmap(":/sprite_sheets/res/sprite_sheets/knight_16x16_sheet.png"));
+//    scene.addItem(player);
+//    player->setPos(16*10, 16*4);
 
 }
