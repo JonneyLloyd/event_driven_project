@@ -12,10 +12,10 @@ GameModel::GameModel(QObject *parent) : QObject(parent)
 
 void GameModel::generateNewRoom()
 {
-    currentRoom = new GenerateRoom(2,32,16);//TODO hardcoded for now
+    currentRoom = new GenerateRoom(2,20,12);//TODO hardcoded for now
     currentRoom->generateFloor();
     currentRoom->generateRoom();
-    player = new Player(22,4); //TODO hardcoded for now & independent of view
+    player = new Player(10,4); //TODO hardcoded for now & independent of view
     emit displayFloorEvent(currentRoom->getFloor(), currentRoom->getWalls());
     qDebug() << "Floor mapping emmitted. floor size: " << currentRoom->getFloor()->size();
 

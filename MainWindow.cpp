@@ -26,7 +26,7 @@ void MainWindow::resizeEvent(QResizeEvent *)
 {
     QRectF bounds = gameView->scene.sceneRect();
     // Implement a maximum size to stop scaling
-//    bounds.setWidth(bounds.width()*0.9);
-//    bounds.setHeight(bounds.height()*0.9);
+    bounds.setWidth(bounds.width()*1.2);
+    bounds.setHeight(bounds.height()*1.2);
     gameView->fitInView(bounds, Qt::KeepAspectRatio);
 }

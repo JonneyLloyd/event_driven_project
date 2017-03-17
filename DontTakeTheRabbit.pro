@@ -33,8 +33,10 @@ SOURCES += main.cpp \
     views/GraphicsTile.cpp \
     views/AnimatedGraphicsTile.cpp \
     models/GenerateRoom.cpp \
+    models/Player.cpp \
     models/Tile.cpp \
-    views/PlayerSprite.cpp
+    views/PlayerSprite.cpp \
+    views/GraphicsInventory.cpp
 
 HEADERS  += \
     Button.h \
@@ -48,8 +50,10 @@ HEADERS  += \
     views/GraphicsTile.h \
     views/AnimatedGraphicsTile.h \
     models/GenerateRoom.h \
+    models/Player.h \
     models/Tile.h \
-    views/PlayerSprite.h
+    views/PlayerSprite.h \
+    views/GraphicsInventory.h
 
 FORMS    +=
 
