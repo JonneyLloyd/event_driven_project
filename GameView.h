@@ -12,6 +12,7 @@
 #include "views/GraphicsTile.h"
 #include "views/AnimatedGraphicsTile.h"
 #include "views/PlayerSprite.h"
+#include "views/GraphicsInventory.h"
 #include "models/Tile.h"
 /*
  * GameView handles visuals and interacts with widgets/items.
@@ -31,6 +32,7 @@ public:
      * param view   The view to add the scene to
      */
     explicit GameView(QWidget *parent = 0);
+    ~GameView();
 
 private:
     PlayerSprite * player;
@@ -40,6 +42,8 @@ private:
     GraphicsTile * testAnimatedTile;
     GraphicsTile * testAnimatedTile2;
     GraphicsTile * testAnimatedTile3;
+
+    GraphicsInventory * inventory;
 
 
 protected:

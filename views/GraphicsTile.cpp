@@ -2,12 +2,12 @@
 
 #include "GraphicsTile.h"
 
-GraphicsTile::GraphicsTile(QPixmap * textureSheet, int tileRow, int tileCol, int tileSize, QGraphicsItem *parent)
-    : textureSheet{textureSheet},
+GraphicsTile::GraphicsTile(QSharedPointer<QPixmap> textureSheet, int tileRow, int tileCol, int tileSize, QGraphicsItem *parent)
+    : QGraphicsObject(parent),
       tileSize{tileSize},
       tileRow{tileRow},
       tileCol{tileCol},
-      traversable{traversable}
+      textureSheet{textureSheet}
 {
     setGraphicsItem(this);
     this->setGeometry(QRectF(0, 0, tileSize, tileSize));
@@ -17,11 +17,6 @@ GraphicsTile::~GraphicsTile()
 {
 
 }
-
-//QRectF GraphicsTile::boundingRect() const
-//{
-//    return QRectF(0, 0, tileSize, tileSize);
-//}
 
 QRectF GraphicsTile::boundingRect() const
 {
@@ -37,6 +32,8 @@ void GraphicsTile::setGeometry(const QRectF &geom)
 
 QSizeF GraphicsTile::sizeHint(Qt::SizeHint which, const QSizeF &constraint) const
 {
+    Q_UNUSED(which);
+    Q_UNUSED(constraint);
     return QSize(tileSize, tileSize);
 //    switch ( which )
 //    {
@@ -56,6 +53,8 @@ QSizeF GraphicsTile::sizeHint(Qt::SizeHint which, const QSizeF &constraint) cons
 
 void GraphicsTile::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
 //    painter->drawRect(this->boundingRect());
     painter->drawPixmap(0, 0, this->geometry().width(), this->geometry().height(), *textureSheet,    // x, y position, sprite sheet
                         tileCol*tileSize,       // col,
@@ -106,14 +105,4 @@ int GraphicsTile::getTileCol() const
 void GraphicsTile::setTileCol(int value)
 {
     tileCol = value;
-}
-
-bool GraphicsTile::getTraversable()
-{
-    return traversable;
-}
-
-void GraphicsTile::setTraversable(bool value)
-{
-    traversable = value;
 }

@@ -2,7 +2,6 @@
 #include "Button.h"
 #include "TileTypeEnum.h"
 #include "views/TileLoader.h"
-#include "views/GraphicsInventory.h"
 #include <QDebug>
 
 GameView::GameView(QWidget *parent) : QGraphicsView(parent)
@@ -23,23 +22,23 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 
     TileLoader tileLoader = TileLoader::getInstance();
 
-    QPixmap * textureSheet = new QPixmap(":/sprite_sheets/res/sprite_sheets/dungeon_sheet.png");
+//    QSharedPointer<QPixmap> textureSheet = QSharedPointer<QPixmap>(new QPixmap(":/sprite_sheets/res/sprite_sheets/dungeon_sheet.png"));
 
 
-    // Example of loading a basic tile (since behaviour of e.g. floor and walls never changes they can use the same class)
-    testTile = new GraphicsTile(textureSheet, 7, 8);
-    scene.addItem(testTile);
-    testTile->setPos(16*2, 16*2);
+//    // Example of loading a basic tile (since behaviour of e.g. floor and walls never changes they can use the same class)
+//    testTile = new GraphicsTile(textureSheet, 7, 8);
+//    scene.addItem(testTile);
+//    testTile->setPos(16*2, 16*2);
 
-    GraphicsTile * wall = new GraphicsTile(textureSheet, 0, 5);
-    scene.addItem(wall);
-    wall->setPos(16*10, 16*10);
+//    GraphicsTile * wall = new GraphicsTile(textureSheet, 0, 5);
+//    scene.addItem(wall);
+//    wall->setPos(16*10, 16*10);
 
 
 
-    player = new PlayerSprite(new QPixmap(":/sprite_sheets/res/sprite_sheets/knight_16x16_sheet.png"));
-    scene.addItem(player);
-    player->setPos(16*10, 16*4);
+//    player = new PlayerSprite(new QPixmap(":/sprite_sheets/res/sprite_sheets/knight_16x16_sheet.png"));
+//    scene.addItem(player);
+//    player->setPos(16*10, 16*4);
 
     // on/off or opened/closed objects should probably be wrapped in their own classes or at least a StateAnimatedTile
     testAnimatedTile = tileLoader.get(TileType::CHEST);
@@ -83,12 +82,17 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 
 
 
-    GraphicsInventory *inventory = new GraphicsInventory;
+    inventory = new GraphicsInventory;
     inventory->setPos(16*12, 16*14);
     scene.addItem(inventory);
     inventory->addInventoryItem(0, TileType::DOOR);
     inventory->addInventoryItem(1, TileType::DOOR); // NB these index values should match the model
 //    inventory->removeInventoryItem(0, TileType::DOOR);
+
+}
+
+GameView::~GameView()
+{
 
 }
 
@@ -176,12 +180,11 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor, QHash<st
         else if(i.value()->getId()==4){ //southeast corner
             tile = tileLoader.get(TileType::WALL_SE_CORNER_U);
         }
-        tile->setTraversable(i.value()->getTraversable());
         scene.addItem(tile);
         tile->setPos(16*i.key().first, 16*i.key().second);
     }
-//    player = new PlayerSprite(new QPixmap(":/sprite_sheets/res/sprite_sheets/knight_16x16_sheet.png"));
-//    scene.addItem(player);
-//    player->setPos(16*10, 16*4);
+    player = qgraphicsitem_cast<PlayerSprite*>(tileLoader.get(TileType::PLAYER));
+    scene.addItem(player);
+    player->setPos(16*10, 16*4);
 
 }

@@ -9,11 +9,12 @@
 #include "views/GraphicsTile.h"
 
 
-class GraphicsInventory : public QGraphicsWidget // public QGraphicsLinearLayout, public QGraphicsObject
+class GraphicsInventory : public QGraphicsWidget
 {
 
 public:
-    GraphicsInventory();
+    GraphicsInventory(QGraphicsItem *parent = 0);
+    ~GraphicsInventory();
 
     QRectF boundingRect() const;
 
@@ -29,7 +30,8 @@ private:
     int spacing = 4;
     std::vector<GraphicsTile*> items;
 
-    QGraphicsLinearLayout layout;
+    QGraphicsLinearLayout * layout;     // must be a pointer as QGraphicsWidget takes ownership
+                                        // (Otherwise segfault on deletion)
 
 };
 

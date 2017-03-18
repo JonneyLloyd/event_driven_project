@@ -1,11 +1,11 @@
 #ifndef TILELOADER_H
 #define TILELOADER_H
 
+#include <QSharedPointer>
 #include <QPixmap>
 
 #include "TileTypeEnum.h"
 #include "views/GraphicsTile.h"
-#include "views/AnimatedGraphicsTile.h"
 
 /*
  * Singleton class containing the necessary texture/sprite sheets.
@@ -20,8 +20,10 @@ public:
 
 private:
     TileLoader();
-    QPixmap * textureSheet;
-    QPixmap * spriteSheet;
+
+    // Smart pointers ensure these images are available to clients even after the singleton is deleted
+    QSharedPointer<QPixmap> textureSheet;
+    QSharedPointer<QPixmap> spriteSheet;
 
 };
 
