@@ -3,6 +3,7 @@
 
 #include "views/GraphicsTile.h"
 
+#include <QSharedPointer>
 #include <QTimeLine>
 
 class AnimatedGraphicsTile : public GraphicsTile
@@ -10,8 +11,7 @@ class AnimatedGraphicsTile : public GraphicsTile
     Q_OBJECT
 
 public:
-    AnimatedGraphicsTile(QPixmap * textureSheet, int tileRow=0, int tileCol=0, int numberOfFrames=1, int duration=500, int tileSize=16, QGraphicsItem * parent=0);
-    ~AnimatedGraphicsTile();
+    AnimatedGraphicsTile(QSharedPointer<QPixmap> textureSheet, int tileRow=0, int tileCol=0, int numberOfFrames=1, int duration=500, int tileSize=16, QGraphicsItem * parent=0);
 
     void start(bool reverse=false);
 
@@ -27,8 +27,7 @@ private:
     int numberOfFrames;
     int currentFrame;
     int initialTileCol;
-
-    QTimeLine * timeLine;
+    QTimeLine timeLine;
 
 public slots:
     virtual void onFrameChanged(int frame);

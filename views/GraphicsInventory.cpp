@@ -4,13 +4,21 @@
 
 #include "views/TileLoader.h"
 
-#include <QDebug>
-
-GraphicsInventory::GraphicsInventory()
+GraphicsInventory::GraphicsInventory(QGraphicsItem *parent)
+    : QGraphicsWidget(parent)
 {
-    this->setLayout(&layout);
-    layout.setSpacing(spacing);
-    layout.setContentsMargins(spacing, spacing, spacing, spacing);
+    layout = new QGraphicsLinearLayout;
+    layout->setParentLayoutItem(this);
+    this->setLayout(layout);
+    layout->setSpacing(spacing);
+    layout->setContentsMargins(spacing, spacing, spacing, spacing);
+}
+
+GraphicsInventory::~GraphicsInventory()
+{
+    for (std::vector<GraphicsTile *>::iterator i = items.begin(); i != items.end(); ++i) {
+        delete *i;  // Maybe this can be replaced with parenting
+    }
 }
 
 QRectF GraphicsInventory::boundingRect() const
@@ -23,6 +31,8 @@ QRectF GraphicsInventory::boundingRect() const
 
 void GraphicsInventory::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
     painter->setBrush(QBrush(QColor(47,60,78), Qt::SolidPattern));
     painter->setPen(QColor(200,60,78));
     painter->setRenderHint(QPainter::Antialiasing);
@@ -33,14 +43,15 @@ void GraphicsInventory::addInventoryItem(int index, TileType tileType)
 {
     TileLoader tileLoader = TileLoader::getInstance();
     auto tile = tileLoader.get(tileType);
+    tile->setParentLayoutItem(layout);  // needed?
     items.insert(items.begin() + index, tile);
-    layout.insertItem(index, tile);
+    layout->insertItem(index, tile);
 }
 
 void GraphicsInventory::removeInventoryItem(int index)
 {
     auto tile = items[index];
-    layout.removeItem(tile);
+    layout->removeItem(tile);  // needed?
     items.erase(items.begin() + index);
     delete tile;
 

@@ -17,8 +17,6 @@ class GameController : public QObject
 public:
     /*
      * Constructor
-     *
-     * param mainWindow   The main window to add content to
      */
     explicit GameController(GameModel *gameModel, GameView *gameView, QObject *parent = 0);
 

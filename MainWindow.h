@@ -9,20 +9,16 @@
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
 
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void resizeEvent(QResizeEvent *);
 
-public slots:
-
-
 private:
     GameController * gameController;
-    GameModel * gameModel;
-    GameView * gameView;
+    GameModel gameModel;
+    GameView gameView;
 
 };
 

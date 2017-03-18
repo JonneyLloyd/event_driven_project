@@ -14,4 +14,4 @@ GameController::GameController(GameModel *gameModel, GameView *gameView, QObject
     gameModel->generateNewRoom();
 }
 
-
+// TODO: maybe a start method to emit the first signal?

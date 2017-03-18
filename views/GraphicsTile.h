@@ -1,6 +1,7 @@
 #ifndef GRAPHICSTILE_H
 #define GRAPHICSTILE_H
 
+#include <QSharedPointer>
 #include <QObject>
 #include <QGraphicsLayoutItem>
 #include <QGraphicsObject>
@@ -14,7 +15,7 @@ public:
     /*
      * Constructor
      */
-    GraphicsTile(QPixmap * textureSheet, int tileRow=0, int tileCol=0, int tileSize=16, QGraphicsItem * parent=0);
+    GraphicsTile(QSharedPointer<QPixmap> textureSheet, int tileRow=0, int tileCol=0, int tileSize=16, QGraphicsItem * parent=0);
     ~GraphicsTile();
 
     void setGeometry(const QRectF &geom) override;
@@ -26,15 +27,14 @@ public:
      * Defines the outer bounds of the item as a rectangle
      * All painting happens within these bounds
      */
-    QRectF boundingRect() const;
+    QRectF boundingRect() const override;
 
     /*
      * Overrided virtual function
      * Paints/re-paints the tile on update().
      * Non blocking call
      */
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-               QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
     /*
      * Set the position of the tile on the grid based on the tile size.
@@ -63,16 +63,12 @@ public:
     int getTileCol() const;
     void setTileCol(int value);
 
-    bool getTraversable();
-    void setTraversable(bool value);
-
 private:
     int tileSize;
     int tileRow;
     int tileCol;
-    bool traversable;
 
-    QPixmap * textureSheet;
+    QSharedPointer<QPixmap> textureSheet = 0;
 
 };
 

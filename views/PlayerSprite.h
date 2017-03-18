@@ -6,6 +6,8 @@
 #include "views/AnimatedGraphicsTile.h"
 #include "DirectionEnum.h"
 
+#include <QSharedPointer>
+
 class PlayerSprite : public AnimatedGraphicsTile
 {
     Q_OBJECT
@@ -15,7 +17,7 @@ public:
      * Constructor
      * params not needed as they are tied to the sprite sheet anyway
      */
-     PlayerSprite(QPixmap * textureSheet, QGraphicsItem * parent=0);
+     PlayerSprite(QSharedPointer<QPixmap> textureSheet, QGraphicsItem * parent=0);
     ~PlayerSprite();
 
     /*

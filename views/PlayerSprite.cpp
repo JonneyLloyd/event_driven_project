@@ -1,7 +1,7 @@
 #include "PlayerSprite.h"
 
 
-PlayerSprite::PlayerSprite(QPixmap * textureSheet, QGraphicsItem * parent)
+PlayerSprite::PlayerSprite(QSharedPointer<QPixmap> textureSheet, QGraphicsItem * parent)
     : AnimatedGraphicsTile(textureSheet, 0, 0, 3, 500, 16, parent)
 {
     setNumberOfFramesPerAnimation(4);
