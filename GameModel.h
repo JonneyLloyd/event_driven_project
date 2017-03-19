@@ -39,6 +39,7 @@ public slots:
     void move(Direction Direction);     // Listens for controller
                                         // Moves the player in game state
     void generateNewRoom();
+    void generateNewRoom(int preset, int rows, int cols);
 private:
     GenerateRoom * currentRoom;
     Player * player;
