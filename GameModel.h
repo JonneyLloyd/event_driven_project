@@ -22,7 +22,7 @@ class GameModel : public QObject
 
 public:
     explicit GameModel(QObject *parent = 0);
-    void generateNewRoom();
+
     GenerateRoom * getCurrentRoom();
     void setCurrentRoom(GenerateRoom * currentRoom);
     Player * getPlayer();
@@ -38,6 +38,7 @@ signals:
 public slots:
     void move(Direction Direction);     // Listens for controller
                                         // Moves the player in game state
+    void generateNewRoom();
 private:
     GenerateRoom * currentRoom;
     Player * player;

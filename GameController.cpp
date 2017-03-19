@@ -15,7 +15,8 @@ GameController::GameController(GameModel *gameModel, GameView *gameView, QObject
                                 QHash<std::pair<int, int>, Tile *>*,
                                 QHash<std::pair<int, int>, Tile *>*)));
 
-    gameModel->generateNewRoom();
+    connect(this, SIGNAL(generateNewRoom()), gameModel, SLOT(generateNewRoom()));
+    emit generateNewRoom();
 }
 
 // TODO: maybe a start method to emit the first signal?
