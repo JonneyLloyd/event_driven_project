@@ -24,8 +24,10 @@ public:
     int getColumns();
     void generateRoom();
     void generateFloor();
+    void generateDoors();
     QHash<std::pair<int, int>, Tile*> * getFloor();
     QHash<std::pair<int, int>, Tile*> * getWalls();
+    QHash<std::pair<int, int>, Tile*> * getDoors();
 
 private:
     int preset;
@@ -33,7 +35,7 @@ private:
     int columns;
     QHash<std::pair<int, int>, Tile*>  * floor;
     QHash<std::pair<int, int>, Tile*>  * walls;
-
+    QHash<std::pair<int, int>, Tile*>  * doors;
 
 };
 
