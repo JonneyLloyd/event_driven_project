@@ -12,11 +12,17 @@ GameModel::GameModel(QObject *parent) : QObject(parent)
 
 void GameModel::generateNewRoom()
 {
-    currentRoom = new GenerateRoom(2,20,12);//TODO hardcoded for now
+    generateNewRoom(2,20,12);
+}
+
+void GameModel::generateNewRoom(int preset, int rows, int cols)
+{
+    currentRoom = new GenerateRoom(preset,rows,cols);//TODO hardcoded for now
     currentRoom->generateFloor();
     currentRoom->generateRoom();
+    currentRoom->generateDoors();
     player = new Player(10,4); //TODO hardcoded for now & independent of view
-    emit displayFloorEvent(currentRoom->getFloor(), currentRoom->getWalls());
+    emit displayFloorEvent(currentRoom->getFloor(), currentRoom->getWalls(), currentRoom->getDoors());
     qDebug() << "Floor mapping emmitted. floor size: " << currentRoom->getFloor()->size();
 
 }
@@ -46,8 +52,10 @@ void GameModel::move(Direction direction)
     qDebug() << "GameModel: Valid move";
 
     QHash<std::pair<int, int>, Tile*> * walls = currentRoom->getWalls();
+    QHash<std::pair<int, int>, Tile*> * doors = currentRoom->getDoors();
     QHash<std::pair<int, int>, Tile*> * all = currentRoom->getFloor();
     all->unite(*walls);
+    all->unite(*doors);
     std::pair<int, int> coordinates;
     QHash<std::pair<int, int>, Tile*>::iterator i;
 

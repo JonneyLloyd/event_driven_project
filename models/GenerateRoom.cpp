@@ -123,6 +123,21 @@ void GenerateRoom::generateFloor()
     }
 }
 
+void GenerateRoom::generateDoors()
+{
+    bool traversable = false;
+    int id = 10;
+    Tile * doorTile = new Tile(traversable, id);
+    doors = new QHash<std::pair<int, int>, Tile*> ;
+    doors->insert(std::make_pair(getRows()/2,0), doorTile); //north door
+
+    id = 11;
+    doorTile = new Tile(traversable, id);
+    doors->insert(std::make_pair(0,getColumns()/2), doorTile); //west door
+    doors->insert(std::make_pair(getRows()-1,getColumns()/2), doorTile); //east door
+    doors->insert(std::make_pair(getRows()/2,getColumns()-1), doorTile); //south door
+}
+
 QHash<std::pair<int, int>, Tile *> * GenerateRoom::getFloor()
 {
     return this->floor;
@@ -131,4 +146,9 @@ QHash<std::pair<int, int>, Tile *> * GenerateRoom::getFloor()
 QHash<std::pair<int, int>, Tile *> * GenerateRoom::getWalls()
 {
     return this->walls;
+}
+
+QHash<std::pair<int, int>, Tile *> *GenerateRoom::getDoors()
+{
+    return this->doors;
 }

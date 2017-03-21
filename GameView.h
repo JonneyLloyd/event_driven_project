@@ -55,7 +55,9 @@ signals:
 public slots:
     void movePlayer(Direction direction);   // Listens for controller
                                             // Moves the player on the screen
-    void displayFloor(QHash<std::pair<int, int>, Tile *> * floor, QHash<std::pair<int, int>, Tile *> * layer2);
+    void displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
+                      QHash<std::pair<int, int>, Tile *> * layer2,
+                      QHash<std::pair<int, int>, Tile *> * doors);
 };
 
 #endif // GAMEVIEW_H
