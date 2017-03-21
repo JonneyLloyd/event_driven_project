@@ -22,7 +22,7 @@ class GameModel : public QObject
 
 public:
     explicit GameModel(QObject *parent = 0);
-    void generateNewRoom();
+
     GenerateRoom * getCurrentRoom();
     void setCurrentRoom(GenerateRoom * currentRoom);
     Player * getPlayer();
@@ -31,11 +31,15 @@ public:
 signals:
     void movePlayerEvent(Direction Direction);  // Notifies controller to move player
                                                 // Should this be direction or position with animation=true default flag
-    void displayFloorEvent(QHash<std::pair<int, int>, Tile *> * floor, QHash<std::pair<int, int>, Tile *> * layer2);
+    void displayFloorEvent(QHash<std::pair<int, int>, Tile *> * floor,
+                           QHash<std::pair<int, int>, Tile *> * layer2,
+                           QHash<std::pair<int, int>, Tile *> * doors);
 
 public slots:
     void move(Direction Direction);     // Listens for controller
                                         // Moves the player in game state
+    void generateNewRoom();
+    void generateNewRoom(int preset, int rows, int cols);
 private:
     GenerateRoom * currentRoom;
     Player * player;

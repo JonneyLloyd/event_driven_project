@@ -131,7 +131,9 @@ void GameView::movePlayer(Direction direction)
 
 //TODO signal to generate room graphics
 //seems to be connected but never enters the function after the emit from model
-void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor, QHash<std::pair<int, int>, Tile *> * layer2)
+void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
+                            QHash<std::pair<int, int>, Tile *> * layer2,
+                            QHash<std::pair<int, int>, Tile *> * doors)
 {
     qDebug() << "SIGNAL RECEIVED";
 
@@ -183,6 +185,22 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor, QHash<st
         scene.addItem(tile);
         tile->setPos(16*i.key().first, 16*i.key().second);
     }
+
+    for (i = doors->begin(); i != doors->end(); ++i){
+        if(i.value()->getId()==10){
+            tile = tileLoader.get(TileType::DOOR);
+            scene.addItem(tile);
+            tile->setPos(16*i.key().first, 16*i.key().second);
+        }
+        else if(i.value()->getId()==11){
+            tile = tileLoader.get(TileType::FLOOR);
+            scene.addItem(tile);
+            tile->setPos(16*i.key().first, 16*i.key().second);
+        }
+
+    }
+
+
     player = qgraphicsitem_cast<PlayerSprite*>(tileLoader.get(TileType::PLAYER));
     scene.addItem(player);
     player->setPos(16*10, 16*4);

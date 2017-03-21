@@ -25,7 +25,7 @@ private:
     GameView * gameView;
 
 signals:
-
+    void generateNewRoom();
 
 public slots:
 
