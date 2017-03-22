@@ -192,8 +192,8 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
             scene.addItem(tile);
             tile->setPos(16*i.key().first, 16*i.key().second);
         }
-        else if(i.value()->getId()==11){
-            tile = tileLoader.get(TileType::FLOOR);
+        else if(i.value()->getId()==TileType::DOOR_SIDE){
+            tile = tileLoader.get(TileType::DOOR_SIDE);
             scene.addItem(tile);
             tile->setPos(16*i.key().first, 16*i.key().second);
         }

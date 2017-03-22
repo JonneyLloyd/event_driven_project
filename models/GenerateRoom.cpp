@@ -1,4 +1,5 @@
 #include "GenerateRoom.h"
+#include "TileTypeEnum.h"
 
 
 
@@ -131,7 +132,7 @@ void GenerateRoom::generateDoors()
     doors = new QHash<std::pair<int, int>, Tile*> ;
     doors->insert(std::make_pair(getRows()/2,0), doorTile); //north door
 
-    id = 11;
+    id = TileType::DOOR_SIDE;
     doorTile = new Tile(traversable, id);
     doors->insert(std::make_pair(0,getColumns()/2), doorTile); //west door
     doors->insert(std::make_pair(getRows()-1,getColumns()/2), doorTile); //east door

@@ -5,6 +5,7 @@
 #include "models/GenerateRoom.h"
 #include "models/Player.h"
 #include "models/Tile.h"
+#include "models/InteractableTile.h"
 
 #include "DirectionEnum.h"
 

@@ -25,6 +25,11 @@ void GameModel::generateNewRoom(int preset, int rows, int cols)
     emit displayFloorEvent(currentRoom->getFloor(), currentRoom->getWalls(), currentRoom->getDoors());
     qDebug() << "Floor mapping emmitted. floor size: " << currentRoom->getFloor()->size();
 
+    /*
+     * Testing InteractableTile
+    InteractableTile * test = new InteractableTile("Testing", TileType::DOOR, true, 666);
+    qDebug() << "Testing InteractibleFile " << test->getDescription();
+    */
 }
 
 GenerateRoom *GameModel::getCurrentRoom()
@@ -56,6 +61,7 @@ void GameModel::move(Direction direction)
     QHash<std::pair<int, int>, Tile*> * all = currentRoom->getFloor();
     all->unite(*walls);
     all->unite(*doors);
+
     std::pair<int, int> coordinates;
     QHash<std::pair<int, int>, Tile*>::iterator i;
 
