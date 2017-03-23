@@ -25,6 +25,13 @@ void GameModel::generateNewRoom(int preset, int rows, int cols)
     emit displayFloorEvent(currentRoom->getFloor(), currentRoom->getWalls(), currentRoom->getDoors());
     qDebug() << "Floor mapping emmitted. floor size: " << currentRoom->getFloor()->size();
 
+    // TODO: move
+    addInventoryItemEvent(0, TileType::ORB_BLUE);
+    addInventoryItemEvent(1, TileType::ORB_ORANGE);
+    addInventoryItemEvent(2, TileType::ORB_GREEN);
+    addInventoryItemEvent(3, TileType::CHEST);
+    addInventoryItemEvent(4, TileType::CHEST);
+
 }
 
 GenerateRoom *GameModel::getCurrentRoom()
@@ -105,5 +112,11 @@ void GameModel::move(Direction direction)
 
     //query player pos and qHash to check if move is valid
     //emit movePlayerEvent(direction);
+}
+
+void GameModel::inventoryClick(int index)
+{
+    // TODO: some logic
+    emit removeInventoryItemEvent(index);
 }
 

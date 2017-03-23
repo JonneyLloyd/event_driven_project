@@ -35,26 +35,13 @@ QSizeF GraphicsTile::sizeHint(Qt::SizeHint which, const QSizeF &constraint) cons
     Q_UNUSED(which);
     Q_UNUSED(constraint);
     return QSize(tileSize, tileSize);
-//    switch ( which )
-//    {
-//        case Qt::MinimumSize:
-//        case Qt::PreferredSize:
-//            return QSizeF(tileSize, tileSize);
-
-//        case Qt::MaximumSize:
-//            return QSizeF(tileSize*2, tileSize*2);
-
-//        default:
-//            return this->boundingRect().size();
-//    }
-
-//    return constraint;
 }
 
 void GraphicsTile::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
+//    painter->drawRect(this->geometry());
 //    painter->drawRect(this->boundingRect());
     painter->drawPixmap(0, 0, this->geometry().width(), this->geometry().height(), *textureSheet,    // x, y position, sprite sheet
                         tileCol*tileSize,       // col,
