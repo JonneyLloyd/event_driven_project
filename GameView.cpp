@@ -6,58 +6,16 @@
 
 GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 {
-    this->setScene(&scene);
-    scene.setSceneRect(0, 0, 16*30, 9*30);
-    this->fitInView(scene.sceneRect(), Qt::KeepAspectRatio);
-    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-    this->setBackgroundBrush(QBrush(QColor(47,40,58), Qt::SolidPattern));
+    setScene(&scene);
+//    scene.setSceneRect(0, 0, 16*30, 9*30);
+    fitInView(scene.sceneRect(), Qt::KeepAspectRatio);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setBackgroundBrush(QBrush(QColor(47,40,58), Qt::SolidPattern));
 
     Button * btn = new Button();
     btn->setRect(0, 0, 16, 16);
     scene.addItem(btn);
-
-
-
-    TileLoader tileLoader = TileLoader::getInstance();
-
-//    QSharedPointer<QPixmap> textureSheet = QSharedPointer<QPixmap>(new QPixmap(":/sprite_sheets/res/sprite_sheets/dungeon_sheet.png"));
-
-
-//    // Example of loading a basic tile (since behaviour of e.g. floor and walls never changes they can use the same class)
-//    testTile = new GraphicsTile(textureSheet, 7, 8);
-//    scene.addItem(testTile);
-//    testTile->setPos(16*2, 16*2);
-
-//    GraphicsTile * wall = new GraphicsTile(textureSheet, 0, 5);
-//    scene.addItem(wall);
-//    wall->setPos(16*10, 16*10);
-
-
-
-//    player = new PlayerSprite(new QPixmap(":/sprite_sheets/res/sprite_sheets/knight_16x16_sheet.png"));
-//    scene.addItem(player);
-//    player->setPos(16*10, 16*4);
-
-    // on/off or opened/closed objects should probably be wrapped in their own classes or at least a StateAnimatedTile
-    testAnimatedTile = tileLoader.get(TileType::CHEST);
-    scene.addItem(testAnimatedTile);
-    testAnimatedTile->setGridPos(4, 2);
-
-    testAnimatedTile2 = tileLoader.get(TileType::SWITCH);
-    scene.addItem(testAnimatedTile2);
-    testAnimatedTile2->setGridPos(7, 2);
-
-    testAnimatedTile3 = tileLoader.get(TileType::DOOR);
-    scene.addItem(testAnimatedTile3);
-    testAnimatedTile3->setGridPos(7, 6);
-
-    for (int t = DOOR; t <= ORB_GREY; t++) {
-        GraphicsTile * tile = tileLoader.get(static_cast<TileType>(t));
-        scene.addItem(tile);
-        tile->setGridPos(t, 12);
-    }
 
 
     // Note: the above classes are only visual representations, all logic should reside in models
@@ -79,21 +37,36 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     //  Blocking calls/game loop
 
 
+    initPlayer();
+    initInventory();
+    fitInView(scene.sceneRect(), Qt::KeepAspectRatio);
 
-
-
-    inventory = new GraphicsInventory;
-    inventory->setPos(16*12, 16*14);
-    scene.addItem(inventory);
-    inventory->addInventoryItem(0, TileType::DOOR);
-    inventory->addInventoryItem(1, TileType::DOOR); // NB these index values should match the model
-//    inventory->removeInventoryItem(0, TileType::DOOR);
+    // temp
+    testInitAnimation();
 
 }
 
 GameView::~GameView()
 {
 
+}
+
+void GameView::initPlayer()
+{
+    TileLoader tileLoader = TileLoader::getInstance();
+    player = qgraphicsitem_cast<PlayerSprite*>(tileLoader.get(TileType::PLAYER));
+    scene.addItem(player);
+    player->setGridPos(10, 4);
+    player->setZValue(1);
+}
+
+void GameView::initInventory()
+{
+    inventory = new GraphicsInventory;
+    inventory->setPos(16*5, 16*14);
+    inventory->setScale(1.2);
+    scene.addItem(inventory);
+    connect(inventory, SIGNAL(inventoryItemClickedEvent(int)), SIGNAL(inventoryClickEvent(int)));
 }
 
 void GameView::keyPressEvent(QKeyEvent *event)
@@ -105,9 +78,14 @@ void GameView::keyPressEvent(QKeyEvent *event)
         case Qt::Key_Right: direction = Direction::EAST;  break;
         case Qt::Key_Down:  direction = Direction::SOUTH; break;
         case Qt::Key_Left:  direction = Direction::WEST;  break;
+
+        case Qt::Key_1: case Qt::Key_2: case Qt::Key_3: case Qt::Key_4:
+        case Qt::Key_5: case Qt::Key_6: case Qt::Key_7: case Qt::Key_8:
+        case Qt::Key_9:     emit inventoryClickEvent(event->text().toInt() - 1);
+                            return;
+
         default:            qDebug() << "GameView: KeyEvent ignored"; return;
     }
-    qDebug() << "GameView: KeyEvent emitted";
     emit moveEvent(direction);
 }
 
@@ -122,11 +100,7 @@ void GameView::movePlayer(Direction direction)
     player->move(direction);
 
     // temp
-    static int n = 0;
-    static_cast<AnimatedGraphicsTile*>(testAnimatedTile)->start(n%2 == 0 ? false:true);
-    static_cast<AnimatedGraphicsTile*>(testAnimatedTile2)->start(n%2 == 0 ? false:true);
-    static_cast<AnimatedGraphicsTile*>(testAnimatedTile3)->start(n%2 == 0 ? false:true);
-    n++;
+    testAnimation();
 }
 
 //TODO signal to generate room graphics
@@ -182,11 +156,11 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
         else if(i.value()->getId()==4){ //southeast corner
             tile = tileLoader.get(TileType::WALL_SE_CORNER_U);
         }
-        scene.addItem(tile);
         tile->setPos(16*i.key().first, 16*i.key().second);
+        scene.addItem(tile);
     }
 
-    for (i = doors->begin(); i != doors->end(); ++i){
+    for (i = doors->begin(); i != doors->end(); ++i) {
         if(i.value()->getId()==10){
             tile = tileLoader.get(TileType::DOOR);
             scene.addItem(tile);
@@ -200,9 +174,54 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
 
     }
 
+}
 
-    player = qgraphicsitem_cast<PlayerSprite*>(tileLoader.get(TileType::PLAYER));
-    scene.addItem(player);
-    player->setPos(16*10, 16*4);
+void GameView::addInventoryItem(int index, TileType type)
+{
+    inventory->addInventoryItem(index, type);
+}
 
+void GameView::removeInventoryItem(int index)
+{
+    inventory->removeInventoryItem(index);
+}
+
+
+
+
+
+
+
+// temp
+void GameView::testInitAnimation()
+{
+    TileLoader tileLoader = TileLoader::getInstance();
+
+    // on/off or opened/closed objects should probably be wrapped in their own classes or at least a StateAnimatedTile
+    testAnimatedTile = tileLoader.get(TileType::CHEST);
+    scene.addItem(testAnimatedTile);
+    testAnimatedTile->setGridPos(4, 2);
+
+    testAnimatedTile2 = tileLoader.get(TileType::SWITCH);
+    scene.addItem(testAnimatedTile2);
+    testAnimatedTile2->setGridPos(7, 2);
+
+    testAnimatedTile3 = tileLoader.get(TileType::DOOR);
+    scene.addItem(testAnimatedTile3);
+    testAnimatedTile3->setGridPos(7, 6);
+
+    for (int t = DOOR; t <= ORB_GREY; t++) {
+        GraphicsTile * tile = tileLoader.get(static_cast<TileType>(t));
+        scene.addItem(tile);
+        tile->setGridPos(t, 12);
+    }
+}
+
+void GameView::testAnimation()
+{
+    static int n = 0;
+    static_cast<AnimatedGraphicsTile*>(testAnimatedTile)->start(n%2 == 0 ? false:true);
+    static_cast<AnimatedGraphicsTile*>(testAnimatedTile2)->start(n%2 == 0 ? false:true);
+    static_cast<AnimatedGraphicsTile*>(testAnimatedTile3)->start(n%2 == 0 ? false:true);
+    n++;
 }

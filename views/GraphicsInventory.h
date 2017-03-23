@@ -3,35 +3,43 @@
 
 #include <QGraphicsWidget>
 #include <QGraphicsLinearLayout>
-#include <vector>
 
 #include "TileTypeEnum.h"
 #include "views/GraphicsTile.h"
+#include "views/GraphicsInventoryItem.h"
 
 
 class GraphicsInventory : public QGraphicsWidget
 {
+    Q_OBJECT
 
 public:
-    GraphicsInventory(QGraphicsItem *parent = 0);
+    GraphicsInventory(int minSize = 4, int tileSize = 16, int spacing = 4, QGraphicsItem *parent = 0);
     ~GraphicsInventory();
 
-    QRectF boundingRect() const;
+    QRectF boundingRect() const override;
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
     void addInventoryItem(int index, TileType tileType);
 
     void removeInventoryItem(int index);
 
-private:
-    int minSize = 4;
-    int tileSize = 16;
-    int spacing = 4;
-    std::vector<GraphicsTile*> items;
+private slots:
+    void itemClicked(GraphicsInventoryItem * child);
 
-    QGraphicsLinearLayout * layout;     // must be a pointer as QGraphicsWidget takes ownership
-                                        // (Otherwise segfault on deletion)
+signals:
+    void inventoryItemClickedEvent(int index);
+
+private:
+    inline int getChildSpacing() const;
+    inline int getChildSize() const;
+
+    int minSize;
+    int tileSize;
+    int spacing;
+
+    QGraphicsLinearLayout * layout;
 
 };
 
