@@ -27,11 +27,4 @@ int Tile::getId(){
     return this->id;
 }
 
-//TODO interface for interactables
-
-//interactable_tile impliments interactable
-//bool state = false
-//enum type
-//string description()
-//interact(this) pass to signal which takes interface type
 
