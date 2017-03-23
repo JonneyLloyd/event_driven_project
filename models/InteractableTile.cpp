@@ -1,7 +1,7 @@
 #include "InteractableTile.h"
 
 
-InteractableTile::InteractableTile(QString description, TileType type, bool traversable, int id)
+InteractableTile::InteractableTile(QString description, TileType type, bool traversable, TileType id)
     : Tile(traversable, id),
       description{description},
       type{type}

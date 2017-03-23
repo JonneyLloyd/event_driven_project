@@ -34,7 +34,7 @@ signals:
     void movePlayerEvent(Direction Direction);  // Notifies controller to move player
                                                 // Should this be direction or position with animation=true default flag
     void displayFloorEvent(QHash<std::pair<int, int>, Tile *> * floor,
-                           QHash<std::pair<int, int>, Tile *> * layer2,
+                           QHash<std::pair<int, int>, Tile *> * walls,
                            QHash<std::pair<int, int>, Tile *> * doors);
 
     void addInventoryItemEvent(int index, TileType type);

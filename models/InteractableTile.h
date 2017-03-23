@@ -7,7 +7,7 @@
 class InteractableTile : public Interactable, public Tile
 {
 public:
-    InteractableTile(QString description, TileType type, bool traversable, int id);
+    InteractableTile(QString description, TileType type, bool traversable, TileType id);
     ~InteractableTile();
     QString getDescription();
     void setDescription(QString value);
