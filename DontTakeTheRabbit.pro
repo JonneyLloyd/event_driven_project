@@ -35,6 +35,7 @@ SOURCES += main.cpp \
     models/GenerateRoom.cpp \
     models/Player.cpp \
     models/Tile.cpp \
+    models/InteractableTile.cpp \
     views/PlayerSprite.cpp \
     views/GraphicsInventory.cpp \
     views/GraphicsInventoryItem.cpp
@@ -53,6 +54,8 @@ HEADERS  += \
     models/GenerateRoom.h \
     models/Player.h \
     models/Tile.h \
+    models/Interactable.h \
+    models/InteractableTile.h \
     views/PlayerSprite.h \
     views/GraphicsInventory.h \
     views/GraphicsInventoryItem.h
