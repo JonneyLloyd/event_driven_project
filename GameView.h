@@ -36,14 +36,18 @@ public:
 
 private:
     PlayerSprite * player;
+    GraphicsInventory * inventory;
+
+    void initPlayer();
+    void initInventory();
 
     // temp
     GraphicsTile * testTile;
     GraphicsTile * testAnimatedTile;
     GraphicsTile * testAnimatedTile2;
     GraphicsTile * testAnimatedTile3;
-
-    GraphicsInventory * inventory;
+    void testInitAnimation();
+    void testAnimation();
 
 
 protected:
@@ -51,6 +55,7 @@ protected:
 
 signals:
     void moveEvent(Direction direction);    // Notifies controller of a move
+    void inventoryClickEvent(int index);
 
 public slots:
     void movePlayer(Direction direction);   // Listens for controller
@@ -58,6 +63,10 @@ public slots:
     void displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
                       QHash<std::pair<int, int>, Tile *> * layer2,
                       QHash<std::pair<int, int>, Tile *> * doors);
+
+    void addInventoryItem(int index, TileType type);
+    void removeInventoryItem(int index);
+
 };
 
 #endif // GAMEVIEW_H

@@ -6,7 +6,8 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsRectItem>
 
-class Button: public QObject, public QGraphicsRectItem {
+class Button: public QObject, public QGraphicsRectItem
+{
     Q_OBJECT
 
 protected:

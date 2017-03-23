@@ -7,6 +7,7 @@
 #include "models/Tile.h"
 #include "models/InteractableTile.h"
 
+#include "TileTypeEnum.h"
 #include "DirectionEnum.h"
 
 /*
@@ -36,11 +37,16 @@ signals:
                            QHash<std::pair<int, int>, Tile *> * layer2,
                            QHash<std::pair<int, int>, Tile *> * doors);
 
+    void addInventoryItemEvent(int index, TileType type);
+    void removeInventoryItemEvent(int index);
+
 public slots:
     void move(Direction Direction);     // Listens for controller
                                         // Moves the player in game state
     void generateNewRoom();
     void generateNewRoom(int preset, int rows, int cols);
+    void inventoryClick(int index);
+
 private:
     GenerateRoom * currentRoom;
     Player * player;
