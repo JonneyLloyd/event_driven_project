@@ -28,7 +28,7 @@ void GameModel::generateNewRoom(int preset, int rows, int cols)
 
     /*
      * Testing InteractableTile
-    InteractableTile * test = new InteractableTile("Testing", TileType::DOOR, true, 666);
+    InteractableTile * test = new InteractableTile("Testing", true, TileType::DOOR);
     qDebug() << "Testing InteractibleFile " << test->getDescription();
     */
 

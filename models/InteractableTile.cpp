@@ -1,10 +1,9 @@
 #include "InteractableTile.h"
 
 
-InteractableTile::InteractableTile(QString description, TileType type, bool traversable, TileType id)
+InteractableTile::InteractableTile(QString description, bool traversable, TileType id)
     : Tile(traversable, id),
-      description{description},
-      type{type}
+      description{description}
 {
 }
 
@@ -26,17 +25,6 @@ void InteractableTile::setDescription(QString value)
     this->description = value;
 }
 
-
-TileType InteractableTile::getType()
-{
-    return this->type;
-}
-
-
-void InteractableTile::setType(TileType value)
-{
-    this->type = value;
-}
 
 
 
