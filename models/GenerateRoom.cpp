@@ -1,5 +1,6 @@
 #include "GenerateRoom.h"
 #include "TileTypeEnum.h"
+#include <QDebug>
 
 
 
@@ -127,9 +128,10 @@ void GenerateRoom::generateDoors()
 {
     bool traversable = false;
     TileType id = TileType::DOOR;
-    InteractableTile * doorTile = new InteractableTile("This is a door", traversable, id);
+    InteractableTile * doorTile = new InteractableTile("This is a door", traversable, id, true, TileType::ORB_BLUE);
     doors = new QHash<std::pair<int, int>, Tile*> ;
     doors->insert(std::make_pair(getRows()/2,0), doorTile); //north door
+
 
     id = TileType::DOOR_SIDE;
     doorTile = new InteractableTile("This is a door", traversable, id);

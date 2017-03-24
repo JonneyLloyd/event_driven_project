@@ -11,9 +11,13 @@ public:
    // pure virtual class
     virtual QString getDescription() = 0;
     virtual void setDescription(QString value)  = 0;
+    virtual QString interact() = 0;
+    virtual QString interact(TileType item) = 0;
 
 protected:
    QString description;
+   bool state;
+   TileType key;
 };
 
 #endif // INTERACTABLE_H

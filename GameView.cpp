@@ -115,19 +115,19 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
     for (i = floor->begin(); i != floor->end(); ++i){
         tile = tileLoader.get(i.value()->getId()); tile->setZValue(-1);  // temp, everything may be added to a 'layer/group' (maybe use enums rather than numbers?): http://stackoverflow.com/questions/18074798/layers-on-qgraphicsview
         scene.addItem(tile);
-        tile->setPos(16*i.key().first, 16*i.key().second);
+        tile->setGridPos(i.key().first, i.key().second);
     }
 
     for (i = walls->begin(); i != walls->end(); ++i){
         tile = tileLoader.get(i.value()->getId());
-        tile->setPos(16*i.key().first, 16*i.key().second);
+        tile->setGridPos(i.key().first, i.key().second);
         scene.addItem(tile);
     }
 
     for (i = doors->begin(); i != doors->end(); ++i) {
         tile = tileLoader.get(i.value()->getId());
         scene.addItem(tile);
-        tile->setPos(16*i.key().first, 16*i.key().second);
+        tile->setGridPos(i.key().first, i.key().second);
     }
 
 }
