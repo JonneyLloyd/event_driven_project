@@ -20,7 +20,8 @@ InteractableTile::InteractableTile(QString description, bool traversable, TileTy
 InteractableTile::InteractableTile(QString description, bool traversable, TileType id)
     :   Tile(traversable, id),
         description{description},
-        state{true}
+        state{true},
+        key{TileType::EMPTY}
 {
 }
 
