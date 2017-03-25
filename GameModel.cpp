@@ -7,7 +7,14 @@
 
 GameModel::GameModel(QObject *parent) : QObject(parent)
 {
+
     setRoomLocation(std::make_pair(0,0));
+    gameLoop = new QTimeLine(600);
+    gameLoop->setCurveShape(QTimeLine::LinearCurve);
+    gameLoop->setFrameRange(0, 5);
+    connect(gameLoop, SIGNAL(frameChanged(int)), SLOT(nextGameLoop(int)));
+    gameLoop->start();
+    gameLoop->setLoopCount(0);  // forever
 }
 
 void GameModel::generateNewRoom()
@@ -65,8 +72,13 @@ void GameModel::setPlayer(Player * player)
 
 void GameModel::move(Direction direction)
 {
-    qDebug() << "GameModel: Valid move";
+    // Buffers movement input to allow current move to finish
+    // Input will be deffered and dispatched at each game loop
+    bufferedMove = direction;
+}
 
+void GameModel::movePlayer(Direction direction)
+{
     QHash<std::pair<int, int>, Tile*> * walls = currentRoom->getWalls();
     QHash<std::pair<int, int>, Tile*> * doors = currentRoom->getDoors();
     QHash<std::pair<int, int>, Tile*> * all = currentRoom->getFloor();
@@ -125,7 +137,12 @@ void GameModel::move(Direction direction)
     }
 
     //query player pos and qHash to check if move is valid
-    //emit movePlayerEvent(direction);
+    i = all->find(coordinates);
+    qDebug() << "key "<< i.key() << "Traversable " << i.value()->getTraversable();
+    if (i.value()->getTraversable() == true){
+        emit movePlayerEvent(direction);
+        player->setXY(coordinates.first, coordinates.second);
+    }
 }
 
 void GameModel::inventoryClick(int index)
@@ -133,6 +150,7 @@ void GameModel::inventoryClick(int index)
     // TODO: some logic
     emit removeInventoryItemEvent(index);
 }
+
 
 void GameModel::interact()
 {
@@ -205,5 +223,23 @@ void GameModel::setRoomLocation(std::pair<int, int> roomLocation)
 std::pair<int, int> GameModel::getRoomLocation()
 {
     return this->roomLocation;
+}
+
+void GameModel::nextGameLoop(int frame)
+{
+    if (frame == 0 && bufferedMove != Direction::UNKNOWN) {
+        // Allow the player to move at the start of each game loop / clock cycle
+        playerMoving = true;    // Movement in progress
+        movePlayer(bufferedMove);
+    }
+    if (frame < 3 && playerMoving) {
+        // ignore all movement input for the first half of the loop
+        // if there is a movement in progress
+        // otherwise, if the user is stationary, accept input at any time
+        bufferedMove = Direction::UNKNOWN;
+    }
+    else if (frame == 4) {
+        playerMoving = false;
+    }
 }
 

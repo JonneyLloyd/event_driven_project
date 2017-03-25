@@ -78,23 +78,21 @@ void GameView::initInventory()
 
 void GameView::keyPressEvent(QKeyEvent *event)
 {
-    Direction direction = Direction::NORTH;
-
     switch (event->key()) {
-        case Qt::Key_Up:    direction = Direction::NORTH; break;
-        case Qt::Key_Right: direction = Direction::EAST;  break;
-        case Qt::Key_Down:  direction = Direction::SOUTH; break;
-        case Qt::Key_Left:  direction = Direction::WEST;  break;
+        case Qt::Key_Up: case Qt::Key_W:    emit moveEvent(Direction::NORTH); break;
+        case Qt::Key_Right: case Qt::Key_D: emit moveEvent(Direction::EAST);  break;
+        case Qt::Key_Down: case Qt::Key_S:  emit moveEvent(Direction::SOUTH); break;
+        case Qt::Key_Left: case Qt::Key_A:  emit moveEvent(Direction::WEST);  break;
+
+//        case Qt::Key_Space:  case Qt::Key_Enter:   emit interactwhateverplaceholder(); break;
 
         case Qt::Key_Return: emit interact();
         case Qt::Key_1: case Qt::Key_2: case Qt::Key_3: case Qt::Key_4:
         case Qt::Key_5: case Qt::Key_6: case Qt::Key_7: case Qt::Key_8:
-        case Qt::Key_9:     emit inventoryClickEvent(event->text().toInt() - 1);
-                            return;
+        case Qt::Key_9:     emit inventoryClickEvent(event->text().toInt() - 1); break;
 
         default:            qDebug() << "GameView: KeyEvent ignored"; return;
     }
-    emit moveEvent(direction);
 }
 
 void GameView::movePlayer(Direction direction)
@@ -172,11 +170,11 @@ void GameView::testInitAnimation()
     scene.addItem(testAnimatedTile3);
     testAnimatedTile3->setGridPos(7, 6);
 
-    for (int t = DOOR; t <= ORB_GREY; t++) {
-        GraphicsTile * tile = tileLoader.get(static_cast<TileType>(t));
-        scene.addItem(tile);
-        tile->setGridPos(t, 12);
-    }
+//    for (int t = DOOR; t <= ORB_GREY; t++) {
+//        GraphicsTile * tile = tileLoader.get(static_cast<TileType>(t));
+//        scene.addItem(tile);
+//        tile->setGridPos(t, 12);
+//    }
 }
 
 void GameView::testAnimation()
