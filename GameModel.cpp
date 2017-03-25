@@ -7,7 +7,7 @@
 
 GameModel::GameModel(QObject *parent) : QObject(parent)
 {
-
+    setRoomLocation(std::make_pair(0,0));
 }
 
 void GameModel::generateNewRoom()
@@ -160,12 +160,30 @@ void GameModel::interact()
 
         default:            qDebug() << "NO MOVEMENT"; return;
     }
+    /*
+     * TODO
+     * Working but will have to look at tidier way to traverse rooms
+     * */
     if (doors->contains(coordinates)){
         i = doors->find(coordinates);
         qDebug() << ((InteractableTile*)(i.value()))->interact();
-        qDebug() <<  ((InteractableTile*)(i.value()))->getId();
-        if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_EAST)
+        if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_EAST
+                && getRoomLocation() == std::make_pair(0,0))
+        {
             moveRoom();
+            setRoomLocation(std::make_pair(0,1));
+            player->setXY(1,getCurrentRoom()->getColumns()/2);
+            emit setPlayerLocation(1,getCurrentRoom()->getColumns()/2);
+        }
+        if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_WEST
+                && getRoomLocation() == std::make_pair(0,1))
+        {
+            moveRoom();
+            setRoomLocation(std::make_pair(0,0));
+
+            player->setXY(getCurrentRoom()->getRows()-2,getCurrentRoom()->getColumns()/2);
+            emit setPlayerLocation(getCurrentRoom()->getRows()-2,getCurrentRoom()->getColumns()/2);
+        }
     }
 }
 
@@ -175,5 +193,17 @@ void GameModel::moveRoom()
     qDebug() << "moving Room";
     generateNewRoom(2,24,14);
 
+
+
+}
+
+void GameModel::setRoomLocation(std::pair<int, int> roomLocation)
+{
+    this->roomLocation = roomLocation;
+}
+
+std::pair<int, int> GameModel::getRoomLocation()
+{
+    return this->roomLocation;
 }
 

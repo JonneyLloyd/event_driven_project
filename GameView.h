@@ -69,6 +69,7 @@ public slots:
 
     void addInventoryItem(int index, TileType type);
     void removeInventoryItem(int index);
+    void setPlayerLocation(int x, int y);
 
 };
 

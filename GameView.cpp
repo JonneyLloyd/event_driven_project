@@ -135,7 +135,7 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
         tile->setGridPos(i.key().first, i.key().second);
     }
     //TODO resetting player in center
-    player->setGridPos(10, 4);
+    //player->setGridPos(10, 4);
 }
 
 void GameView::addInventoryItem(int index, TileType type)
@@ -146,6 +146,12 @@ void GameView::addInventoryItem(int index, TileType type)
 void GameView::removeInventoryItem(int index)
 {
     inventory->removeInventoryItem(index);
+}
+
+void GameView::setPlayerLocation(int x, int y)
+{
+    player->setGridPos(x, y);
+    qDebug() << "setPos signal received";
 }
 
 // temp
