@@ -33,13 +33,13 @@ void Player::setXY(int x, int y)
 }
 
 
-int Player::getX()
+int Player::getX() const
 {
     return this->x;
 }
 
 
-int Player::getY()
+int Player::getY() const
 {
     return this->y;
 }

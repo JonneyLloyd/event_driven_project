@@ -10,6 +10,8 @@
 #include "TileTypeEnum.h"
 #include "DirectionEnum.h"
 
+#include <QTimeLine>
+
 /*
  * GameModel handles state and logic of the game.
  * Following MVC it is controlled externally.
@@ -48,8 +50,16 @@ public slots:
     void inventoryClick(int index);
 
 private:
+    bool playerMoving = false;
+    Direction bufferedMove = Direction::UNKNOWN;
+    QTimeLine * gameLoop;
     GenerateRoom * currentRoom;
     Player * player;
+    void movePlayer(Direction Direction);
+
+private slots:
+    void nextGameLoop(int);
+
 };
 
 #endif // GAMEMODEL_H
