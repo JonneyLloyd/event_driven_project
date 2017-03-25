@@ -36,6 +36,7 @@ private:
     QHash<std::pair<int, int>, Tile*>  * floor;
     QHash<std::pair<int, int>, Tile*>  * walls;
     QHash<std::pair<int, int>, Tile*>  * doors;
+    QHash<std::pair<int, int>, InteractableTile*>  * interactableDoors;
 
 
 };

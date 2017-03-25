@@ -43,3 +43,13 @@ int Player::getY()
 {
     return this->y;
 }
+
+void Player::setHeading(Direction heading)
+{
+    this->heading = heading;
+}
+
+Direction Player::getHeading()
+{
+    return this->heading;
+}

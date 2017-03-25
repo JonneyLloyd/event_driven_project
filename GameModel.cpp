@@ -61,6 +61,8 @@ void GameModel::setPlayer(Player * player)
     this->player = player;
 }
 
+
+
 void GameModel::move(Direction direction)
 {
     qDebug() << "GameModel: Valid move";
@@ -82,6 +84,7 @@ void GameModel::move(Direction direction)
         if (i.value()->getTraversable() == true){
             emit movePlayerEvent(direction);
             player->setXY(player->getX()-1, player->getY());
+            player->setHeading(Direction::WEST);
         }
         break;
 
@@ -92,6 +95,7 @@ void GameModel::move(Direction direction)
         if (i.value()->getTraversable() == true){
             emit movePlayerEvent(direction);
             player->setXY(player->getX()+1, player->getY());
+            player->setHeading(Direction::EAST);
         }
         break;
 
@@ -102,6 +106,7 @@ void GameModel::move(Direction direction)
         if (i.value()->getTraversable() == true){
             emit movePlayerEvent(direction);
             player->setXY(player->getX(), player->getY()-1);
+            player->setHeading(Direction::NORTH);
         }
         break;
 
@@ -112,6 +117,7 @@ void GameModel::move(Direction direction)
         if (i.value()->getTraversable() == true){
             emit movePlayerEvent(direction);
             player->setXY(player->getX(), player->getY()+1);
+            player->setHeading(Direction::SOUTH);
         }
         break;
 
@@ -126,5 +132,48 @@ void GameModel::inventoryClick(int index)
 {
     // TODO: some logic
     emit removeInventoryItemEvent(index);
+}
+
+void GameModel::interact()
+{
+    QHash<std::pair<int, int>, Tile*> * doors = currentRoom->getDoors();
+    std::pair<int, int> coordinates;
+    QHash<std::pair<int, int>, Tile*>::iterator i;
+    Direction heading = player->getHeading();
+
+    switch (heading){
+        case Direction::WEST:
+        coordinates = std::make_pair (player->getX()-1, player->getY());
+        break;
+
+        case Direction::EAST:
+        coordinates = std::make_pair (player->getX()+1, player->getY());
+        break;
+
+        case Direction::NORTH:
+        coordinates = std::make_pair (player->getX(), player->getY()-1);
+        break;
+
+        case Direction::SOUTH:
+        coordinates = std::make_pair (player->getX(), player->getY()+1);
+        break;
+
+        default:            qDebug() << "NO MOVEMENT"; return;
+    }
+    if (doors->contains(coordinates)){
+        i = doors->find(coordinates);
+        qDebug() << ((InteractableTile*)(i.value()))->interact();
+        qDebug() <<  ((InteractableTile*)(i.value()))->getId();
+        if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_EAST)
+            moveRoom();
+    }
+}
+
+void GameModel::moveRoom()
+{
+    //TODO hardcoded for now
+    qDebug() << "moving Room";
+    generateNewRoom(2,24,14);
+
 }
 

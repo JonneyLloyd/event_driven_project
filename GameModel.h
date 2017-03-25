@@ -29,6 +29,7 @@ public:
     void setCurrentRoom(GenerateRoom * currentRoom);
     Player * getPlayer();
     void setPlayer(Player * player);
+    void moveRoom();
 
 signals:
     void movePlayerEvent(Direction Direction);  // Notifies controller to move player
@@ -46,6 +47,7 @@ public slots:
     void generateNewRoom();
     void generateNewRoom(int preset, int rows, int cols);
     void inventoryClick(int index);
+    void interact();
 
 private:
     GenerateRoom * currentRoom;
