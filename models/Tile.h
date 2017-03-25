@@ -1,23 +1,25 @@
 #ifndef TILE_H
 #define TILE_H
 
+#include "TileTypeEnum.h"
+
 
 
 class Tile
 {
 
 public:
-    Tile(bool traversable, int id);
+    Tile(bool traversable, TileType id);
     ~Tile();
 
     void setTraversabe(bool traversable);
-    void setId(int id);
+    void setId(TileType id);
     bool getTraversable();
-    int getId();
+    TileType getId();
 
 private:
     bool traversable;
-    int id;
+    TileType id;
 };
 
 

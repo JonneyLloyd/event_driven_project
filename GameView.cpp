@@ -106,72 +106,28 @@ void GameView::movePlayer(Direction direction)
 //TODO signal to generate room graphics
 //seems to be connected but never enters the function after the emit from model
 void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
-                            QHash<std::pair<int, int>, Tile *> * layer2,
+                            QHash<std::pair<int, int>, Tile *> * walls,
                             QHash<std::pair<int, int>, Tile *> * doors)
 {
-    qDebug() << "SIGNAL RECEIVED";
-
     TileLoader tileLoader = TileLoader::getInstance();
     GraphicsTile * tile;
     QHash<std::pair<int, int>, Tile*>::iterator i;
     for (i = floor->begin(); i != floor->end(); ++i){
-        if(i.value()->getId()==9){
-            tile = tileLoader.get(TileType::FLOOR);
-            tile->setZValue(-1);  // temp, everything may be added to a 'layer/group' (maybe use enums rather than numbers?): http://stackoverflow.com/questions/18074798/layers-on-qgraphicsview
-            scene.addItem(tile);
-            tile->setPos(16*i.key().first, 16*i.key().second);
-        }
-
+        tile = tileLoader.get(i.value()->getId()); tile->setZValue(-1);  // temp, everything may be added to a 'layer/group' (maybe use enums rather than numbers?): http://stackoverflow.com/questions/18074798/layers-on-qgraphicsview
+        scene.addItem(tile);
+        tile->setGridPos(i.key().first, i.key().second);
     }
 
-    for (i = layer2->begin(); i != layer2->end(); ++i){
-        if(i.value()->getId()==5){ //west wall
-                    tile = tileLoader.get(TileType::WALL_W_U);
-        }
-
-        else if(i.value()->getId()==6){ //east wall
-            tile = tileLoader.get(TileType::WALL_E_U);
-        }
-
-        else if(i.value()->getId()==7){ //north wall
-            tile = tileLoader.get(TileType::WALL_N_L);
-        }
-
-        else if(i.value()->getId()==8){ //south wall
-            tile = tileLoader.get(TileType::WALL_S_U);
-        }
-
-        else if(i.value()->getId()==1){ //northwest corner
-            tile = tileLoader.get(TileType::WALL_NW_CORNER_L);
-        }
-
-        else if(i.value()->getId()==2){ //northeast corner
-            tile = tileLoader.get(TileType::WALL_NE_CORNER_L);
-        }
-
-        else if(i.value()->getId()==3){ //southwest corner
-            tile = tileLoader.get(TileType::WALL_SW_CORNER_U);
-        }
-
-        else if(i.value()->getId()==4){ //southeast corner
-            tile = tileLoader.get(TileType::WALL_SE_CORNER_U);
-        }
-        tile->setPos(16*i.key().first, 16*i.key().second);
+    for (i = walls->begin(); i != walls->end(); ++i){
+        tile = tileLoader.get(i.value()->getId());
+        tile->setGridPos(i.key().first, i.key().second);
         scene.addItem(tile);
     }
 
     for (i = doors->begin(); i != doors->end(); ++i) {
-        if(i.value()->getId()==10){
-            tile = tileLoader.get(TileType::DOOR);
-            scene.addItem(tile);
-            tile->setPos(16*i.key().first, 16*i.key().second);
-        }
-        else if(i.value()->getId()==11){
-            tile = tileLoader.get(TileType::FLOOR);
-            scene.addItem(tile);
-            tile->setPos(16*i.key().first, 16*i.key().second);
-        }
-
+        tile = tileLoader.get(i.value()->getId());
+        scene.addItem(tile);
+        tile->setGridPos(i.key().first, i.key().second);
     }
 
 }
