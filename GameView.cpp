@@ -110,8 +110,8 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
                             QHash<std::pair<int, int>, Tile *> * walls,
                             QHash<std::pair<int, int>, Tile *> * doors)
 {
-    initScene();
 
+    initScene();
     TileLoader tileLoader = TileLoader::getInstance();
     GraphicsTile * tile;
     QHash<std::pair<int, int>, Tile*>::iterator i;

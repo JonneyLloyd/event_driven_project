@@ -36,6 +36,7 @@ enum TileType { PLAYER, DOOR, CHEST, SWITCH,
                 CRATE,
                 ORB_BLUE, ORB_ORANGE, ORB_GREEN, ORB_PINK, ORB_GREY, FLOOR,
                 DOOR_WEST, DOOR_EAST, DOOR_SOUTH, EMPTY
+
               };
 
 #endif // TILETYPE_H
