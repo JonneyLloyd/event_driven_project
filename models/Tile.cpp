@@ -1,7 +1,7 @@
 #include "Tile.h"
 
 
-Tile::Tile(bool traversable, int id){
+Tile::Tile(bool traversable, TileType id){
     this->traversable = traversable;
     this->id = id;
 }
@@ -15,7 +15,7 @@ void Tile::setTraversabe(bool traversable){
     this->traversable = traversable;
 }
 
-void Tile::setId(int id){
+void Tile::setId(TileType id){
     this->id = id;
 }
 
@@ -23,6 +23,8 @@ bool Tile::getTraversable(){
     return this->traversable;
 }
 
-int Tile::getId(){
+TileType Tile::getId(){
     return this->id;
 }
+
+

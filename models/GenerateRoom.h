@@ -3,7 +3,7 @@
 
 
 #include <QHash>
-#include "Tile.h"
+#include "InteractableTile.h"
 #include <QObject>
 
 class GenerateRoom : public QObject
