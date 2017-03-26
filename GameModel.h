@@ -31,6 +31,9 @@ public:
     void setCurrentRoom(GenerateRoom * currentRoom);
     Player * getPlayer();
     void setPlayer(Player * player);
+    void moveRoom();
+    void setRoomLocation(std::pair<int, int> roomLocation);
+    std::pair<int, int> getRoomLocation();
 
 signals:
     void movePlayerEvent(Direction Direction);  // Notifies controller to move player
@@ -38,9 +41,9 @@ signals:
     void displayFloorEvent(QHash<std::pair<int, int>, Tile *> * floor,
                            QHash<std::pair<int, int>, Tile *> * walls,
                            QHash<std::pair<int, int>, Tile *> * doors);
-
     void addInventoryItemEvent(int index, TileType type);
     void removeInventoryItemEvent(int index);
+    void setPlayerLocation(int x, int y);
 
 public slots:
     void move(Direction Direction);     // Listens for controller
@@ -48,6 +51,7 @@ public slots:
     void generateNewRoom();
     void generateNewRoom(int preset, int rows, int cols);
     void inventoryClick(int index);
+    void interact();
 
 private:
     bool playerMoving = false;
@@ -55,6 +59,8 @@ private:
     QTimeLine * gameLoop;
     GenerateRoom * currentRoom;
     Player * player;
+    std::pair<int, int> roomLocation;
+
     void movePlayer(Direction Direction);
 
 private slots:
