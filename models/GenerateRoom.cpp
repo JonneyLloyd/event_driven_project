@@ -133,10 +133,14 @@ void GenerateRoom::generateDoors()
     doors->insert(std::make_pair(getRows()/2,0), doorTile); //north door
 
 
-    id = TileType::DOOR_SIDE;
+    id = TileType::DOOR_WEST;
     doorTile = new InteractableTile("This is a door", traversable, id);
     doors->insert(std::make_pair(0,getColumns()/2), doorTile); //west door
+    id = TileType::DOOR_EAST;
+    doorTile = new InteractableTile("This is a door", traversable, id);
     doors->insert(std::make_pair(getRows()-1,getColumns()/2), doorTile); //east door
+    id = TileType::DOOR_SOUTH;
+    doorTile = new InteractableTile("This is a door", traversable, id);
     doors->insert(std::make_pair(getRows()/2,getColumns()-1), doorTile); //south door
 }
 
@@ -154,3 +158,5 @@ QHash<std::pair<int, int>, Tile *> *GenerateRoom::getDoors()
 {
     return this->doors;
 }
+
+

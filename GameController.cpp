@@ -19,7 +19,8 @@ GameController::GameController(GameModel *gameModel, GameView *gameView, QObject
     connect(gameView, SIGNAL(inventoryClickEvent(int)), gameModel, SLOT(inventoryClick(int)));
     connect(gameModel, SIGNAL(addInventoryItemEvent(int,TileType)), gameView, SLOT(addInventoryItem(int,TileType)));
     connect(gameModel, SIGNAL(removeInventoryItemEvent(int)), gameView, SLOT(removeInventoryItem(int)));
-
+    connect(gameView, SIGNAL(interact()), gameModel, SLOT(interact()));
+    connect(gameModel, SIGNAL(setPlayerLocation(int, int)), gameView, SLOT(setPlayerLocation(int, int)));
     connect(this, SIGNAL(generateNewRoom()), gameModel, SLOT(generateNewRoom()));
     emit generateNewRoom();
 }

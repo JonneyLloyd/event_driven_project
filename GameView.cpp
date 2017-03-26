@@ -8,14 +8,7 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 {
     setScene(&scene);
 //    scene.setSceneRect(0, 0, 16*30, 9*30);
-    fitInView(scene.sceneRect(), Qt::KeepAspectRatio);
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setBackgroundBrush(QBrush(QColor(47,40,58), Qt::SolidPattern));
-
-    Button * btn = new Button();
-    btn->setRect(0, 0, 16, 16);
-    scene.addItem(btn);
+    initScene();
 
 
     // Note: the above classes are only visual representations, all logic should reside in models
@@ -36,6 +29,19 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     //  Move rooms
     //  Blocking calls/game loop
 
+}
+
+void GameView::initScene()
+{
+    scene.clear();
+    fitInView(scene.sceneRect(), Qt::KeepAspectRatio);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setBackgroundBrush(QBrush(QColor(47,40,58), Qt::SolidPattern));
+
+    Button * btn = new Button();
+    btn->setRect(0, 0, 16, 16);
+    scene.addItem(btn);
 
     initPlayer();
     initInventory();
@@ -43,13 +49,14 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 
     // temp
     testInitAnimation();
-
 }
 
 GameView::~GameView()
 {
 
 }
+
+
 
 void GameView::initPlayer()
 {
@@ -79,6 +86,7 @@ void GameView::keyPressEvent(QKeyEvent *event)
 
 //        case Qt::Key_Space:  case Qt::Key_Enter:   emit interactwhateverplaceholder(); break;
 
+        case Qt::Key_Return: emit interact();
         case Qt::Key_1: case Qt::Key_2: case Qt::Key_3: case Qt::Key_4:
         case Qt::Key_5: case Qt::Key_6: case Qt::Key_7: case Qt::Key_8:
         case Qt::Key_9:     emit inventoryClickEvent(event->text().toInt() - 1); break;
@@ -89,11 +97,6 @@ void GameView::keyPressEvent(QKeyEvent *event)
 
 void GameView::movePlayer(Direction direction)
 {
-    /*
-     * Code checks next tile before movement
-     * Will not move to intraversable tiles
-     * WARNING if for some reason the next tile over is empty/void this will cause crash
-    */
     qDebug() << "GameView: Player is moving";
     player->move(direction);
 
@@ -101,17 +104,19 @@ void GameView::movePlayer(Direction direction)
     testAnimation();
 }
 
-//TODO signal to generate room graphics
-//seems to be connected but never enters the function after the emit from model
 void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
                             QHash<std::pair<int, int>, Tile *> * walls,
                             QHash<std::pair<int, int>, Tile *> * doors)
 {
+
+    initScene();
     TileLoader tileLoader = TileLoader::getInstance();
     GraphicsTile * tile;
     QHash<std::pair<int, int>, Tile*>::iterator i;
     for (i = floor->begin(); i != floor->end(); ++i){
-        tile = tileLoader.get(i.value()->getId()); tile->setZValue(-1);  // temp, everything may be added to a 'layer/group' (maybe use enums rather than numbers?): http://stackoverflow.com/questions/18074798/layers-on-qgraphicsview
+        tile = tileLoader.get(i.value()->getId());
+        //z value shows previous layers when moving room. Working on fix
+        tile->setZValue(-1);  // temp, everything may be added to a 'layer/group' (maybe use enums rather than numbers?): http://stackoverflow.com/questions/18074798/layers-on-qgraphicsview
         scene.addItem(tile);
         tile->setGridPos(i.key().first, i.key().second);
     }
@@ -127,7 +132,8 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
         scene.addItem(tile);
         tile->setGridPos(i.key().first, i.key().second);
     }
-
+    //TODO resetting player in center
+    //player->setGridPos(10, 4);
 }
 
 void GameView::addInventoryItem(int index, TileType type)
@@ -140,11 +146,11 @@ void GameView::removeInventoryItem(int index)
     inventory->removeInventoryItem(index);
 }
 
-
-
-
-
-
+void GameView::setPlayerLocation(int x, int y)
+{
+    player->setGridPos(x, y);
+    qDebug() << "setPos signal received";
+}
 
 // temp
 void GameView::testInitAnimation()

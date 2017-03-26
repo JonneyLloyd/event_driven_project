@@ -38,8 +38,10 @@ private:
     PlayerSprite * player;
     GraphicsInventory * inventory;
 
+    void initScene();
     void initPlayer();
     void initInventory();
+
 
     // temp
     GraphicsTile * testTile;
@@ -56,6 +58,7 @@ protected:
 signals:
     void moveEvent(Direction direction);    // Notifies controller of a move
     void inventoryClickEvent(int index);
+    void interact();
 
 public slots:
     void movePlayer(Direction direction);   // Listens for controller
@@ -66,6 +69,7 @@ public slots:
 
     void addInventoryItem(int index, TileType type);
     void removeInventoryItem(int index);
+    void setPlayerLocation(int x, int y);
 
 };
 

@@ -58,7 +58,10 @@ GraphicsTile * TileLoader::get(TileType tileType) const
     case TileType::ORB_GREEN:   return new GraphicsTile(textureSheet, 6, 21);
     case TileType::ORB_PINK:    return new GraphicsTile(textureSheet, 6, 22);
     case TileType::ORB_GREY:    return new GraphicsTile(textureSheet, 6, 23);
-    case TileType::DOOR_SIDE:   return new GraphicsTile(textureSheet, 2, 6);
+
+    case TileType::DOOR_EAST:   return new GraphicsTile(textureSheet, 2, 6);
+    case TileType::DOOR_WEST:   return new GraphicsTile(textureSheet, 2, 6);
+    case TileType::DOOR_SOUTH:   return new GraphicsTile(textureSheet, 2, 6);
 
     case TileType::FLOOR:       // Default for now, maybe an emty tile if not found?
 

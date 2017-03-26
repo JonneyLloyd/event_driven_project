@@ -7,6 +7,8 @@
 
 GameModel::GameModel(QObject *parent) : QObject(parent)
 {
+
+    setRoomLocation(std::make_pair(0,0));
     gameLoop = new QTimeLine(600);
     gameLoop->setCurveShape(QTimeLine::LinearCurve);
     gameLoop->setFrameRange(0, 5);
@@ -66,6 +68,8 @@ void GameModel::setPlayer(Player * player)
     this->player = player;
 }
 
+
+
 void GameModel::move(Direction direction)
 {
     // Buffers movement input to allow current move to finish
@@ -86,19 +90,19 @@ void GameModel::movePlayer(Direction direction)
 
     switch (direction){
         case Direction::WEST:
-        coordinates = std::make_pair(player->getX()-1, player->getY());
+        coordinates = std::make_pair (player->getX()-1, player->getY());
         break;
 
         case Direction::EAST:
-        coordinates = std::make_pair(player->getX()+1, player->getY());
+        coordinates = std::make_pair (player->getX()+1, player->getY());
         break;
 
         case Direction::NORTH:
-        coordinates = std::make_pair(player->getX(), player->getY()-1);
+        coordinates = std::make_pair (player->getX(), player->getY()-1);
         break;
 
         case Direction::SOUTH:
-        coordinates = std::make_pair(player->getX(), player->getY()+1);
+        coordinates = std::make_pair (player->getX(), player->getY()+1);
         break;
 
         default:            qDebug() << "NO MOVEMENT"; return;
@@ -110,6 +114,7 @@ void GameModel::movePlayer(Direction direction)
     if (i.value()->getTraversable() == true){
         emit movePlayerEvent(direction);
         player->setXY(coordinates.first, coordinates.second);
+        player->setHeading(direction);
     }
 }
 
@@ -117,6 +122,80 @@ void GameModel::inventoryClick(int index)
 {
     // TODO: some logic
     emit removeInventoryItemEvent(index);
+}
+
+
+void GameModel::interact()
+{
+    QHash<std::pair<int, int>, Tile*> * doors = currentRoom->getDoors();
+    std::pair<int, int> coordinates;
+    QHash<std::pair<int, int>, Tile*>::iterator i;
+    Direction heading = player->getHeading();
+
+    switch (heading){
+        case Direction::WEST:
+        coordinates = std::make_pair (player->getX()-1, player->getY());
+        break;
+
+        case Direction::EAST:
+        coordinates = std::make_pair (player->getX()+1, player->getY());
+        break;
+
+        case Direction::NORTH:
+        coordinates = std::make_pair (player->getX(), player->getY()-1);
+        break;
+
+        case Direction::SOUTH:
+        coordinates = std::make_pair (player->getX(), player->getY()+1);
+        break;
+
+        default:            qDebug() << "NO MOVEMENT"; return;
+    }
+    /*
+     * TODO
+     * Working but will have to look at tidier way to traverse rooms
+     * */
+    if (doors->contains(coordinates)){
+        i = doors->find(coordinates);
+        qDebug() << ((InteractableTile*)(i.value()))->interact();
+        if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_EAST
+                && getRoomLocation() == std::make_pair(0,0))
+        {
+            moveRoom();
+            setRoomLocation(std::make_pair(0,1));
+            player->setXY(1,getCurrentRoom()->getColumns()/2);
+            emit setPlayerLocation(1,getCurrentRoom()->getColumns()/2);
+        }
+        if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_WEST
+                && getRoomLocation() == std::make_pair(0,1))
+        {
+            moveRoom();
+            setRoomLocation(std::make_pair(0,0));
+
+            player->setXY(getCurrentRoom()->getRows()-2,getCurrentRoom()->getColumns()/2);
+            emit setPlayerLocation(getCurrentRoom()->getRows()-2,getCurrentRoom()->getColumns()/2);
+        }
+    }
+}
+
+void GameModel::moveRoom()
+{
+    //TODO hardcoded for now
+    qDebug() << "moving Room";
+    generateNewRoom(2,24,14);
+
+
+
+}
+
+void GameModel::setRoomLocation(std::pair<int, int> roomLocation)
+{
+    this->roomLocation = roomLocation;
+}
+
+std::pair<int, int> GameModel::getRoomLocation()
+{
+    return this->roomLocation;
 }
 
 void GameModel::nextGameLoop(int frame)
