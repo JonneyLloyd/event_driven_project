@@ -91,46 +91,18 @@ void GameModel::movePlayer(Direction direction)
     switch (direction){
         case Direction::WEST:
         coordinates = std::make_pair (player->getX()-1, player->getY());
-        i = all->find(coordinates);
-        qDebug() << "key "<< i.key() << "Traversable " << i.value()->getTraversable();
-        if (i.value()->getTraversable() == true){
-            emit movePlayerEvent(direction);
-            player->setXY(player->getX()-1, player->getY());
-            player->setHeading(Direction::WEST);
-        }
         break;
 
         case Direction::EAST:
         coordinates = std::make_pair (player->getX()+1, player->getY());
-        i = all->find(coordinates);
-        qDebug() << "key "<< i.key() << "Traversable " << i.value()->getTraversable();
-        if (i.value()->getTraversable() == true){
-            emit movePlayerEvent(direction);
-            player->setXY(player->getX()+1, player->getY());
-            player->setHeading(Direction::EAST);
-        }
         break;
 
         case Direction::NORTH:
         coordinates = std::make_pair (player->getX(), player->getY()-1);
-        i = all->find(coordinates);
-        qDebug() << "key "<< i.key() << "Traversable " << i.value()->getTraversable();
-        if (i.value()->getTraversable() == true){
-            emit movePlayerEvent(direction);
-            player->setXY(player->getX(), player->getY()-1);
-            player->setHeading(Direction::NORTH);
-        }
         break;
 
         case Direction::SOUTH:
         coordinates = std::make_pair (player->getX(), player->getY()+1);
-        i = all->find(coordinates);
-        qDebug() << "key "<< i.key() << "Traversable " << i.value()->getTraversable();
-        if (i.value()->getTraversable() == true){
-            emit movePlayerEvent(direction);
-            player->setXY(player->getX(), player->getY()+1);
-            player->setHeading(Direction::SOUTH);
-        }
         break;
 
         default:            qDebug() << "NO MOVEMENT"; return;
@@ -142,6 +114,7 @@ void GameModel::movePlayer(Direction direction)
     if (i.value()->getTraversable() == true){
         emit movePlayerEvent(direction);
         player->setXY(coordinates.first, coordinates.second);
+        player->setHeading(direction);
     }
 }
 
