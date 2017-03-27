@@ -16,7 +16,7 @@ class TileLoader
 
 public:
     static TileLoader & getInstance();
-    GraphicsTile * get(TileType tileType) const;
+    GraphicsTile * get(TileType::Enum tileType) const;
 
 private:
     TileLoader();

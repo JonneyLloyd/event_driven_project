@@ -12,8 +12,9 @@ public:
     void setX(int x);
     void setY(int y);
     void setXY(int x, int y);
-    void setHeading(Direction heading);
-    Direction getHeading();
+
+    void setHeading(Direction::Enum heading);
+    Direction::Enum getHeading();
     int getX() const;
     int getY() const;
 
@@ -21,7 +22,8 @@ public:
 private:
     int x;
     int y;
-    Direction heading;
+    Direction::Enum heading;
+
 };
 
 #endif // PLAYER_H

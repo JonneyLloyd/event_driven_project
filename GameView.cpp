@@ -1,7 +1,9 @@
 #include "GameView.h"
-#include "Button.h"
+#include "GraphicsMenuPauseButton.h"
 #include "TileTypeEnum.h"
 #include "views/TileLoader.h"
+#include "views/GraphicsText.h"
+#include "LayerEnum.h"
 #include <QDebug>
 
 GameView::GameView(QWidget *parent) : QGraphicsView(parent)
@@ -9,7 +11,6 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     setScene(&scene);
 //    scene.setSceneRect(0, 0, 16*30, 9*30);
     initScene();
-
 
     // Note: the above classes are only visual representations, all logic should reside in models
 
@@ -39,13 +40,17 @@ void GameView::initScene()
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setBackgroundBrush(QBrush(QColor(47,40,58), Qt::SolidPattern));
 
-    Button * btn = new Button();
-    btn->setRect(0, 0, 16, 16);
-    scene.addItem(btn);
+    GraphicsMenuPauseButton * pauseButton = new GraphicsMenuPauseButton();
+    pauseButton->setRect(0, 0, 16, 16);
+    pauseButton->setPos(-20, 0);
+    scene.addItem(pauseButton);
+    connect(pauseButton, SIGNAL(clickEvent()), SIGNAL(pauseClickEvent()));
 
     initPlayer();
     initInventory();
     fitInView(scene.sceneRect(), Qt::KeepAspectRatio);
+
+    initMenu();
 
     // temp
     testInitAnimation();
@@ -64,16 +69,28 @@ void GameView::initPlayer()
     player = qgraphicsitem_cast<PlayerSprite*>(tileLoader.get(TileType::PLAYER));
     scene.addItem(player);
     player->setGridPos(10, 4);
-    player->setZValue(1);
+    player->setZValue(Layer::PLAYER);
 }
 
 void GameView::initInventory()
 {
-    inventory = new GraphicsInventory;
+    inventory = new GraphicsMenu(Qt::Orientation::Horizontal, QSize(16, 16));
     inventory->setPos(16*5, 16*14);
     inventory->setScale(1.2);
+    inventory->setZValue(Layer::GUI_BACKGROUND);
     scene.addItem(inventory);
     connect(inventory, SIGNAL(inventoryItemClickedEvent(int)), SIGNAL(inventoryClickEvent(int)));
+}
+
+void GameView::initMenu()
+{
+    menu = new GraphicsMenu(Qt::Orientation::Vertical, QSize(40, 10), 2, 8);
+    menu->hide();
+    menu->setPos(16*7, 16*3);
+    menu->setScale(1.5);
+    menu->setZValue(Layer::GUI_FOREGROUND);
+    scene.addItem(menu);
+    connect(menu, SIGNAL(inventoryItemClickedEvent(int)), SIGNAL(menuClickEvent(int)));
 }
 
 void GameView::keyPressEvent(QKeyEvent *event)
@@ -84,9 +101,8 @@ void GameView::keyPressEvent(QKeyEvent *event)
         case Qt::Key_Down: case Qt::Key_S:  emit moveEvent(Direction::SOUTH); break;
         case Qt::Key_Left: case Qt::Key_A:  emit moveEvent(Direction::WEST);  break;
 
-//        case Qt::Key_Space:  case Qt::Key_Enter:   emit interactwhateverplaceholder(); break;
-
-        case Qt::Key_Return: emit interact();
+        case Qt::Key_Escape: emit pauseClickEvent(); break;
+        case Qt::Key_Space: case Qt::Key_Return: emit interactEvent(); break;
         case Qt::Key_1: case Qt::Key_2: case Qt::Key_3: case Qt::Key_4:
         case Qt::Key_5: case Qt::Key_6: case Qt::Key_7: case Qt::Key_8:
         case Qt::Key_9:     emit inventoryClickEvent(event->text().toInt() - 1); break;
@@ -95,9 +111,8 @@ void GameView::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void GameView::movePlayer(Direction direction)
+void GameView::movePlayer(Direction::Enum direction)
 {
-    qDebug() << "GameView: Player is moving";
     player->move(direction);
 
     // temp
@@ -116,29 +131,32 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
     for (i = floor->begin(); i != floor->end(); ++i){
         tile = tileLoader.get(i.value()->getId());
         //z value shows previous layers when moving room. Working on fix
-        tile->setZValue(-1);  // temp, everything may be added to a 'layer/group' (maybe use enums rather than numbers?): http://stackoverflow.com/questions/18074798/layers-on-qgraphicsview
-        scene.addItem(tile);
+
+        tile->setZValue(Layer::BACKGROUND);  // temp, everything may be added to a 'layer/group' (maybe use enums rather than numbers?): http://stackoverflow.com/questions/18074798/layers-on-qgraphicsview
         tile->setGridPos(i.key().first, i.key().second);
+        scene.addItem(tile);
     }
 
     for (i = walls->begin(); i != walls->end(); ++i){
         tile = tileLoader.get(i.value()->getId());
+        tile->setZValue(Layer::MIDDLEGROUND);
         tile->setGridPos(i.key().first, i.key().second);
         scene.addItem(tile);
     }
 
     for (i = doors->begin(); i != doors->end(); ++i) {
         tile = tileLoader.get(i.value()->getId());
-        scene.addItem(tile);
+        tile->setZValue(Layer::INTERACTABLE);
         tile->setGridPos(i.key().first, i.key().second);
+        scene.addItem(tile);
     }
-    //TODO resetting player in center
-    //player->setGridPos(10, 4);
 }
 
-void GameView::addInventoryItem(int index, TileType type)
+void GameView::addInventoryItem(int index, TileType::Enum type)
 {
-    inventory->addInventoryItem(index, type);
+    TileLoader tileLoader = TileLoader::getInstance();
+    auto tile = tileLoader.get(type);
+    inventory->addInventoryItem(index, tile);
 }
 
 void GameView::removeInventoryItem(int index)
@@ -152,6 +170,27 @@ void GameView::setPlayerLocation(int x, int y)
     qDebug() << "setPos signal received";
 }
 
+void GameView::setPlayerHeading(Direction::Enum direction)
+{
+    player->setHeading(direction);
+}
+
+void GameView::displayMenu(bool visible)
+{
+    if (visible)
+        menu->show();
+    else
+        menu->hide();
+}
+
+void GameView::addMenuItem(int index, QString text)
+{
+    auto item = new GraphicsText(text, QSize(40, 10));
+    menu->addInventoryItem(index, item);
+}
+
+
+
 // temp
 void GameView::testInitAnimation()
 {
@@ -161,14 +200,18 @@ void GameView::testInitAnimation()
     testAnimatedTile = tileLoader.get(TileType::CHEST);
     scene.addItem(testAnimatedTile);
     testAnimatedTile->setGridPos(4, 2);
+    testAnimatedTile->setZValue(Layer::INTERACTABLE);
 
     testAnimatedTile2 = tileLoader.get(TileType::SWITCH);
     scene.addItem(testAnimatedTile2);
     testAnimatedTile2->setGridPos(7, 2);
+    testAnimatedTile2->setZValue(Layer::INTERACTABLE);
 
     testAnimatedTile3 = tileLoader.get(TileType::DOOR);
     scene.addItem(testAnimatedTile3);
     testAnimatedTile3->setGridPos(7, 6);
+    testAnimatedTile3->setZValue(Layer::INTERACTABLE);
+
 
 //    for (int t = DOOR; t <= ORB_GREY; t++) {
 //        GraphicsTile * tile = tileLoader.get(static_cast<TileType>(t));

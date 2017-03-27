@@ -7,24 +7,24 @@
 class InteractableTile : public Interactable, public Tile
 {
 public:
-    InteractableTile(QString description, bool traversable, TileType id, bool state, TileType key);
-    InteractableTile(QString description, bool traversable, TileType id, bool state);
-    InteractableTile(QString description, bool traversable, TileType id);
+    InteractableTile(QString description, bool traversable, TileType::Enum id, bool state, TileType::Enum key);
+    InteractableTile(QString description, bool traversable, TileType::Enum id, bool state);
+    InteractableTile(QString description, bool traversable, TileType::Enum id);
     ~InteractableTile();
     QString getDescription();
     void setDescription(QString value);
     void setState(bool state);
     bool getState();
-    void setKey(TileType value);
-    TileType getKey();
+    void setKey(TileType::Enum value);
+    TileType::Enum getKey();
     QString interact();
-    QString interact(TileType item);
+    QString interact(TileType::Enum item);
 
 
 protected:
    QString description;
    bool state;
-   TileType key;
+   TileType::Enum key;
 
 };
 

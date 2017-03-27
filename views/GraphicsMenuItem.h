@@ -1,5 +1,5 @@
-#ifndef GRAPHICSINVENTORYITEM_H
-#define GRAPHICSINVENTORYITEM_H
+#ifndef GRAPHICSMENUITEM_H
+#define GRAPHICSMENUITEM_H
 
 #include <QObject>
 #include <QGraphicsWidget>
@@ -11,19 +11,19 @@
 #include "views/GraphicsTile.h"
 
 
-class GraphicsInventoryItem: public QGraphicsWidget
+class GraphicsMenuItem: public QGraphicsWidget
 {
     Q_OBJECT
 
 public:
-    GraphicsInventoryItem(int size, int spacing, QGraphicsItem *parent = 0);
-    ~GraphicsInventoryItem();
+    GraphicsMenuItem(QSize size, int margin, QGraphicsItem *parent = 0);
+    ~GraphicsMenuItem();
 
-    QRectF boundingRect() const;
+    QRectF boundingRect() const override;
+    QSizeF sizeHint(Qt::SizeHint which, const QSizeF &constraint = QSizeF()) const override;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-
-    void setGraphicsTile(GraphicsTile * tile);
+    void setGraphicsLayoutItem(QGraphicsLayoutItem * layoutItem);
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent * mouseEvent) override;
@@ -31,12 +31,11 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
 signals:
-    void itemClickedEvent(GraphicsInventoryItem * child);
+    void itemClickedEvent(GraphicsMenuItem * child);
 
 private:
-    int size;
-    int spacing;
-//    QColor defaultColor = QColor(200,60,78);
+    QSize size;
+    int margin;
     QColor defaultColor = QColor(37,50,68);
     QColor hoverColor = QColor(145,176,154);
     QColor * activeColor = &defaultColor;
@@ -45,4 +44,4 @@ private:
 
 };
 
-#endif // GRAPHICSINVENTORYITEM_H
+#endif // GRAPHICSMENUITEM_H
