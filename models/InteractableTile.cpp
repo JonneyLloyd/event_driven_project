@@ -1,7 +1,7 @@
 #include "InteractableTile.h"
 
 
-InteractableTile::InteractableTile(QString description, bool traversable, TileType id, bool state, TileType key)
+InteractableTile::InteractableTile(QString description, bool traversable, TileType::Enum id, bool state, TileType::Enum key)
     :   Tile(traversable, id),
         description{description},
         state{state},
@@ -9,7 +9,7 @@ InteractableTile::InteractableTile(QString description, bool traversable, TileTy
 {
 }
 
-InteractableTile::InteractableTile(QString description, bool traversable, TileType id, bool state)
+InteractableTile::InteractableTile(QString description, bool traversable, TileType::Enum id, bool state)
     :   Tile(traversable, id),
         description{description},
         state{state},
@@ -17,7 +17,7 @@ InteractableTile::InteractableTile(QString description, bool traversable, TileTy
 {
 }
 
-InteractableTile::InteractableTile(QString description, bool traversable, TileType id)
+InteractableTile::InteractableTile(QString description, bool traversable, TileType::Enum id)
     :   Tile(traversable, id),
         description{description},
         state{true},
@@ -53,12 +53,12 @@ bool InteractableTile::getState()
     return this->state;
 }
 
-void InteractableTile::setKey(TileType value)
+void InteractableTile::setKey(TileType::Enum value)
 {
     this->key = value;
 }
 
-TileType InteractableTile::getKey()
+TileType::Enum InteractableTile::getKey()
 {
     return this->key;
 }
@@ -74,7 +74,7 @@ QString InteractableTile::interact()
     }
 }
 
-QString InteractableTile::interact(TileType item)
+QString InteractableTile::interact(TileType::Enum item)
 {
     if (this->key == item)
     {

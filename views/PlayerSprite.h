@@ -23,12 +23,13 @@ public:
     /*
      * Move one step in the given direction
      */
-    void move(Direction direction);
+    void move(Direction::Enum direction);
+    void setHeading(Direction::Enum direction);
 
     void onFrameChanged(int frame);
 
 private:
-    Direction spriteDirection = Direction::SOUTH;             // The initial heading
+    Direction::Enum spriteDirection = Direction::SOUTH;             // The initial heading
     std::vector<int> spriteOffset = {2, 1, 0, 3};       // The positional offset in of each sprite
                                                         // facing north, east, south, west
 

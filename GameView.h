@@ -7,13 +7,12 @@
 #include <QGraphicsScene>
 
 #include "DirectionEnum.h"
-
-// temp
 #include "views/GraphicsTile.h"
 #include "views/AnimatedGraphicsTile.h"
 #include "views/PlayerSprite.h"
-#include "views/GraphicsInventory.h"
+#include "views/GraphicsMenu.h"
 #include "models/Tile.h"
+
 /*
  * GameView handles visuals and interacts with widgets/items.
  * Following MVC it is controlled externally.
@@ -36,11 +35,13 @@ public:
 
 private:
     PlayerSprite * player;
-    GraphicsInventory * inventory;
+    GraphicsMenu * inventory;
+    GraphicsMenu * menu;
 
     void initScene();
     void initPlayer();
     void initInventory();
+    void initMenu();
 
 
     // temp
@@ -56,20 +57,25 @@ protected:
     void keyPressEvent(QKeyEvent *event);   // Overrides parent
 
 signals:
-    void moveEvent(Direction direction);    // Notifies controller of a move
+    void moveEvent(Direction::Enum direction);    // Notifies controller of a move
     void inventoryClickEvent(int index);
-    void interact();
+    void interactEvent();
+    void menuClickEvent(int index);
+    void pauseClickEvent();
 
 public slots:
-    void movePlayer(Direction direction);   // Listens for controller
+    void movePlayer(Direction::Enum direction);   // Listens for controller
                                             // Moves the player on the screen
     void displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
                       QHash<std::pair<int, int>, Tile *> * walls,
                       QHash<std::pair<int, int>, Tile *> * doors);
 
-    void addInventoryItem(int index, TileType type);
+    void addInventoryItem(int index, TileType::Enum type);
     void removeInventoryItem(int index);
     void setPlayerLocation(int x, int y);
+    void setPlayerHeading(Direction::Enum direction);
+    void displayMenu(bool visible);
+    void addMenuItem(int index, QString text);
 
 };
 

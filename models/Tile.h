@@ -9,17 +9,17 @@ class Tile
 {
 
 public:
-    Tile(bool traversable, TileType id);
+    Tile(bool traversable, TileType::Enum id);
     ~Tile();
 
     void setTraversabe(bool traversable);
-    void setId(TileType id);
+    void setId(TileType::Enum id);
     bool getTraversable();
-    TileType getId();
+    TileType::Enum getId();
 
 private:
     bool traversable;
-    TileType id;
+    TileType::Enum id;
 };
 
 
