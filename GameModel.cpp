@@ -182,7 +182,7 @@ void GameModel::moveRoom()
 {
     //TODO hardcoded for now
     qDebug() << "moving Room";
-    generateNewRoom(2,24,14);
+    generateNewRoom(2,20,12);
 
 
 

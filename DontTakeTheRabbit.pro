@@ -38,7 +38,8 @@ SOURCES += main.cpp \
     models/InteractableTile.cpp \
     views/PlayerSprite.cpp \
     views/GraphicsInventory.cpp \
-    views/GraphicsInventoryItem.cpp
+    views/GraphicsInventoryItem.cpp \
+    models/State.cpp
 
 HEADERS  += \
     Button.h \
@@ -58,7 +59,8 @@ HEADERS  += \
     models/InteractableTile.h \
     views/PlayerSprite.h \
     views/GraphicsInventory.h \
-    views/GraphicsInventoryItem.h
+    views/GraphicsInventoryItem.h \
+    models/State.h
 
 FORMS    +=
 
