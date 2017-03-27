@@ -10,7 +10,7 @@ class State
 {
 
 public:
-    State(QHash<std::pair<int, int>, Tile*> * interactables, std::pair<int, int> roomLocation, int rows, int cols);
+    State(std::pair<int, int> roomLocation, int rows, int cols);
 
     void setInteractables(QHash<std::pair<int, int>, Tile*> * interactables);
     QHash<std::pair<int, int>, Tile*> * getInteractables();

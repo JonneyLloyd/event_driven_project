@@ -3,6 +3,7 @@
 #include "models/Player.h"
 #include "models/Tile.h"
 
+
 #include <QApplication>
 #include <QDebug>
 
@@ -18,9 +19,34 @@ GameModel::GameModel(QObject *parent) : QObject(parent)
     gameLoop->setLoopCount(0);  // forever
 }
 
+
+
 void GameModel::generateNewRoom()
 {
-    generateNewRoom(2,20,12);
+    //generateNewRoom(2,20,12);
+    vector<TileType::Enum> doorTypes;
+    doorTypes.push_back(TileType::Enum::DOOR);
+    doorTypes.push_back(TileType::Enum::DOOR_EAST);
+    doorTypes.push_back(TileType::Enum::DOOR_SOUTH);
+    doorTypes.push_back(TileType::Enum::DOOR_WEST);
+    roomState = new State(std::make_pair(0,0), 20, 12);
+    currentRoom = new GenerateRoom(1, roomState->getRows(),roomState->getCols());
+    currentRoom->generateFloor();
+    currentRoom->generateRoom();
+    currentRoom->generateDoors(doorTypes);
+    player = new Player(10,4);
+    emit displayFloorEvent(currentRoom->getFloor(), currentRoom->getWalls(), currentRoom->getDoors());
+
+    emit addInventoryItemEvent(0, TileType::ORB_BLUE);
+    emit addInventoryItemEvent(1, TileType::ORB_ORANGE);
+    emit addInventoryItemEvent(2, TileType::ORB_GREEN);
+    emit addInventoryItemEvent(3, TileType::CHEST);
+    emit addInventoryItemEvent(4, TileType::CHEST);
+
+    // TODO: enum or vector
+    emit addMenuItemEvent(0, QString("Resume"));
+    emit addMenuItemEvent(1, QString("Options"));
+    emit addMenuItemEvent(2, QString("Quit"));
 }
 
 void GameModel::generateNewRoom(int preset, int rows, int cols)
@@ -31,8 +57,6 @@ void GameModel::generateNewRoom(int preset, int rows, int cols)
     currentRoom->generateDoors();
     player = new Player(10,4); //TODO hardcoded for now & independent of view
     emit displayFloorEvent(currentRoom->getFloor(), currentRoom->getWalls(), currentRoom->getDoors());
-    qDebug() << "Floor mapping emmitted. floor size: " << currentRoom->getFloor()->size();
-
 
     /*
      * Testing InteractableTile
@@ -52,6 +76,7 @@ void GameModel::generateNewRoom(int preset, int rows, int cols)
     emit addMenuItemEvent(1, QString("Options"));
     emit addMenuItemEvent(2, QString("Quit"));
 }
+
 
 GenerateRoom *GameModel::getCurrentRoom()
 {

@@ -144,6 +144,41 @@ void GenerateRoom::generateDoors()
     doors->insert(std::make_pair(getRows()/2,getColumns()-1), doorTile); //south door
 }
 
+void GenerateRoom::generateDoors(vector<TileType::Enum> doorTypes)
+{
+    doors = new QHash<std::pair<int, int>, Tile*> ;
+    bool traversable = false;
+    int row, col;
+    InteractableTile * doorTile;
+    for(int i = 0; i < doorTypes.size(); i++){
+        row = 0;
+        col = 0;
+        switch (doorTypes[i]){
+            case TileType::Enum::DOOR :
+                row = getRows()/2;
+                col = 0;
+                break;
+            case TileType::Enum::DOOR_WEST :
+                row = 0;
+                col = getColumns()/2;
+                break;
+            case TileType::Enum::DOOR_EAST :
+                row = getRows()-1;
+                col = getColumns()/2;
+                break;
+            case TileType::Enum::DOOR_SOUTH :
+                row = getRows()/2;
+                col = getColumns()-1;
+                break;
+            default: ; break;
+        }
+        doorTile = new InteractableTile("This is a door", traversable, doorTypes[i]);
+
+        doors->insert(std::make_pair(row,col), doorTile);
+
+    }
+}
+
 QHash<std::pair<int, int>, Tile *> * GenerateRoom::getFloor()
 {
     return this->floor;

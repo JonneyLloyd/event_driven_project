@@ -1,11 +1,11 @@
 #include "State.h"
 
 
-State::State(QHash<std::pair<int, int>, Tile*> * interactables, std::pair<int, int> roomLocation, int rows, int cols)
-    :   interactables{interactables},
-        roomLocation{roomLocation},
-        rows{rows},
-        cols{cols}
+State::State(std::pair<int, int> roomLocation, int rows, int cols)
+    : roomLocation{roomLocation},
+      rows{rows},
+      cols{cols}
+
 {
 }
 

@@ -6,6 +6,7 @@
 #include "models/Player.h"
 #include "models/Tile.h"
 #include "models/InteractableTile.h"
+#include "models/State.h"
 
 #include "TileTypeEnum.h"
 #include "DirectionEnum.h"
@@ -66,6 +67,7 @@ private:
     GenerateRoom * currentRoom;
     Player * player;
     std::pair<int, int> roomLocation;
+    State * roomState;
 
     void movePlayer(Direction::Enum direction);
 
