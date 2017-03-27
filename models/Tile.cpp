@@ -1,7 +1,7 @@
 #include "Tile.h"
 
 
-Tile::Tile(bool traversable, TileType id){
+Tile::Tile(bool traversable, TileType::Enum id){
     this->traversable = traversable;
     this->id = id;
 }
@@ -15,7 +15,7 @@ void Tile::setTraversabe(bool traversable){
     this->traversable = traversable;
 }
 
-void Tile::setId(TileType id){
+void Tile::setId(TileType::Enum id){
     this->id = id;
 }
 
@@ -23,7 +23,7 @@ bool Tile::getTraversable(){
     return this->traversable;
 }
 
-TileType Tile::getId(){
+TileType::Enum Tile::getId(){
     return this->id;
 }
 

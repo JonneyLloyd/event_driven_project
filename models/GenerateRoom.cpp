@@ -59,7 +59,7 @@ void GenerateRoom::generateRoom()
 {
     walls = new QHash<std::pair<int, int>, Tile*> ;
     bool traversable = false;
-    TileType id = TileType::WALL_W_U;
+    TileType::Enum id = TileType::WALL_W_U;
     Tile * westWall = new Tile(traversable, id);
     id = TileType::WALL_E_U;
     Tile * eastWall = new Tile(traversable, id);
@@ -113,7 +113,7 @@ void GenerateRoom::generateRoom()
 
 void GenerateRoom::generateFloor()
 {
-    TileType id = TileType::FLOOR;
+    TileType::Enum id = TileType::FLOOR;
     bool traversable = true;
     Tile * floorTile = new Tile(traversable, id);
     floor = new QHash<std::pair<int, int>, Tile*> ;
@@ -127,7 +127,7 @@ void GenerateRoom::generateFloor()
 void GenerateRoom::generateDoors()
 {
     bool traversable = false;
-    TileType id = TileType::DOOR;
+    TileType::Enum id = TileType::DOOR;
     InteractableTile * doorTile = new InteractableTile("This is a door", traversable, id, true, TileType::ORB_BLUE);
     doors = new QHash<std::pair<int, int>, Tile*> ;
     doors->insert(std::make_pair(getRows()/2,0), doorTile); //north door

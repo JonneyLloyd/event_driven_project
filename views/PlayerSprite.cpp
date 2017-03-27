@@ -12,11 +12,17 @@ PlayerSprite::~PlayerSprite()
 
 }
 
-void PlayerSprite::move(Direction direction)
+void PlayerSprite::move(Direction::Enum direction)
+{
+    setHeading(direction);
+    start();
+}
+
+void PlayerSprite::setHeading(Direction::Enum direction)
 {
     spriteDirection = direction;
     setTileRow(spriteOffset[spriteDirection]);
-    start();
+    update();
 }
 
 void PlayerSprite::onFrameChanged(int frame)
@@ -31,6 +37,7 @@ void PlayerSprite::onFrameChanged(int frame)
         case Direction::EAST:   setPos(x() + moveAmt,   y());           break;
         case Direction::SOUTH:  setPos(x(),             y() + moveAmt); break;
         case Direction::WEST:   setPos(x() - moveAmt,   y());           break;
+        default: break;
     }
     AnimatedGraphicsTile::onFrameChanged(frame);
 }

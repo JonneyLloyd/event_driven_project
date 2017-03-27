@@ -25,7 +25,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     MainWindow.cpp \
-    Button.cpp \
     GameModel.cpp \
     GameController.cpp \
     GameView.cpp \
@@ -37,11 +36,12 @@ SOURCES += main.cpp \
     models/Tile.cpp \
     models/InteractableTile.cpp \
     views/PlayerSprite.cpp \
-    views/GraphicsInventory.cpp \
-    views/GraphicsInventoryItem.cpp
+    views/GraphicsText.cpp \
+    views/GraphicsMenu.cpp \
+    views/GraphicsMenuItem.cpp \
+    GraphicsMenuPauseButton.cpp
 
 HEADERS  += \
-    Button.h \
     GameModel.h \
     GameController.h \
     GameView.h \
@@ -57,8 +57,11 @@ HEADERS  += \
     models/Interactable.h \
     models/InteractableTile.h \
     views/PlayerSprite.h \
-    views/GraphicsInventory.h \
-    views/GraphicsInventoryItem.h
+    views/GraphicsText.h \
+    views/GraphicsMenu.h \
+    views/GraphicsMenuItem.h \
+    LayerEnum.h \
+    GraphicsMenuPauseButton.h
 
 FORMS    +=
 

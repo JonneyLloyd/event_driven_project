@@ -44,12 +44,12 @@ int Player::getY() const
     return this->y;
 }
 
-void Player::setHeading(Direction heading)
+void Player::setHeading(Direction::Enum heading)
 {
     this->heading = heading;
 }
 
-Direction Player::getHeading()
+Direction::Enum Player::getHeading()
 {
     return this->heading;
 }

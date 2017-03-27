@@ -9,7 +9,7 @@ TileLoader &TileLoader::getInstance()
     return instance;
 }
 
-GraphicsTile * TileLoader::get(TileType tileType) const
+GraphicsTile * TileLoader::get(TileType::Enum tileType) const
 {
     switch(tileType) {
     case TileType::PLAYER:  return new PlayerSprite(spriteSheet);

@@ -1,6 +1,8 @@
 #ifndef DIRECTIONENUM_H
 #define DIRECTIONENUM_H
 
-enum Direction { NORTH, EAST, SOUTH, WEST, UNKNOWN };
+namespace Direction {
+    enum Enum { NORTH, EAST, SOUTH, WEST, UNKNOWN };
+}
 
 #endif // DIRECTIONENUM_H

@@ -36,32 +36,37 @@ public:
     std::pair<int, int> getRoomLocation();
 
 signals:
-    void movePlayerEvent(Direction Direction);  // Notifies controller to move player
+    void movePlayerEvent(Direction::Enum direction);  // Notifies controller to move player
                                                 // Should this be direction or position with animation=true default flag
     void displayFloorEvent(QHash<std::pair<int, int>, Tile *> * floor,
                            QHash<std::pair<int, int>, Tile *> * walls,
                            QHash<std::pair<int, int>, Tile *> * doors);
-    void addInventoryItemEvent(int index, TileType type);
+    void addInventoryItemEvent(int index, TileType::Enum type);
     void removeInventoryItemEvent(int index);
-    void setPlayerLocation(int x, int y);
+    void setPlayerLocationEvent(int x, int y);
+    void setPlayerHeadingEvent(Direction::Enum);
+    void displayMenuEvent(bool visible);
+    void addMenuItemEvent(int index, QString text);
 
 public slots:
-    void move(Direction Direction);     // Listens for controller
+    void move(Direction::Enum direction);     // Listens for controller
                                         // Moves the player in game state
     void generateNewRoom();
     void generateNewRoom(int preset, int rows, int cols);
     void inventoryClick(int index);
     void interact();
+    void menuClick(int index);
+    void pauseClick();
 
 private:
     bool playerMoving = false;
-    Direction bufferedMove = Direction::UNKNOWN;
+    Direction::Enum bufferedMove = Direction::UNKNOWN;
     QTimeLine * gameLoop;
     GenerateRoom * currentRoom;
     Player * player;
     std::pair<int, int> roomLocation;
 
-    void movePlayer(Direction Direction);
+    void movePlayer(Direction::Enum direction);
 
 private slots:
     void nextGameLoop(int);
