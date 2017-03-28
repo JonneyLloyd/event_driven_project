@@ -24,7 +24,8 @@
  * if the state changes
  */
 
-
+//ref:
+//http://stackoverflow.com/questions/875103/how-do-i-erase-an-element-from-stdvector-by-index
 template <typename T>
 void remove(std::vector<T>& vec, unsigned int pos)
 {

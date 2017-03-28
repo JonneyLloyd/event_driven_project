@@ -223,25 +223,24 @@ void GameModel::inventoryClick(int index)
     i = interactables->find(coordinates);
     if(((InteractableTile*)(i.value()))->getKey() == inventory[index]){
         qDebug() << ((InteractableTile*)(i.value()))->interact(inventory[index]);
-    world->value(getRoomLocation())->changeInteractable(((InteractableTile*)(i.value()))->getId(),TileType::EMPTY);
+        world->value(getRoomLocation())->changeInteractable(((InteractableTile*)(i.value()))->getId(),TileType::EMPTY);
 
-    remove(inventory,index);
-    //TODO OLIVER - change to dialog box
-    }
+        remove(inventory,index);
+        //TODO OLIVER - change to dialog box
+        }
     }
 
     emit removeInventoryItemEvent(index);
 }
 
 
-
-
-
-
-
-
 void GameModel::interact()
 {
+    //TODO JONNEY
+    // code to interact with chest that contains key
+    // remove key from world like line 226
+    // put key into inventory
+    // send signal to view for inventory
     interactables = currentRoom->getInteractables();
     std::pair<int, int> coordinates;
     QHash<std::pair<int, int>, Tile*>::iterator i;
