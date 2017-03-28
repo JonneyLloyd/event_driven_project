@@ -49,3 +49,10 @@ int State::getCols()
 {
     return this->cols;
 }
+
+void State::changeInteractable(TileType::Enum interactable, TileType::Enum newKey)
+{
+    QHash<TileType::Enum, TileType::Enum>::iterator i;
+    i = interactables.find(interactable);
+    i.value() = newKey;
+}

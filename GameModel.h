@@ -13,6 +13,7 @@
 
 #include <QTimeLine>
 #include <QHash>
+#include <vector>
 
 /*
  * GameModel handles state and logic of the game.
@@ -22,6 +23,18 @@
  * Possibly create a game loop here using a timer asynchronously and emitting signals
  * if the state changes
  */
+
+
+template <typename T>
+void remove(std::vector<T>& vec, unsigned int pos)
+{
+    typename std::vector<T>::iterator it = vec.begin();
+    //You need typename to tell the compiler that ::iterator is supposed to be a type
+    std::advance(it, pos);
+    vec.erase(it);
+}
+
+
 class GameModel : public QObject
 {
     Q_OBJECT
@@ -36,6 +49,8 @@ public:
     void setRoomLocation(std::pair<int, int> roomLocation);
     std::pair<int, int> getRoomLocation();
     void generateAllRoomStates();
+ //   void newGame();
+
 
 signals:
     void movePlayerEvent(Direction::Enum direction);  // Notifies controller to move player
@@ -71,7 +86,9 @@ private:
     Player * player;
     std::pair<int, int> roomLocation;
     State * roomState;
-    QHash<std::pair<int, int>,State*> world;
+    QHash<std::pair<int, int>,State*> * world;
+    QHash<std::pair<int, int>, Tile*> * interactables;
+    vector<TileType::Enum> inventory;
 
     void movePlayer(Direction::Enum direction);
 

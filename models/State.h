@@ -20,6 +20,7 @@ public:
     int getRows();
     void setCols(int cols);
     int getCols();
+    void changeInteractable(TileType::Enum interactable, TileType::Enum newKey);
 
 
 private:

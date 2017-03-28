@@ -23,10 +23,10 @@ public:
     void generateRoom();
     void generateFloor();
     void generateDoors();
-    void generateDoors(QHash<TileType::Enum, TileType::Enum> doors);
+    void generateInteractableLayer(QHash<TileType::Enum, TileType::Enum> interactableList);
     QHash<std::pair<int, int>, Tile*> * getFloor();
     QHash<std::pair<int, int>, Tile*> * getWalls();
-    QHash<std::pair<int, int>, Tile*> * getDoors();
+    QHash<std::pair<int, int>, Tile*> * getInteractables();
 
 private:
     int preset;
@@ -34,10 +34,8 @@ private:
     int columns;
     QHash<std::pair<int, int>, Tile*>  * floor;
     QHash<std::pair<int, int>, Tile*>  * walls;
-    QHash<std::pair<int, int>, Tile*>  * doors;
+    QHash<std::pair<int, int>, Tile*>  * interactables;
     QHash<std::pair<int, int>, InteractableTile*>  * interactableDoors;
-
-
 };
 
 

@@ -51,7 +51,7 @@ void GameView::initScene()
     initMenu();
 
     // temp
-    testInitAnimation();
+    //testInitAnimation();
 }
 
 GameView::~GameView()
@@ -114,7 +114,7 @@ void GameView::movePlayer(Direction::Enum direction)
     player->move(direction);
 
     // temp
-    testAnimation();
+    //testAnimation();
 }
 
 void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,

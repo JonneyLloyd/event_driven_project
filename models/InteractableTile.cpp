@@ -65,24 +65,22 @@ TileType::Enum InteractableTile::getKey()
 
 QString InteractableTile::interact()
 {
-    if (this->key != TileType::EMPTY)
-        return this->description;
-    else
-    {
-        this->state = !state;
-        return "It worked";
-    }
+    if (this->key == TileType::EMPTY)
+      this->state = true;
+    return this->description;
+
 }
 
 QString InteractableTile::interact(TileType::Enum item)
 {
     if (this->key == item)
     {
-        this->state = !state;
-        return "It worked";
+        this->setKey(TileType::EMPTY);
+        this->state = true;
+        return "The key unlocked it!";
     }
-    else
-        return this->description;
+    return "That didnt work!";
+
 }
 
 
