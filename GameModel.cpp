@@ -92,19 +92,9 @@ void GameModel::generateAllRoomStates(){
     world->insert(roomState->getRoomLocation(), roomState);
 }
 
-
-
-
 void GameModel::generateNewRoom()
 {
     generateNewRoom(getRoomLocation());
-}
-
-void GameModel::inventoryRefresh()
-{
-    for(int i = 0; i < inventory.size(); i++){
-        emit addInventoryItemEvent(i, inventory[i]);
-    }
 }
 
 void GameModel::generateNewRoom(std::pair<int, int> roomLocation)
@@ -118,14 +108,8 @@ void GameModel::generateNewRoom(std::pair<int, int> roomLocation)
     emit displayFloorEvent(currentRoom->getFloor(),
                            currentRoom->getWalls(), currentRoom->getInteractables());
 
-    inventoryRefresh();
-    /*
-    emit addInventoryItemEvent(0, TileType::ORB_BLUE);
-    emit addInventoryItemEvent(1, TileType::ORB_ORANGE);
-    emit addInventoryItemEvent(2, TileType::ORB_GREEN);
-    emit addInventoryItemEvent(3, TileType::CHEST);
-    emit addInventoryItemEvent(4, TileType::CHEST);
-*/
+    for(int i = 0; i < inventory.size(); i++)
+        emit addInventoryItemEvent(i, inventory[i]);
     //TODO vector of TileType in header
     //iterate vector to emit to view
 
@@ -136,9 +120,6 @@ void GameModel::generateNewRoom(std::pair<int, int> roomLocation)
     emit addMenuItemEvent(1, QString("Options"));
     emit addMenuItemEvent(2, QString("Quit"));
 }
-
-
-
 
 GenerateRoom *GameModel::getCurrentRoom()
 {
@@ -250,21 +231,11 @@ void GameModel::inventoryClick(int index)
         emit removeInventoryItemEvent(index);
         }
     }
-
-
 }
 
 
 void GameModel::interact()
 {
-    //TODO JONNEY
-    // code to interact with chest that contains key
-    // remove key from world like line 226
-    // put key into inventory
-    // send signal to view for inventory
-
-    //const up getters etc
-
     interactables = currentRoom->getInteractables();
     std::pair<int, int> coordinates;
     QHash<std::pair<int, int>, Tile*>::iterator i;
@@ -345,13 +316,10 @@ void GameModel::interact()
             world->value(getRoomLocation())->changeInteractableContent(((InteractableTile*)(i.value()))->getId(),TileType::EMPTY);
             world->value(getRoomLocation())->changeInteractableContent(((InteractableTile*)(i.value()))->getId(),true);
             qDebug() << "You found an odd shaped key in the chest...";
-
         }
         if (direction != Direction::UNKNOWN){
             emit setPlayerHeadingEvent(direction);
         }
-
-
     }
 }
 

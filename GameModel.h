@@ -50,7 +50,6 @@ public:
     void setRoomLocation(std::pair<int, int> roomLocation);
     std::pair<int, int> getRoomLocation();
     void generateAllRoomStates();
-    void inventoryRefresh();
  //   void newGame();
 
 
@@ -60,7 +59,6 @@ signals:
     void displayFloorEvent(QHash<std::pair<int, int>, Tile *> * floor,
                            QHash<std::pair<int, int>, Tile *> * walls,
                            QHash<std::pair<int, int>, Tile *> * doors);
-
     void addInventoryItemEvent(int index, TileType::Enum type);
     void removeInventoryItemEvent(int index);
     void setPlayerLocationEvent(int x, int y);
@@ -68,11 +66,9 @@ signals:
     void displayMenuEvent(bool visible);
     void addMenuItemEvent(int index, QString text);
 
-
 public slots:
     void move(Direction::Enum direction);     // Listens for controller
                                         // Moves the player in game state
-
     void generateNewRoom();
     void generateNewRoom(std::pair<int, int> roomLocation);
     void inventoryClick(int index);
@@ -91,7 +87,6 @@ private:
     QHash<std::pair<int, int>,State*> * world;
     QHash<std::pair<int, int>, Tile*> * interactables;
     vector<TileType::Enum> inventory;
-
     void movePlayer(Direction::Enum direction);
 
 private slots:

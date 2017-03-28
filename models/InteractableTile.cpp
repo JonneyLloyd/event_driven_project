@@ -28,7 +28,6 @@ InteractableTile::InteractableTile(QString description, bool traversable, TileTy
 
 InteractableTile::~InteractableTile()
 {
-
 }
 
 
@@ -68,7 +67,6 @@ QString InteractableTile::interact()
     if (this->key == TileType::EMPTY)
       this->state = true;
     return this->description;
-
 }
 
 QString InteractableTile::interact(TileType::Enum item)
@@ -80,7 +78,6 @@ QString InteractableTile::interact(TileType::Enum item)
         return "The key unlocked it!";
     }
     return "That didnt work!";
-
 }
 
 

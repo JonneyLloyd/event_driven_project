@@ -13,7 +13,6 @@ public:
     State(std::pair<int, int> roomLocation, int rows, int cols,
           QHash<TileType::Enum, TileType::Enum> interactableContent,
           QHash<TileType::Enum, bool> interactableState);
-
     void setInteractableContent(QHash<TileType::Enum, TileType::Enum> interactableContent);
     QHash<TileType::Enum, TileType::Enum> getInteractableContent();
     void setRoomLocation(std::pair<int, int> roomLocation);
@@ -25,12 +24,9 @@ public:
     void changeInteractableContent(TileType::Enum interactable, TileType::Enum newKey);
     void changeInteractableContent(TileType::Enum interactable, bool newState);
 
-
 private:
     int rows;
     int cols;
-    //TODO JONNEY
-    //Hash<TileType::Enum, bool> itemState;
     QHash<TileType::Enum, TileType::Enum> interactableContent;
     QHash<TileType::Enum, bool> interactableState;
     std::pair<int, int> roomLocation;

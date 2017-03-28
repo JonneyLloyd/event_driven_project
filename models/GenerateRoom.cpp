@@ -16,7 +16,6 @@ GenerateRoom::GenerateRoom(int preset, int rows, int columns)
 
 GenerateRoom::~GenerateRoom()
 {
-
 }
 
 
@@ -133,7 +132,6 @@ void GenerateRoom::generateDoors()
     interactables = new QHash<std::pair<int, int>, Tile*> ;
     interactables->insert(std::make_pair(getRows()/2,0), doorTile); //north door
 
-
     id = TileType::DOOR_WEST;
     doorTile = new InteractableTile("This is a door", traversable, id);
     interactables->insert(std::make_pair(0,getColumns()/2), doorTile); //west door
@@ -157,7 +155,6 @@ void GenerateRoom::generateInteractableLayer(QHash<TileType::Enum, TileType::Enu
     for (i = interactableList.begin(); i != interactableList.end(); ++i){
         row = 0;
         col = 0;
-
         if(i.value() == TileType::Enum::EMPTY)
             description = "An unlocked door...";
         else
@@ -188,7 +185,6 @@ void GenerateRoom::generateInteractableLayer(QHash<TileType::Enum, TileType::Enu
             default: ; break;
         }
         doorTile = new InteractableTile(description, traversable, i.key(), state, i.value());
-
         interactables->insert(std::make_pair(row,col), doorTile);
 
     }
