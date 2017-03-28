@@ -50,6 +50,7 @@ public:
     void setRoomLocation(std::pair<int, int> roomLocation);
     std::pair<int, int> getRoomLocation();
     void generateAllRoomStates();
+    void inventoryRefresh();
  //   void newGame();
 
 
