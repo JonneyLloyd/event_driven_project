@@ -6,11 +6,13 @@
 #include "models/Player.h"
 #include "models/Tile.h"
 #include "models/InteractableTile.h"
+#include "models/State.h"
 
 #include "TileTypeEnum.h"
 #include "DirectionEnum.h"
 
 #include <QTimeLine>
+#include <QHash>
 
 /*
  * GameModel handles state and logic of the game.
@@ -31,9 +33,9 @@ public:
     void setCurrentRoom(GenerateRoom * currentRoom);
     Player * getPlayer();
     void setPlayer(Player * player);
-    void moveRoom();
     void setRoomLocation(std::pair<int, int> roomLocation);
     std::pair<int, int> getRoomLocation();
+    void generateAllRoomStates();
 
 signals:
     void movePlayerEvent(Direction::Enum direction);  // Notifies controller to move player
@@ -41,6 +43,7 @@ signals:
     void displayFloorEvent(QHash<std::pair<int, int>, Tile *> * floor,
                            QHash<std::pair<int, int>, Tile *> * walls,
                            QHash<std::pair<int, int>, Tile *> * doors);
+
     void addInventoryItemEvent(int index, TileType::Enum type);
     void removeInventoryItemEvent(int index);
     void setPlayerLocationEvent(int x, int y);
@@ -48,11 +51,13 @@ signals:
     void displayMenuEvent(bool visible);
     void addMenuItemEvent(int index, QString text);
 
+
 public slots:
     void move(Direction::Enum direction);     // Listens for controller
                                         // Moves the player in game state
+
     void generateNewRoom();
-    void generateNewRoom(int preset, int rows, int cols);
+    void generateNewRoom(std::pair<int, int> roomLocation);
     void inventoryClick(int index);
     void interact();
     void menuClick(int index);
@@ -65,6 +70,8 @@ private:
     GenerateRoom * currentRoom;
     Player * player;
     std::pair<int, int> roomLocation;
+    State * roomState;
+    QHash<std::pair<int, int>,State*> world;
 
     void movePlayer(Direction::Enum direction);
 

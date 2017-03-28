@@ -3,6 +3,7 @@
 #include "models/Player.h"
 #include "models/Tile.h"
 
+
 #include <QApplication>
 #include <QDebug>
 
@@ -10,6 +11,7 @@ GameModel::GameModel(QObject *parent) : QObject(parent)
 {
 
     setRoomLocation(std::make_pair(0,0));
+    generateAllRoomStates();
     gameLoop = new QTimeLine(600);
     gameLoop->setCurveShape(QTimeLine::LinearCurve);
     gameLoop->setFrameRange(0, 5);
@@ -18,29 +20,48 @@ GameModel::GameModel(QObject *parent) : QObject(parent)
     gameLoop->setLoopCount(0);  // forever
 }
 
-void GameModel::generateNewRoom()
-{
-    generateNewRoom(2,20,12);
+void GameModel::generateAllRoomStates(){
+    QHash<TileType::Enum, TileType::Enum> interactables;
+    interactables.insert(TileType::Enum::DOOR, TileType::Enum::EMPTY);
+    interactables.insert(TileType::Enum::DOOR_EAST, TileType::Enum::EMPTY);
+    roomState = new State(std::make_pair(0,0), 16, 10, interactables);
+    world.insert(roomState->getRoomLocation(), roomState);
+
+    interactables.clear();
+    interactables.insert(TileType::Enum::DOOR, TileType::Enum::EMPTY);
+    interactables.insert(TileType::Enum::DOOR_WEST, TileType::Enum::EMPTY);
+    roomState = new State(std::make_pair(0,1), 16, 10, interactables);
+    world.insert(roomState->getRoomLocation(), roomState);
+
+    interactables.clear();
+    interactables.insert(TileType::Enum::DOOR_SOUTH, TileType::Enum::EMPTY);
+    interactables.insert(TileType::Enum::DOOR_WEST, TileType::Enum::EMPTY);
+    roomState = new State(std::make_pair(1,1), 16, 10, interactables);
+    world.insert(roomState->getRoomLocation(), roomState);
+
+    interactables.clear();
+    interactables.insert(TileType::Enum::DOOR_SOUTH, TileType::Enum::EMPTY);
+    interactables.insert(TileType::Enum::DOOR_EAST, TileType::Enum::EMPTY);
+    roomState = new State(std::make_pair(1,0), 16, 10, interactables);
+    world.insert(roomState->getRoomLocation(), roomState);
 }
 
-void GameModel::generateNewRoom(int preset, int rows, int cols)
+
+void GameModel::generateNewRoom()
 {
-    currentRoom = new GenerateRoom(preset,rows,cols);//TODO hardcoded for now
+    generateNewRoom(getRoomLocation());
+}
+
+void GameModel::generateNewRoom(std::pair<int, int> roomLocation)
+{
+    roomState = world.value(roomLocation);
+    currentRoom = new GenerateRoom(1, roomState->getRows(),roomState->getCols());
     currentRoom->generateFloor();
     currentRoom->generateRoom();
-    currentRoom->generateDoors();
-    player = new Player(10,4); //TODO hardcoded for now & independent of view
+    currentRoom->generateDoors(roomState->getInteractables());
+    player = new Player(10,4);
     emit displayFloorEvent(currentRoom->getFloor(), currentRoom->getWalls(), currentRoom->getDoors());
-    qDebug() << "Floor mapping emmitted. floor size: " << currentRoom->getFloor()->size();
 
-
-    /*
-     * Testing InteractableTile
-    InteractableTile * test = new InteractableTile("Testing", true, TileType::DOOR);
-    qDebug() << "Testing InteractibleFile " << test->getDescription();
-    */
-
-    // TODO: move
     emit addInventoryItemEvent(0, TileType::ORB_BLUE);
     emit addInventoryItemEvent(1, TileType::ORB_ORANGE);
     emit addInventoryItemEvent(2, TileType::ORB_GREEN);
@@ -52,6 +73,9 @@ void GameModel::generateNewRoom(int preset, int rows, int cols)
     emit addMenuItemEvent(1, QString("Options"));
     emit addMenuItemEvent(2, QString("Quit"));
 }
+
+
+
 
 GenerateRoom *GameModel::getCurrentRoom()
 {
@@ -72,7 +96,6 @@ void GameModel::setPlayer(Player * player)
 {
     this->player = player;
 }
-
 
 
 void GameModel::move(Direction::Enum direction)
@@ -119,6 +142,7 @@ void GameModel::movePlayer(Direction::Enum direction)
     if (i.value()->getTraversable() == true){
         emit movePlayerEvent(direction);
         player->setXY(coordinates.first, coordinates.second);
+        player->setHeading(direction);
     }
     else {
         emit setPlayerHeadingEvent(direction);
@@ -162,38 +186,45 @@ void GameModel::interact()
      * TODO
      * Working but will have to look at tidier way to traverse rooms
      * */
+    int x = getRoomLocation().first;
+    int y = getRoomLocation().second;
+    int playerX = 0;
+    int playerY = 0;
     if (doors->contains(coordinates)){
         i = doors->find(coordinates);
         qDebug() << ((InteractableTile*)(i.value()))->interact();
-        if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_EAST
-                && getRoomLocation() == std::make_pair(0,0))
+        if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_EAST)
         {
-            moveRoom();
-            setRoomLocation(std::make_pair(0,1));
+            setRoomLocation(std::make_pair(x,y+1));
+            generateNewRoom();
             player->setXY(1,getCurrentRoom()->getColumns()/2);
             emit setPlayerLocationEvent(1,getCurrentRoom()->getColumns()/2);
         }
-        if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_WEST
-                && getRoomLocation() == std::make_pair(0,1))
-        {
-            moveRoom();
-            setRoomLocation(std::make_pair(0,0));
-
+        else if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_WEST){
+            setRoomLocation(std::make_pair(x,y-1));
+            generateNewRoom();
             player->setXY(getCurrentRoom()->getRows()-2,getCurrentRoom()->getColumns()/2);
             emit setPlayerLocationEvent(getCurrentRoom()->getRows()-2,getCurrentRoom()->getColumns()/2);
         }
+        else if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR){
+            setRoomLocation(std::make_pair(x+1,y));
+            generateNewRoom();
+            player->setXY(getCurrentRoom()->getRows() /2,getCurrentRoom()->getColumns()-2);
+            emit setPlayerLocationEvent(getCurrentRoom()->getRows() /2,getCurrentRoom()->getColumns()-2);
+
+        }
+        else if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_SOUTH){
+            setRoomLocation(std::make_pair(x-1,y));
+            generateNewRoom();
+            player->setXY(getCurrentRoom()->getRows() /2,1);
+            emit setPlayerLocationEvent(getCurrentRoom()->getRows() /2,1);
+        }
+
+
+
     }
 }
 
-void GameModel::moveRoom()
-{
-    //TODO hardcoded for now
-    qDebug() << "moving Room";
-    generateNewRoom(2,24,14);
-
-
-
-}
 
 void GameModel::setRoomLocation(std::pair<int, int> roomLocation)
 {

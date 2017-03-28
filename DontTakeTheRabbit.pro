@@ -35,6 +35,7 @@ SOURCES += main.cpp \
     models/Player.cpp \
     models/Tile.cpp \
     models/InteractableTile.cpp \
+    models/State.cpp \
     views/PlayerSprite.cpp \
     views/GraphicsText.cpp \
     views/GraphicsMenu.cpp \
@@ -56,6 +57,7 @@ HEADERS  += \
     models/Tile.h \
     models/Interactable.h \
     models/InteractableTile.h \
+    models/State.h \
     views/PlayerSprite.h \
     views/GraphicsText.h \
     views/GraphicsMenu.h \

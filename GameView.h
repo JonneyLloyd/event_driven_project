@@ -44,6 +44,7 @@ private:
     void initMenu();
 
 
+
     // temp
     GraphicsTile * testTile;
     GraphicsTile * testAnimatedTile;
@@ -59,6 +60,7 @@ protected:
 signals:
     void moveEvent(Direction::Enum direction);    // Notifies controller of a move
     void inventoryClickEvent(int index);
+
     void interactEvent();
     void menuClickEvent(int index);
     void pauseClickEvent();
