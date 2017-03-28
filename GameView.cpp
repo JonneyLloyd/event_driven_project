@@ -102,9 +102,7 @@ void GameView::keyPressEvent(QKeyEvent *event)
         case Qt::Key_Left: case Qt::Key_A:  emit moveEvent(Direction::WEST);  break;
 
         case Qt::Key_Escape: emit pauseClickEvent(); break;
-
         case Qt::Key_Space: case Qt::Key_Return: emit interactEvent(); break;
-
         case Qt::Key_1: case Qt::Key_2: case Qt::Key_3: case Qt::Key_4:
         case Qt::Key_5: case Qt::Key_6: case Qt::Key_7: case Qt::Key_8:
         case Qt::Key_9:     emit inventoryClickEvent(event->text().toInt() - 1); break;
@@ -133,6 +131,7 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
     for (i = floor->begin(); i != floor->end(); ++i){
         tile = tileLoader.get(i.value()->getId());
         //z value shows previous layers when moving room. Working on fix
+
         tile->setZValue(Layer::BACKGROUND);  // temp, everything may be added to a 'layer/group' (maybe use enums rather than numbers?): http://stackoverflow.com/questions/18074798/layers-on-qgraphicsview
         tile->setGridPos(i.key().first, i.key().second);
         scene.addItem(tile);
@@ -189,9 +188,6 @@ void GameView::addMenuItem(int index, QString text)
     auto item = new GraphicsText(text, QSize(40, 10));
     menu->addInventoryItem(index, item);
 }
-
-
-
 
 
 

@@ -4,11 +4,9 @@
 
 #include <QHash>
 #include "InteractableTile.h"
-#include <QObject>
 
-class GenerateRoom : public QObject
+class GenerateRoom
 {
-    Q_OBJECT
 public:
     /*
      * Constructor
@@ -25,6 +23,7 @@ public:
     void generateRoom();
     void generateFloor();
     void generateDoors();
+    void generateDoors(QHash<TileType::Enum, TileType::Enum> doors);
     QHash<std::pair<int, int>, Tile*> * getFloor();
     QHash<std::pair<int, int>, Tile*> * getWalls();
     QHash<std::pair<int, int>, Tile*> * getDoors();

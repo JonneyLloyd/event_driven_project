@@ -33,6 +33,7 @@ namespace TileType {
     //                WALL_NW_CORNER_INNER_U,
     //                WALL_NW_CORNER_INNER_L,
 
+
                     PILLAR_L, PILLAR_U,
                     CRATE,
                     ORB_BLUE, ORB_ORANGE, ORB_GREEN, ORB_PINK, ORB_GREY, FLOOR,
@@ -40,5 +41,6 @@ namespace TileType {
 
                   };
 }
+
 
 #endif // TILETYPE_H
