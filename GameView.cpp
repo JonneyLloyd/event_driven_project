@@ -147,7 +147,15 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
         tile->setZValue(Layer::INTERACTABLE);
         tile->setGridPos(i.key().first, i.key().second);
         scene.addItem(tile);
+        interactables->insert(std::make_pair(i.key().first, i.key().second), tile);
     }
+}
+
+void GameView::removeInteractableItem(const std::pair<int, int> & key)
+{
+    auto tile = interactables->value(key);
+    interactables->remove(key);
+    delete tile;
 }
 
 void GameView::addInventoryItem(int index, TileType::Enum type)

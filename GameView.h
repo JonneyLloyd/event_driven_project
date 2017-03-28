@@ -43,7 +43,7 @@ private:
     void initInventory();
     void initMenu();
 
-
+    QHash<std::pair<int, int>, GraphicsTile *> * interactables = new QHash<std::pair<int, int>, GraphicsTile *>();
 
     // temp
     GraphicsTile * testTile;
@@ -71,6 +71,7 @@ public slots:
     void displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
                       QHash<std::pair<int, int>, Tile *> * walls,
                       QHash<std::pair<int, int>, Tile *> * doors);
+    void removeInteractableItem(const std::pair<int, int> & key);
 
     void addInventoryItem(int index, TileType::Enum type);
     void removeInventoryItem(int index);
