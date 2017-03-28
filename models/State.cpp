@@ -1,20 +1,21 @@
 #include "State.h"
 
 
-State::State(std::pair<int, int> roomLocation, int rows, int cols)
+State::State(std::pair<int, int> roomLocation, int rows, int cols,
+             QHash<TileType::Enum, TileType::Enum> interactables)
     : roomLocation{roomLocation},
       rows{rows},
-      cols{cols}
-
+      cols{cols},
+      interactables{interactables}
 {
 }
 
-void State::setInteractables(QHash<std::pair<int, int>, Tile*> * interactables)
+void State::setInteractables(QHash<TileType::Enum, TileType::Enum> interactables)
 {
     this->interactables = interactables;
 }
 
-QHash<std::pair<int, int>, Tile*> * State::getInteractables()
+QHash<TileType::Enum, TileType::Enum> State::getInteractables()
 {
     return this->interactables;
 }

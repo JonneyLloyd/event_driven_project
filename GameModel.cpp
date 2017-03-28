@@ -11,6 +11,7 @@ GameModel::GameModel(QObject *parent) : QObject(parent)
 {
 
     setRoomLocation(std::make_pair(0,0));
+    generateAllRoomStates();
     gameLoop = new QTimeLine(600);
     gameLoop->setCurveShape(QTimeLine::LinearCurve);
     gameLoop->setFrameRange(0, 5);
@@ -19,21 +20,61 @@ GameModel::GameModel(QObject *parent) : QObject(parent)
     gameLoop->setLoopCount(0);  // forever
 }
 
+void GameModel::generateAllRoomStates(){
+    QHash<TileType::Enum, TileType::Enum> interactables;
+    interactables.insert(TileType::Enum::DOOR, TileType::Enum::EMPTY);
+    interactables.insert(TileType::Enum::DOOR_EAST, TileType::Enum::EMPTY);
+    roomState = new State(std::make_pair(0,0), 20, 12, interactables);
+    world.insert(roomState->getRoomLocation(), roomState);
+
+    interactables.clear();
+    interactables.insert(TileType::Enum::DOOR, TileType::Enum::EMPTY);
+    interactables.insert(TileType::Enum::DOOR_WEST, TileType::Enum::EMPTY);
+    roomState = new State(std::make_pair(0,1), 20, 12, interactables);
+    world.insert(roomState->getRoomLocation(), roomState);
+
+}
 
 
 void GameModel::generateNewRoom()
 {
     //generateNewRoom(2,20,12);
-    vector<TileType::Enum> doorTypes;
-    doorTypes.push_back(TileType::Enum::DOOR);
-    doorTypes.push_back(TileType::Enum::DOOR_EAST);
-    doorTypes.push_back(TileType::Enum::DOOR_SOUTH);
-    doorTypes.push_back(TileType::Enum::DOOR_WEST);
-    roomState = new State(std::make_pair(0,0), 20, 12);
+    generateNewRoom(getRoomLocation());
+    /*
+    QHash<TileType::Enum, TileType::Enum> doorTypes;
+    doorTypes.insert(TileType::Enum::DOOR, TileType::Enum::EMPTY);
+    doorTypes.insert(TileType::Enum::DOOR_EAST, TileType::Enum::EMPTY);
+    doorTypes.insert(TileType::Enum::DOOR_SOUTH, TileType::Enum::EMPTY);
+    doorTypes.insert(TileType::Enum::DOOR_WEST, TileType::Enum::EMPTY);
+    roomState = new State(std::make_pair(0,0), 20, 12, doorTypes);
     currentRoom = new GenerateRoom(1, roomState->getRows(),roomState->getCols());
     currentRoom->generateFloor();
     currentRoom->generateRoom();
-    currentRoom->generateDoors(doorTypes);
+    currentRoom->generateDoors(roomState->getInteractables());
+    player = new Player(10,4);
+    emit displayFloorEvent(currentRoom->getFloor(), currentRoom->getWalls(), currentRoom->getDoors());
+
+    emit addInventoryItemEvent(0, TileType::ORB_BLUE);
+    emit addInventoryItemEvent(1, TileType::ORB_ORANGE);
+    emit addInventoryItemEvent(2, TileType::ORB_GREEN);
+    emit addInventoryItemEvent(3, TileType::CHEST);
+    emit addInventoryItemEvent(4, TileType::CHEST);
+
+    // TODO: enum or vector
+    emit addMenuItemEvent(0, QString("Resume"));
+    emit addMenuItemEvent(1, QString("Options"));
+    emit addMenuItemEvent(2, QString("Quit"));
+
+    */
+}
+
+void GameModel::generateNewRoom(std::pair<int, int> roomLocation)
+{
+    roomState = world.value(roomLocation);
+    currentRoom = new GenerateRoom(1, roomState->getRows(),roomState->getCols());
+    currentRoom->generateFloor();
+    currentRoom->generateRoom();
+    currentRoom->generateDoors(roomState->getInteractables());
     player = new Player(10,4);
     emit displayFloorEvent(currentRoom->getFloor(), currentRoom->getWalls(), currentRoom->getDoors());
 

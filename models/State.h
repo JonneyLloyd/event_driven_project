@@ -10,10 +10,10 @@ class State
 {
 
 public:
-    State(std::pair<int, int> roomLocation, int rows, int cols);
+    State(std::pair<int, int> roomLocation, int rows, int cols, QHash<TileType::Enum, TileType::Enum> interactables);
 
-    void setInteractables(QHash<std::pair<int, int>, Tile*> * interactables);
-    QHash<std::pair<int, int>, Tile*> * getInteractables();
+    void setInteractables(QHash<TileType::Enum, TileType::Enum> interactables);
+    QHash<TileType::Enum, TileType::Enum> getInteractables();
     void setRoomLocation(std::pair<int, int> roomLocation);
     std::pair<int, int> getRoomLocation();
     void setRows(int rows);
@@ -21,10 +21,11 @@ public:
     void setCols(int cols);
     int getCols();
 
+
 private:
     int rows;
     int cols;
-    QHash<std::pair<int, int>, Tile*> * interactables;
+    QHash<TileType::Enum, TileType::Enum> interactables;
     std::pair<int, int> roomLocation;
 };
 

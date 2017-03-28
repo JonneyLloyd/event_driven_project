@@ -12,6 +12,7 @@
 #include "DirectionEnum.h"
 
 #include <QTimeLine>
+#include <QHash>
 
 /*
  * GameModel handles state and logic of the game.
@@ -35,6 +36,7 @@ public:
     void moveRoom();
     void setRoomLocation(std::pair<int, int> roomLocation);
     std::pair<int, int> getRoomLocation();
+    void generateAllRoomStates();
 
 signals:
     void movePlayerEvent(Direction::Enum direction);  // Notifies controller to move player
@@ -50,10 +52,13 @@ signals:
     void displayMenuEvent(bool visible);
     void addMenuItemEvent(int index, QString text);
 
+
 public slots:
     void move(Direction::Enum direction);     // Listens for controller
                                         // Moves the player in game state
+
     void generateNewRoom();
+    void generateNewRoom(std::pair<int, int> roomLocation);
     void generateNewRoom(int preset, int rows, int cols);
     void inventoryClick(int index);
     void interact();
@@ -68,6 +73,7 @@ private:
     Player * player;
     std::pair<int, int> roomLocation;
     State * roomState;
+    QHash<std::pair<int, int>,State*> world;
 
     void movePlayer(Direction::Enum direction);
 
