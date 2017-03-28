@@ -11,6 +11,10 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     setScene(&scene);
 //    scene.setSceneRect(0, 0, 16*30, 9*30);
     initScene();
+    fitInView(scene.sceneRect(), Qt::KeepAspectRatio);
+    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    setBackgroundBrush(QBrush(QColor(47,40,58), Qt::SolidPattern));
 
     // Note: the above classes are only visual representations, all logic should reside in models
 
@@ -35,10 +39,6 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 void GameView::initScene()
 {
     scene.clear();
-    fitInView(scene.sceneRect(), Qt::KeepAspectRatio);
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setBackgroundBrush(QBrush(QColor(47,40,58), Qt::SolidPattern));
 
     GraphicsMenuPauseButton * pauseButton = new GraphicsMenuPauseButton();
     pauseButton->setRect(0, 0, 16, 16);
@@ -48,8 +48,6 @@ void GameView::initScene()
 
     initPlayer();
     initInventory();
-    fitInView(scene.sceneRect(), Qt::KeepAspectRatio);
-
     initMenu();
 
     // temp
