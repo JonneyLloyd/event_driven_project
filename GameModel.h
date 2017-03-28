@@ -33,7 +33,6 @@ public:
     void setCurrentRoom(GenerateRoom * currentRoom);
     Player * getPlayer();
     void setPlayer(Player * player);
-    void moveRoom();
     void setRoomLocation(std::pair<int, int> roomLocation);
     std::pair<int, int> getRoomLocation();
     void generateAllRoomStates();
@@ -59,7 +58,6 @@ public slots:
 
     void generateNewRoom();
     void generateNewRoom(std::pair<int, int> roomLocation);
-    void generateNewRoom(int preset, int rows, int cols);
     void inventoryClick(int index);
     void interact();
     void menuClick(int index);
