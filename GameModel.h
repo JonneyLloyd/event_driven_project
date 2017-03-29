@@ -45,13 +45,11 @@ public:
 
     GenerateRoom * getCurrentRoom();
     void setCurrentRoom(GenerateRoom * currentRoom);
-    Player * getPlayer();
+    Player * getPlayer()  const;
     void setPlayer(Player * player);
     void setRoomLocation(std::pair<int, int> roomLocation);
-    std::pair<int, int> getRoomLocation();
+    std::pair<int, int> getRoomLocation()  const;
     void generateAllRoomStates();
- //   void newGame();
-
 
 signals:
     void movePlayerEvent(Direction::Enum direction);  // Notifies controller to move player
