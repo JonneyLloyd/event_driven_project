@@ -13,6 +13,24 @@ GenerateRoom::GenerateRoom(int rows, int columns)
 
 GenerateRoom::~GenerateRoom()
 {
+    QHash<std::pair<int, int>, Tile*> ::iterator i;
+    for (i = floor->begin(); i != floor->end(); ++i){
+        delete &i;
+    }
+    delete floor;
+    for (i = walls->begin(); i != walls->end(); ++i){
+        delete &i;
+    }
+    delete walls;
+    for (i = interactables->begin(); i != interactables->end(); ++i){
+        delete &i;
+    }
+    delete interactables;
+    QHash<std::pair<int, int>, InteractableTile*> :: iterator j;
+    for (j = interactableDoors->begin(); j != interactableDoors->end(); ++j){
+        delete &j;
+    }
+    delete interactableDoors;
 }
 
 void GenerateRoom::setRows(int rows)
