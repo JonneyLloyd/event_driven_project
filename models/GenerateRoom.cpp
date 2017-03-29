@@ -1,6 +1,7 @@
 #include "GenerateRoom.h"
 #include "TileTypeEnum.h"
 #include <QDebug>
+#include <math.h>
 
 
 
@@ -15,7 +16,6 @@ GenerateRoom::GenerateRoom(int preset, int rows, int columns)
 
 GenerateRoom::~GenerateRoom()
 {
-
 }
 
 
@@ -129,32 +129,36 @@ void GenerateRoom::generateDoors()
     bool traversable = false;
     TileType::Enum id = TileType::DOOR;
     InteractableTile * doorTile = new InteractableTile("This is a door", traversable, id, true, TileType::ORB_BLUE);
-    doors = new QHash<std::pair<int, int>, Tile*> ;
-    doors->insert(std::make_pair(getRows()/2,0), doorTile); //north door
-
+    interactables = new QHash<std::pair<int, int>, Tile*> ;
+    interactables->insert(std::make_pair(getRows()/2,0), doorTile); //north door
 
     id = TileType::DOOR_WEST;
     doorTile = new InteractableTile("This is a door", traversable, id);
-    doors->insert(std::make_pair(0,getColumns()/2), doorTile); //west door
+    interactables->insert(std::make_pair(0,getColumns()/2), doorTile); //west door
     id = TileType::DOOR_EAST;
     doorTile = new InteractableTile("This is a door", traversable, id);
-    doors->insert(std::make_pair(getRows()-1,getColumns()/2), doorTile); //east door
+    interactables->insert(std::make_pair(getRows()-1,getColumns()/2), doorTile); //east door
     id = TileType::DOOR_SOUTH;
     doorTile = new InteractableTile("This is a door", traversable, id);
-    doors->insert(std::make_pair(getRows()/2,getColumns()-1), doorTile); //south door
+    interactables->insert(std::make_pair(getRows()/2,getColumns()-1), doorTile); //south door
 }
 
-void GenerateRoom::generateDoors(QHash<TileType::Enum, TileType::Enum> doorTypes)
+void GenerateRoom::generateInteractableLayer(QHash<TileType::Enum, TileType::Enum> interactableList)
 {
-    doors = new QHash<std::pair<int, int>, Tile*> ;
+    interactables = new QHash<std::pair<int, int>, Tile*> ;
     bool traversable = false, state = false;
     int row, col;
     InteractableTile * doorTile;
+    QString description;
 
     QHash<TileType::Enum, TileType::Enum>::iterator i;
-    for (i = doorTypes.begin(); i != doorTypes.end(); ++i){
+    for (i = interactableList.begin(); i != interactableList.end(); ++i){
         row = 0;
         col = 0;
+        if(i.value() == TileType::Enum::EMPTY)
+            description = "An unlocked door...";
+        else
+            description = "This door has a strange key hole!";
         switch (i.key()){
             case TileType::Enum::DOOR :
                 row = getRows()/2;
@@ -172,11 +176,16 @@ void GenerateRoom::generateDoors(QHash<TileType::Enum, TileType::Enum> doorTypes
                 row = getRows()/2;
                 col = getColumns()-1;
                 break;
+             case TileType::Enum::CHEST :
+                row = getRows()/2;
+                col = getColumns()/2;
+                description = "An unlocked chest...";
+                break;
+
             default: ; break;
         }
-        doorTile = new InteractableTile("This is a door", traversable, i.key(), state, i.value());
-
-        doors->insert(std::make_pair(row,col), doorTile);
+        doorTile = new InteractableTile(description, traversable, i.key(), state, i.value());
+        interactables->insert(std::make_pair(row,col), doorTile);
 
     }
 }
@@ -191,9 +200,9 @@ QHash<std::pair<int, int>, Tile *> * GenerateRoom::getWalls()
     return this->walls;
 }
 
-QHash<std::pair<int, int>, Tile *> *GenerateRoom::getDoors()
+QHash<std::pair<int, int>, Tile *> *GenerateRoom::getInteractables()
 {
-    return this->doors;
+    return this->interactables;
 }
 
 

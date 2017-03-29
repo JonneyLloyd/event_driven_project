@@ -2,22 +2,24 @@
 
 
 State::State(std::pair<int, int> roomLocation, int rows, int cols,
-             QHash<TileType::Enum, TileType::Enum> interactables)
+             QHash<TileType::Enum, TileType::Enum> interactableContent,
+             QHash<TileType::Enum, bool> interactableState)
     : roomLocation{roomLocation},
       rows{rows},
       cols{cols},
-      interactables{interactables}
+      interactableContent{interactableContent},
+      interactableState{interactableState}
 {
 }
 
-void State::setInteractables(QHash<TileType::Enum, TileType::Enum> interactables)
+void State::setInteractableContent(QHash<TileType::Enum, TileType::Enum> interactableContent)
 {
-    this->interactables = interactables;
+    this->interactableContent = interactableContent;
 }
 
-QHash<TileType::Enum, TileType::Enum> State::getInteractables()
+QHash<TileType::Enum, TileType::Enum> State::getInteractableContent()
 {
-    return this->interactables;
+    return this->interactableContent;
 }
 
 void State::setRoomLocation(std::pair<int, int> roomLocation)
@@ -48,4 +50,18 @@ void State::setCols(int cols)
 int State::getCols()
 {
     return this->cols;
+}
+
+void State::changeInteractableContent(TileType::Enum interactable, TileType::Enum newKey)
+{
+    QHash<TileType::Enum, TileType::Enum>::iterator i;
+    i = interactableContent.find(interactable);
+    i.value() = newKey;
+}
+
+void State::changeInteractableContent(TileType::Enum interactable, bool newState)
+{
+    QHash<TileType::Enum, bool>::iterator i;
+    i = interactableState.find(interactable);
+    i.value() = newState;
 }

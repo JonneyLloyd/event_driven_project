@@ -13,6 +13,7 @@
 
 #include <QTimeLine>
 #include <QHash>
+#include <vector>
 
 /*
  * GameModel handles state and logic of the game.
@@ -22,6 +23,19 @@
  * Possibly create a game loop here using a timer asynchronously and emitting signals
  * if the state changes
  */
+
+//ref:
+//http://stackoverflow.com/questions/875103/how-do-i-erase-an-element-from-stdvector-by-index
+template <typename T>
+void remove(std::vector<T>& vec, unsigned int pos)
+{
+    typename std::vector<T>::iterator it = vec.begin();
+    //You need typename to tell the compiler that ::iterator is supposed to be a type
+    std::advance(it, pos);
+    vec.erase(it);
+}
+
+
 class GameModel : public QObject
 {
     Q_OBJECT
@@ -36,6 +50,8 @@ public:
     void setRoomLocation(std::pair<int, int> roomLocation);
     std::pair<int, int> getRoomLocation();
     void generateAllRoomStates();
+ //   void newGame();
+
 
 signals:
     void movePlayerEvent(Direction::Enum direction);  // Notifies controller to move player
@@ -43,7 +59,6 @@ signals:
     void displayFloorEvent(QHash<std::pair<int, int>, Tile *> * floor,
                            QHash<std::pair<int, int>, Tile *> * walls,
                            QHash<std::pair<int, int>, Tile *> * doors);
-
     void addInventoryItemEvent(int index, TileType::Enum type);
     void removeInventoryItemEvent(int index);
     void setPlayerLocationEvent(int x, int y);
@@ -51,11 +66,9 @@ signals:
     void displayMenuEvent(bool visible);
     void addMenuItemEvent(int index, QString text);
 
-
 public slots:
     void move(Direction::Enum direction);     // Listens for controller
                                         // Moves the player in game state
-
     void generateNewRoom();
     void generateNewRoom(std::pair<int, int> roomLocation);
     void inventoryClick(int index);
@@ -71,8 +84,9 @@ private:
     Player * player;
     std::pair<int, int> roomLocation;
     State * roomState;
-    QHash<std::pair<int, int>,State*> world;
-
+    QHash<std::pair<int, int>,State*> * world;
+    QHash<std::pair<int, int>, Tile*> * interactables;
+    vector<TileType::Enum> inventory;
     void movePlayer(Direction::Enum direction);
 
 private slots:
