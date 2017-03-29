@@ -16,7 +16,8 @@ class TileLoader
 
 public:
     static TileLoader & getInstance();
-    GraphicsTile * get(TileType::Enum tileType) const;
+    // TODO Oliver fix singleton
+    GraphicsTile * get(const TileType::Enum & tileType) const;
 
 private:
     TileLoader();

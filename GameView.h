@@ -37,23 +37,12 @@ private:
     PlayerSprite * player;
     GraphicsMenu * inventory;
     GraphicsMenu * menu;
+    QHash<std::pair<int, int>, GraphicsTile *> * interactables;
 
     void initScene();
     void initPlayer();
     void initInventory();
     void initMenu();
-
-    QHash<std::pair<int, int>, GraphicsTile *> * interactables;
-
-
-    // temp
-    GraphicsTile * testTile;
-    GraphicsTile * testAnimatedTile;
-    GraphicsTile * testAnimatedTile2;
-    GraphicsTile * testAnimatedTile3;
-    void testInitAnimation();
-    void testAnimation();
-
 
 protected:
     void keyPressEvent(QKeyEvent *event);   // Overrides parent
@@ -64,16 +53,16 @@ signals:
 
     void interactEvent();
     void menuClickEvent(int index);
+    void gameOverMenuClickEvent();
     void pauseClickEvent();
 
 public slots:
     void movePlayer(Direction::Enum direction);   // Listens for controller
-                                            // Moves the player on the screen
+                                                  // Moves the player on the screen
     void displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
                       QHash<std::pair<int, int>, Tile *> * walls,
                       QHash<std::pair<int, int>, Tile *> * doors);
-    void removeInteractableItem(const std::pair<int, int> & position); // TODO
-    void setInteractableItemState(const std::pair<int, int> & position, bool activated, int loopCount); // TODO
+    void setInteractableItemState(const std::pair<int, int> & position, bool activated, int loopCount);
 
     void addInventoryItem(int index, TileType::Enum type);
     void removeInventoryItem(int index);
@@ -82,6 +71,7 @@ public slots:
     void displayMenu(bool visible);
     void displayDialog(QString text);
     void addMenuItem(int index, QString text);
+    void displayGameOverMenu();
 
 private slots:
     void removeDialog(GraphicsMenuItem *dialog);

@@ -10,31 +10,11 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 {
     interactables = new QHash<std::pair<int, int>, GraphicsTile *>();
     setScene(&scene);
-//    scene.setSceneRect(0, 0, 16*30, 9*30);
     initScene();
     fitInView(scene.sceneRect(), Qt::KeepAspectRatio);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setBackgroundBrush(QBrush(QColor(47,40,58), Qt::SolidPattern));
-
-
-    // Note: the above classes are only visual representations, all logic should reside in models
-
-    // TODO (views):
-    //  Introduce layering
-    //  Draw map/layers using model output - there is a method to do all painting in one go
-    //  Add menu widgets
-    //  Figure out if QGraphicsItem * parent is needed/wanted and adjust tile objects (since it is the last param)
-    //  Fix memory problems!!
-
-    // TODO (models):
-    //  Representations for player, interactable objects, world, layers, tiles
-    //  Provide this to the view in an easy to consume way?
-    //  Block keyboard input while player is moving
-    //  Validate player moves
-    //  Check if the tile in front can be interacted with (activated, walked on)
-    //  Move rooms
-    //  Blocking calls/game loop
 
 }
 
@@ -51,14 +31,13 @@ void GameView::initScene()
     initPlayer();
     initInventory();
     initMenu();
-
-    // temp
-    //testInitAnimation();
 }
 
 GameView::~GameView()
 {
-
+    // All variables/objects on the heap have been added to the scene.
+    // the scene takes ownership of these objects and calls there destructors
+    // when cleared or when terminated.
 }
 
 
@@ -114,14 +93,11 @@ void GameView::keyPressEvent(QKeyEvent *event)
 void GameView::movePlayer(Direction::Enum direction)
 {
     player->move(direction);
-
-    // temp
-    //testAnimation();
 }
 
 void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
                             QHash<std::pair<int, int>, Tile *> * walls,
-                            QHash<std::pair<int, int>, Tile *> * doors)
+                            QHash<std::pair<int, int>, Tile *> * doors)// TODO: Oliver const?
 {
 
     initScene();
@@ -131,7 +107,7 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
         auto tile = tileLoader.get(i.value()->getId());
         //z value shows previous layers when moving room. Working on fix
 
-        tile->setZValue(Layer::BACKGROUND);  // temp, everything may be added to a 'layer/group' (maybe use enums rather than numbers?): http://stackoverflow.com/questions/18074798/layers-on-qgraphicsview
+        tile->setZValue(Layer::BACKGROUND);
         tile->setGridPos(i.key().first, i.key().second);
         scene.addItem(tile);
     }
@@ -169,13 +145,6 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
     }
 }
 
-void GameView::removeInteractableItem(const std::pair<int, int> & position)
-{
-    auto tile = interactables->value(position);
-    interactables->remove(position);
-    delete tile;
-}
-
 void GameView::setInteractableItemState(const std::pair<int, int> & position, bool activated, int loopCount)
 {
     auto tile = interactables->value(position);
@@ -185,7 +154,7 @@ void GameView::setInteractableItemState(const std::pair<int, int> & position, bo
     }
 }
 
-void GameView::addInventoryItem(int index, TileType::Enum type)
+void GameView::addInventoryItem(int index, TileType::Enum type)// TODO: Oliver const?
 {
     TileLoader tileLoader = TileLoader::getInstance();
     auto tile = tileLoader.get(type);
@@ -200,10 +169,9 @@ void GameView::removeInventoryItem(int index)
 void GameView::setPlayerLocation(int x, int y)
 {
     player->setGridPos(x, y);
-    qDebug() << "setPos signal received";
 }
 
-void GameView::setPlayerHeading(Direction::Enum direction)
+void GameView::setPlayerHeading(Direction::Enum direction)// TODO: Oliver const?
 {
     player->setHeading(direction);
 }
@@ -216,7 +184,7 @@ void GameView::displayMenu(bool visible)
         menu->hide();
 }
 
-void GameView::displayDialog(QString text)
+void GameView::displayDialog(QString text)// TODO: Oliver const?
 {
     GraphicsMenuItem * dialogBox = new GraphicsMenuItem(QSize(100, 40), 2);
     GraphicsText * dialogText = new GraphicsText(text, QSize(100, 40));
@@ -232,49 +200,20 @@ void GameView::removeDialog(GraphicsMenuItem* dialog)
     delete dialog;  // Children are deleted by its destructor
 }
 
-void GameView::addMenuItem(int index, QString text)
+void GameView::addMenuItem(int index, QString text)// TODO: Oliver const?
 {
     auto item = new GraphicsText(text, QSize(40, 10));
     menu->addInventoryItem(index, item);
 }
 
-
-
-
-// temp
-void GameView::testInitAnimation()
+void GameView::displayGameOverMenu()
 {
-    TileLoader tileLoader = TileLoader::getInstance();
-
-    // on/off or opened/closed objects should probably be wrapped in their own classes or at least a StateAnimatedTile
-    testAnimatedTile = tileLoader.get(TileType::CHEST);
-    scene.addItem(testAnimatedTile);
-    testAnimatedTile->setGridPos(4, 2);
-    testAnimatedTile->setZValue(Layer::INTERACTABLE);
-
-    testAnimatedTile2 = tileLoader.get(TileType::SWITCH);
-    scene.addItem(testAnimatedTile2);
-    testAnimatedTile2->setGridPos(7, 2);
-    testAnimatedTile2->setZValue(Layer::INTERACTABLE);
-
-    testAnimatedTile3 = tileLoader.get(TileType::DOOR);
-    scene.addItem(testAnimatedTile3);
-    testAnimatedTile3->setGridPos(7, 6);
-    testAnimatedTile3->setZValue(Layer::INTERACTABLE);
-
-
-//    for (int t = DOOR; t <= ORB_GREY; t++) {
-//        GraphicsTile * tile = tileLoader.get(static_cast<TileType>(t));
-//        scene.addItem(tile);
-//        tile->setGridPos(t, 12);
-//    }
-}
-
-void GameView::testAnimation()
-{
-    static int n = 0;
-    static_cast<AnimatedGraphicsTile*>(testAnimatedTile)->start(n%2 == 0 ? false:true);
-    static_cast<AnimatedGraphicsTile*>(testAnimatedTile2)->start(n%2 == 0 ? false:true);
-    static_cast<AnimatedGraphicsTile*>(testAnimatedTile3)->start(n%2 == 0 ? false:true);
-    n++;
+    GraphicsMenuItem * dialogBox = new GraphicsMenuItem(QSize(200, 80), 2);
+    GraphicsText * dialogText = new GraphicsText("Game Over - Quit", QSize(200, 80));
+    dialogText->setFont(QFont("calibri", 12));
+    dialogBox->setGraphicsLayoutItem(dialogText);
+    dialogBox->setPos(16*2, 16*6);
+    dialogBox->setZValue(Layer::GUI_BACKGROUND);
+    scene.addItem(dialogBox);
+    connect(dialogBox, SIGNAL(itemClickedEvent(GraphicsMenuItem*)), SIGNAL(gameOverMenuClickEvent()));
 }

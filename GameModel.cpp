@@ -65,7 +65,7 @@ void GameModel::generateAllRoomStates(){
     interactableContent.insert(TileType::CHEST, TileType::ORB_GREEN);
     interactableState.insert(TileType::DOOR_SOUTH, false);
     interactableState.insert(TileType::CHEST, false);
-    roomState = new State(std::make_pair(1,1), 10, 6, interactableContent, interactableState);
+    roomState = new State(std::make_pair(1,1), 10, 8, interactableContent, interactableState);
     world->insert(roomState->getRoomLocation(), roomState);
     interactableContent.clear();
 
@@ -97,7 +97,6 @@ void GameModel::generateAllRoomStates(){
     interactableState.insert(TileType::DOOR_SOUTH, false);
     interactableState.insert(TileType::SWITCH, false);
     roomState = new State(std::make_pair(3,0), 10, 6, interactableContent, interactableState);
-//    roomState = new State(std::make_pair(0,0), 12, 12, interactableContent, interactableState);
     world->insert(roomState->getRoomLocation(), roomState);
 
     //Setting end of map
@@ -309,13 +308,18 @@ void GameModel::interact()
             emit setPlayerLocationEvent(getCurrentRoom()->getRows()-2,getCurrentRoom()->getColumns()/2);
             //signal for animation
         }
-        else if ((i->getId() == TileType::DOOR || i->getId() == TileType::GATE) &&
+        else if (i->getId() == TileType::DOOR &&
                  i->getState() == true){
             setRoomLocation(std::make_pair(x+1,y));
             generateNewRoom();
             player->setXY(getCurrentRoom()->getRows() /2,getCurrentRoom()->getColumns()-2);
             direction = (Direction::NORTH);
             emit setPlayerLocationEvent(getCurrentRoom()->getRows() /2,getCurrentRoom()->getColumns()-2);
+            //signal for animation
+        }
+        else if (i->getId() == TileType::GATE &&
+                 i->getState() == true){
+            setRoomLocation(std::make_pair(x+1,y));
             //signal for animation
         }
         else if (i->getId() == TileType::DOOR_SOUTH &&
@@ -374,8 +378,7 @@ void GameModel::interact()
 void GameModel::setRoomLocation(std::pair<int, int> roomLocation)
 {
     if (roomLocation == winCondition){
-        //TODO OLIVER pop up win screen here
-
+        emit displayGameOverMenuEvent();
     }
     else
         this->roomLocation = roomLocation;
@@ -393,6 +396,11 @@ void GameModel::menuClick(int index)
         QApplication::quit();
     emit displayMenuEvent(false);
 
+}
+
+void GameModel::gameOverMenuClick()
+{
+    QApplication::quit();
 }
 
 void GameModel::pauseClick()

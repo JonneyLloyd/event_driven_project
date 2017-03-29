@@ -9,7 +9,7 @@ TileLoader &TileLoader::getInstance()
     return instance;
 }
 
-GraphicsTile * TileLoader::get(TileType::Enum tileType) const
+GraphicsTile * TileLoader::get(const TileType::Enum &tileType) const
 {
     AnimatedGraphicsTile * temp;
     switch(tileType) {
@@ -84,8 +84,7 @@ GraphicsTile * TileLoader::get(TileType::Enum tileType) const
     case TileType::DOOR_WEST:   return new GraphicsTile(textureSheet, 2, 6);
     case TileType::DOOR_SOUTH:   return new GraphicsTile(textureSheet, 2, 6);
 
-    case TileType::FLOOR:       // Default for now, maybe an emty tile if not found?
-
+    case TileType::FLOOR:
     default:                    return new GraphicsTile(textureSheet, 2, 6);
     }
 

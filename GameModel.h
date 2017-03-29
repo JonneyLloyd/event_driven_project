@@ -65,6 +65,7 @@ signals:
     void displayMenuEvent(bool visible);
     void displayDialogEvent(QString text);
     void addMenuItemEvent(int index, QString text);
+    void displayGameOverMenuEvent();
 
 public slots:
     void move(Direction::Enum direction);     // Listens for controller
@@ -74,6 +75,7 @@ public slots:
     void inventoryClick(int index);
     void interact();
     void menuClick(int index);
+    void gameOverMenuClick();
     void pauseClick();
 
 private:
