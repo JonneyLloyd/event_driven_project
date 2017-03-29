@@ -3,7 +3,6 @@
 #include "models/Player.h"
 #include "models/Tile.h"
 
-
 #include <QApplication>
 #include <QDebug>
 
@@ -32,63 +31,69 @@ void GameModel::newGame()
 void GameModel::generateAllRoomStates(){
     QHash<TileType::Enum, TileType::Enum> interactableContent;
     QHash<TileType::Enum, bool> interactableState;
-    interactableContent.insert(TileType::Enum::DOOR, TileType::Enum::ORB_GREEN);
-    interactableContent.insert(TileType::Enum::DOOR_EAST, TileType::Enum::EMPTY);
-    interactableContent.insert(TileType::Enum::CHEST, TileType::Enum::ORB_BLUE);
-    interactableState.insert(TileType::Enum::DOOR, false);
-    interactableState.insert(TileType::Enum::DOOR_EAST, false);
-    interactableState.insert(TileType::Enum::CHEST, false);
+    interactableContent.insert(TileType::DOOR, TileType::ORB_GREEN);
+    interactableContent.insert(TileType::DOOR_EAST, TileType::EMPTY);
+    interactableContent.insert(TileType::CHEST, TileType::ORB_BLUE);
+    interactableState.insert(TileType::DOOR, false);
+    interactableState.insert(TileType::DOOR_EAST, false);
+    interactableState.insert(TileType::CHEST, false);
     roomState = new State(std::make_pair(0,0), 16, 10, interactableContent, interactableState);
     world->insert(roomState->getRoomLocation(), roomState);
 
     interactableContent.clear();
-    interactableContent.insert(TileType::Enum::DOOR, TileType::Enum::EMPTY);
-    interactableContent.insert(TileType::Enum::DOOR_WEST, TileType::Enum::EMPTY);
-    interactableState.insert(TileType::Enum::DOOR, false);
-    interactableState.insert(TileType::Enum::DOOR_WEST, false);
+    interactableContent.insert(TileType::DOOR, TileType::EMPTY);
+    interactableContent.insert(TileType::DOOR_WEST, TileType::EMPTY);
+    interactableState.insert(TileType::DOOR, false);
+    interactableState.insert(TileType::DOOR_WEST, false);
     roomState = new State(std::make_pair(0,1), 14, 10, interactableContent, interactableState);
     world->insert(roomState->getRoomLocation(), roomState);
 
     interactableContent.clear();
-    interactableContent.insert(TileType::Enum::DOOR, TileType::Enum::ORB_BLUE);
-    interactableContent.insert(TileType::Enum::DOOR_SOUTH, TileType::Enum::EMPTY);
-    interactableState.insert(TileType::Enum::DOOR, false);
-    interactableState.insert(TileType::Enum::DOOR_SOUTH, false);
+    interactableContent.insert(TileType::DOOR, TileType::ORB_BLUE);
+    interactableContent.insert(TileType::DOOR_SOUTH, TileType::EMPTY);
+    interactableState.insert(TileType::DOOR, false);
+    interactableState.insert(TileType::DOOR_SOUTH, false);
     roomState = new State(std::make_pair(1,0), 16, 10, interactableContent, interactableState);
     world->insert(roomState->getRoomLocation(), roomState);
 
     interactableContent.clear();
-    interactableContent.insert(TileType::Enum::DOOR_SOUTH, TileType::Enum::EMPTY);
-    interactableContent.insert(TileType::Enum::CHEST, TileType::Enum::ORB_GREEN);
-    interactableState.insert(TileType::Enum::DOOR_SOUTH, false);
-    interactableState.insert(TileType::Enum::CHEST, false);
+    interactableContent.insert(TileType::DOOR_SOUTH, TileType::EMPTY);
+    interactableContent.insert(TileType::CHEST, TileType::ORB_GREEN);
+    interactableState.insert(TileType::DOOR_SOUTH, false);
+    interactableState.insert(TileType::CHEST, false);
     roomState = new State(std::make_pair(1,1), 10, 6, interactableContent, interactableState);
     world->insert(roomState->getRoomLocation(), roomState);
 
     interactableContent.clear();
-    interactableContent.insert(TileType::Enum::DOOR, TileType::Enum::ORB_PINK);
-    interactableContent.insert(TileType::Enum::DOOR_SOUTH, TileType::Enum::EMPTY);
-    interactableContent.insert(TileType::Enum::DOOR_EAST, TileType::Enum::EMPTY);
-    interactableState.insert(TileType::Enum::DOOR, false);
-    interactableState.insert(TileType::Enum::DOOR_SOUTH, false);
-    interactableState.insert(TileType::Enum::DOOR_EAST, false);
+    interactableContent.insert(TileType::DOOR, TileType::ORB_PINK);
+    interactableContent.insert(TileType::DOOR_SOUTH, TileType::EMPTY);
+    interactableContent.insert(TileType::DOOR_EAST, TileType::EMPTY);
+    interactableState.insert(TileType::DOOR, false);
+    interactableState.insert(TileType::DOOR_SOUTH, false);
+    interactableState.insert(TileType::DOOR_EAST, false);
     roomState = new State(std::make_pair(2,0), 12, 8, interactableContent, interactableState);
     world->insert(roomState->getRoomLocation(), roomState);
 
     interactableContent.clear();
-    interactableContent.insert(TileType::Enum::DOOR_WEST, TileType::Enum::EMPTY);
-    interactableContent.insert(TileType::Enum::DOOR_EAST, TileType::Enum::EMPTY);
-    interactableState.insert(TileType::Enum::DOOR_WEST, false);
-    interactableState.insert(TileType::Enum::DOOR_EAST, false);
-    roomState = new State(std::make_pair(2,1), 14, 6, interactableContent, interactableState);
+
+    interactableContent.insert(TileType::DOOR_WEST, TileType::EMPTY);
+    interactableContent.insert(TileType::CHEST, TileType::ORB_PINK);
+    interactableState.insert(TileType::DOOR_WEST, false);
+    interactableState.insert(TileType::CHEST, false);
+    roomState = new State(std::make_pair(2,1), 8, 6, interactableContent, interactableState);
     world->insert(roomState->getRoomLocation(), roomState);
 
     interactableContent.clear();
-    interactableContent.insert(TileType::Enum::DOOR_WEST, TileType::Enum::EMPTY);
-    interactableContent.insert(TileType::Enum::CHEST, TileType::Enum::ORB_PINK);
-    interactableState.insert(TileType::Enum::DOOR_WEST, false);
-    interactableState.insert(TileType::Enum::CHEST, false);
-    roomState = new State(std::make_pair(2,1), 8, 6, interactableContent, interactableState);
+    //TODO OLIVER change door enum to gate
+    interactableContent.insert(TileType::DOOR, TileType::SWITCH);
+    interactableContent.insert(TileType::DOOR_SOUTH, TileType::EMPTY);
+    //TODO OLIVER change door enum to gate
+    interactableContent.insert(TileType::SWITCH, TileType::DOOR);
+    //TODO OLIVER change door enum to gate
+    interactableState.insert(TileType::DOOR, false);
+    interactableState.insert(TileType::DOOR_SOUTH, false);
+    interactableState.insert(TileType::SWITCH, false);
+    roomState = new State(std::make_pair(3,0), 10, 6, interactableContent, interactableState);
     world->insert(roomState->getRoomLocation(), roomState);
 }
 
@@ -103,7 +108,8 @@ void GameModel::generateNewRoom(std::pair<int, int> roomLocation)
     currentRoom = new GenerateRoom(1, roomState->getRows(),roomState->getCols());
     currentRoom->generateFloor();
     currentRoom->generateRoom();
-    currentRoom->generateInteractableLayer(roomState->getInteractableContent());
+    currentRoom->generateInteractableLayer(roomState->getInteractableContent(),
+                                           roomState->getInteractableState());
     player = new Player(10,4);
     emit displayFloorEvent(currentRoom->getFloor(),
                            currentRoom->getWalls(), currentRoom->getInteractables());
@@ -317,6 +323,20 @@ void GameModel::interact()
             world->value(getRoomLocation())->changeInteractableContent(((InteractableTile*)(i.value()))->getId(),true);
             qDebug() << "You found an odd shaped key in the chest...";
         }
+        else if (((InteractableTile*)(i.value()))->getId() == TileType::SWITCH){
+            //TODO OLIVER use dialor box here
+            qDebug() << "You switched the lever...";
+            //std::pair<int, int> doorCoords = interactables->key(((InteractableTile*)(i.value()))->getKey());
+            std::pair<int, int> doorCoords = currentRoom->getTileCoords(((InteractableTile*)(i.value()))->getKey());
+            QHash<std::pair<int, int>, Tile*>::iterator temp;
+            temp = interactables->find(doorCoords);
+            //TODO OLIVER use dialor box here
+            qDebug() << ((InteractableTile*)(temp.value()))->interact(TileType::SWITCH);
+
+            //TODO OLIVER animations for gate and switch
+            //no need to save state as this will be win condition
+        }
+
         if (direction != Direction::UNKNOWN){
             emit setPlayerHeadingEvent(direction);
         }
