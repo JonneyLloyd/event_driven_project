@@ -31,6 +31,7 @@ void GameModel::newGame()
 void GameModel::generateAllRoomStates(){
     QHash<TileType::Enum, TileType::Enum> interactableContent;
     QHash<TileType::Enum, bool> interactableState;
+
     interactableContent.insert(TileType::DOOR, TileType::ORB_GREEN);
     interactableContent.insert(TileType::DOOR_EAST, TileType::EMPTY);
     interactableContent.insert(TileType::CHEST, TileType::ORB_BLUE);
@@ -41,14 +42,15 @@ void GameModel::generateAllRoomStates(){
     world->insert(roomState->getRoomLocation(), roomState);
 
     interactableContent.clear();
+
     interactableContent.insert(TileType::DOOR, TileType::EMPTY);
     interactableContent.insert(TileType::DOOR_WEST, TileType::EMPTY);
     interactableState.insert(TileType::DOOR, false);
     interactableState.insert(TileType::DOOR_WEST, false);
     roomState = new State(std::make_pair(0,1), 14, 10, interactableContent, interactableState);
     world->insert(roomState->getRoomLocation(), roomState);
-
     interactableContent.clear();
+
     interactableContent.insert(TileType::DOOR, TileType::ORB_BLUE);
     interactableContent.insert(TileType::DOOR_SOUTH, TileType::EMPTY);
     interactableState.insert(TileType::DOOR, false);
@@ -57,6 +59,7 @@ void GameModel::generateAllRoomStates(){
     world->insert(roomState->getRoomLocation(), roomState);
 
     interactableContent.clear();
+
     interactableContent.insert(TileType::DOOR_SOUTH, TileType::EMPTY);
     interactableContent.insert(TileType::CHEST, TileType::ORB_GREEN);
     interactableState.insert(TileType::DOOR_SOUTH, false);
@@ -65,6 +68,7 @@ void GameModel::generateAllRoomStates(){
     world->insert(roomState->getRoomLocation(), roomState);
 
     interactableContent.clear();
+
     interactableContent.insert(TileType::DOOR, TileType::ORB_PINK);
     interactableContent.insert(TileType::DOOR_SOUTH, TileType::EMPTY);
     interactableContent.insert(TileType::DOOR_EAST, TileType::EMPTY);
@@ -75,6 +79,7 @@ void GameModel::generateAllRoomStates(){
     world->insert(roomState->getRoomLocation(), roomState);
 
     interactableContent.clear();
+
 
     interactableContent.insert(TileType::DOOR_WEST, TileType::EMPTY);
     interactableContent.insert(TileType::CHEST, TileType::ORB_PINK);
@@ -110,6 +115,7 @@ void GameModel::generateNewRoom(std::pair<int, int> roomLocation)
     currentRoom->generateRoom();
     currentRoom->generateInteractableLayer(roomState->getInteractableContent(),
                                            roomState->getInteractableState());
+
     player = new Player(10,4);
     emit displayFloorEvent(currentRoom->getFloor(),
                            currentRoom->getWalls(), currentRoom->getInteractables());
@@ -323,6 +329,7 @@ void GameModel::interact()
             world->value(getRoomLocation())->changeInteractableContent(((InteractableTile*)(i.value()))->getId(),true);
             qDebug() << "You found an odd shaped key in the chest...";
         }
+
         else if (((InteractableTile*)(i.value()))->getId() == TileType::SWITCH){
             //TODO OLIVER use dialor box here
             qDebug() << "You switched the lever...";

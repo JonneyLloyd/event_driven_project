@@ -143,6 +143,7 @@ void GenerateRoom::generateDoors()
     interactables->insert(std::make_pair(getRows()/2,getColumns()-1), doorTile); //south door
 }
 
+
 void GenerateRoom::generateInteractableLayer(QHash<TileType::Enum, TileType::Enum> interactableList,
                                              QHash<TileType::Enum, bool> interactableState)
 {
@@ -178,6 +179,7 @@ void GenerateRoom::generateInteractableLayer(QHash<TileType::Enum, TileType::Enu
                 row = getRows()/2;
                 col = getColumns()-1;
                 break;
+
              case TileType::CHEST :
                 row = getRows()/2;
                 col = getColumns()/2;
@@ -220,7 +222,5 @@ std::pair<int, int> GenerateRoom::getTileCoords(TileType::Enum tileName)
             return i.key();
         }
     return std::make_pair(0,0);
-
 }
-
 

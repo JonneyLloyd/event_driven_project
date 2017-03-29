@@ -20,6 +20,7 @@ void State::setInteractableContent(QHash<TileType::Enum, TileType::Enum> interac
 QHash<TileType::Enum, TileType::Enum> State::getInteractableContent()
 {
     return this->interactableContent;
+
 }
 
 QHash<TileType::Enum, bool> State::getInteractableState()
