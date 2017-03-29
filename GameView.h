@@ -72,14 +72,19 @@ public slots:
     void displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
                       QHash<std::pair<int, int>, Tile *> * walls,
                       QHash<std::pair<int, int>, Tile *> * doors);
-    void removeInteractableItem(const std::pair<int, int> & key);
+    void removeInteractableItem(const std::pair<int, int> & position); // TODO
+    void setInteractableItemState(const std::pair<int, int> & position, bool activated, int loopCount); // TODO
 
     void addInventoryItem(int index, TileType::Enum type);
     void removeInventoryItem(int index);
     void setPlayerLocation(int x, int y);
     void setPlayerHeading(Direction::Enum direction);
     void displayMenu(bool visible);
+    void displayDialog(QString text); // TODO
     void addMenuItem(int index, QString text);
+
+private slots:
+    void removeDialog(GraphicsMenuItem *dialog);
 
 };
 
