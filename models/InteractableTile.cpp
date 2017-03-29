@@ -71,13 +71,18 @@ QString InteractableTile::interact()
 
 QString InteractableTile::interact(TileType::Enum item)
 {
+    QString result = "";
     if (this->key == item)
     {
-        this->setKey(TileType::EMPTY);
-        this->state = true;
-        return "The key unlocked it!";
+        this->state = !state;
+        if(!state)
+            result = "That closed it";
+        else
+            result = "That opened it";
     }
-    return "That didnt work!";
+    else
+        result = "That didnt work!";
+    return result;
 }
 
 

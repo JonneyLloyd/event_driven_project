@@ -15,6 +15,7 @@ public:
           QHash<TileType::Enum, bool> interactableState);
     void setInteractableContent(QHash<TileType::Enum, TileType::Enum> interactableContent);
     QHash<TileType::Enum, TileType::Enum> getInteractableContent();
+    QHash<TileType::Enum, bool> getInteractableState();
     void setRoomLocation(std::pair<int, int> roomLocation);
     std::pair<int, int> getRoomLocation();
     void setRows(int rows);

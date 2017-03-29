@@ -143,7 +143,9 @@ void GenerateRoom::generateDoors()
     interactables->insert(std::make_pair(getRows()/2,getColumns()-1), doorTile); //south door
 }
 
-void GenerateRoom::generateInteractableLayer(QHash<TileType::Enum, TileType::Enum> interactableList)
+
+void GenerateRoom::generateInteractableLayer(QHash<TileType::Enum, TileType::Enum> interactableList,
+                                             QHash<TileType::Enum, bool> interactableState)
 {
     interactables = new QHash<std::pair<int, int>, Tile*> ;
     bool traversable = false, state = false;
@@ -155,32 +157,39 @@ void GenerateRoom::generateInteractableLayer(QHash<TileType::Enum, TileType::Enu
     for (i = interactableList.begin(); i != interactableList.end(); ++i){
         row = 0;
         col = 0;
-        if(i.value() == TileType::Enum::EMPTY)
+        state = interactableState.find(i.key()).value();
+        if(i.value() == TileType::EMPTY)
             description = "An unlocked door...";
         else
             description = "This door has a strange key hole!";
         switch (i.key()){
-            case TileType::Enum::DOOR :
+            case TileType::DOOR :
                 row = getRows()/2;
                 col = 0;
                 break;
-            case TileType::Enum::DOOR_WEST :
+            case TileType::DOOR_WEST :
                 row = 0;
                 col = getColumns()/2;
                 break;
-            case TileType::Enum::DOOR_EAST :
+            case TileType::DOOR_EAST :
                 row = getRows()-1;
                 col = getColumns()/2;
                 break;
-            case TileType::Enum::DOOR_SOUTH :
+            case TileType::DOOR_SOUTH :
                 row = getRows()/2;
                 col = getColumns()-1;
                 break;
-             case TileType::Enum::CHEST :
+
+             case TileType::CHEST :
                 row = getRows()/2;
                 col = getColumns()/2;
                 description = "An unlocked chest...";
                 break;
+            case TileType::SWITCH :
+               row = getRows()/3;
+               col = getColumns()/3;
+               description = "A switchable lever...";
+               break;
 
             default: ; break;
         }
@@ -205,4 +214,13 @@ QHash<std::pair<int, int>, Tile *> *GenerateRoom::getInteractables()
     return this->interactables;
 }
 
+std::pair<int, int> GenerateRoom::getTileCoords(TileType::Enum tileName)
+{
+    QHash<std::pair<int, int>, Tile*>::iterator i;
+    for (i = interactables->begin(); i != interactables->end(); ++i){
+        if(i.value()->getId() == tileName)
+            return i.key();
+        }
+    return std::make_pair(0,0);
+}
 
