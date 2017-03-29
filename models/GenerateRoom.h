@@ -11,27 +11,23 @@ public:
     /*
      * Constructor
      */
-    GenerateRoom(int preset, int rows = 16, int columns = 16);
+    GenerateRoom(int rows = 16, int columns = 16);
     ~GenerateRoom();
-    void setPreset(int preset);
     void setRows(int rows);
     void setColumns(int columns);
-
-    int getPreset();
-    int getRows();
-    int getColumns();
+    int getRows()  const;
+    int getColumns()  const;
     void generateRoom();
     void generateFloor();
     void generateDoors();
     void generateInteractableLayer(QHash<TileType::Enum, TileType::Enum> interactableList,
                                    QHash<TileType::Enum, bool> interactableState);
-    QHash<std::pair<int, int>, Tile*> * getFloor();
-    QHash<std::pair<int, int>, Tile*> * getWalls();
-    QHash<std::pair<int, int>, Tile*> * getInteractables();
-    std::pair<int, int> getTileCoords(TileType::Enum tileName);
+    QHash<std::pair<int, int>, Tile*> * getFloor()  const;
+    QHash<std::pair<int, int>, Tile*> * getWalls()  const;
+    QHash<std::pair<int, int>, Tile*> * getInteractables()  const;
+    std::pair<int, int> getTileCoords(TileType::Enum tileName)  const;
 
 private:
-    int preset;
     int rows;
     int columns;
     QHash<std::pair<int, int>, Tile*>  * floor;

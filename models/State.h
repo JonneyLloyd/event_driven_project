@@ -14,14 +14,14 @@ public:
           QHash<TileType::Enum, TileType::Enum> interactableContent,
           QHash<TileType::Enum, bool> interactableState);
     void setInteractableContent(QHash<TileType::Enum, TileType::Enum> interactableContent);
-    QHash<TileType::Enum, TileType::Enum> getInteractableContent();
-    QHash<TileType::Enum, bool> getInteractableState();
+    QHash<TileType::Enum, TileType::Enum> getInteractableContent()  const;
+    QHash<TileType::Enum, bool> getInteractableState()  const;
     void setRoomLocation(std::pair<int, int> roomLocation);
-    std::pair<int, int> getRoomLocation();
+    std::pair<int, int> getRoomLocation()  const;
     void setRows(int rows);
-    int getRows();
+    int getRows()  const;
     void setCols(int cols);
-    int getCols();
+    int getCols()  const;
     void changeInteractableContent(TileType::Enum interactable, TileType::Enum newKey);
     void changeInteractableContent(TileType::Enum interactable, bool newState);
 

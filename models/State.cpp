@@ -17,13 +17,13 @@ void State::setInteractableContent(QHash<TileType::Enum, TileType::Enum> interac
     this->interactableContent = interactableContent;
 }
 
-QHash<TileType::Enum, TileType::Enum> State::getInteractableContent()
+QHash<TileType::Enum, TileType::Enum> State::getInteractableContent()  const
 {
     return this->interactableContent;
 
 }
 
-QHash<TileType::Enum, bool> State::getInteractableState()
+QHash<TileType::Enum, bool> State::getInteractableState()  const
 {
     return this->interactableState;
 }
@@ -33,7 +33,7 @@ void State::setRoomLocation(std::pair<int, int> roomLocation)
     this->roomLocation = roomLocation;
 }
 
-std::pair<int, int> State::getRoomLocation()
+std::pair<int, int> State::getRoomLocation()  const
 {
     return this->roomLocation;
 }
@@ -43,7 +43,7 @@ void State::setRows(int rows)
     this->rows = rows;
 }
 
-int State::getRows()
+int State::getRows()  const
 {
     return this->rows;
 }
@@ -53,7 +53,7 @@ void State::setCols(int cols)
     this->cols = cols;
 }
 
-int State::getCols()
+int State::getCols()  const
 {
     return this->cols;
 }

@@ -5,11 +5,8 @@
 
 
 
-GenerateRoom::GenerateRoom(int preset, int rows, int columns)
+GenerateRoom::GenerateRoom(int rows, int columns)
 {
-    if (preset <=0)
-        preset = 1;
-    this->preset = preset;
     this->rows = rows;
     this->columns = columns;
 }
@@ -17,13 +14,6 @@ GenerateRoom::GenerateRoom(int preset, int rows, int columns)
 GenerateRoom::~GenerateRoom()
 {
 }
-
-
-void GenerateRoom::setPreset(int preset)
-{
-    this->preset=preset;
-}
-
 
 void GenerateRoom::setRows(int rows)
 {
@@ -37,24 +27,18 @@ void GenerateRoom::setColumns(int columns)
 }
 
 
-int GenerateRoom::getPreset()
-{
-    return this->preset;
-}
-
-
-int GenerateRoom::getRows()
+int GenerateRoom::getRows()  const
 {
     return this->rows;
 }
 
 
-int GenerateRoom::getColumns()
+int GenerateRoom::getColumns()  const
 {
     return this->columns;
 }
 
-
+//generate room using relative values so as to work with any dimensions
 void GenerateRoom::generateRoom()
 {
     walls = new QHash<std::pair<int, int>, Tile*> ;
@@ -110,7 +94,6 @@ void GenerateRoom::generateRoom()
     }
 }
 
-
 void GenerateRoom::generateFloor()
 {
     TileType::Enum id = TileType::FLOOR;
@@ -131,7 +114,6 @@ void GenerateRoom::generateDoors()
     InteractableTile * doorTile = new InteractableTile("This is a door", traversable, id, true, TileType::ORB_BLUE);
     interactables = new QHash<std::pair<int, int>, Tile*> ;
     interactables->insert(std::make_pair(getRows()/2,0), doorTile); //north door
-
     id = TileType::DOOR_WEST;
     doorTile = new InteractableTile("This is a door", traversable, id);
     interactables->insert(std::make_pair(0,getColumns()/2), doorTile); //west door
@@ -143,13 +125,12 @@ void GenerateRoom::generateDoors()
     interactables->insert(std::make_pair(getRows()/2,getColumns()-1), doorTile); //south door
 }
 
-
 void GenerateRoom::generateInteractableLayer(QHash<TileType::Enum, TileType::Enum> interactableList,
                                              QHash<TileType::Enum, bool> interactableState)
 {
     interactables = new QHash<std::pair<int, int>, Tile*> ;
     bool traversable = false, state = false;
-    int row, col;
+    int row = 0, col = 0;
     InteractableTile * doorTile;
     QString description;
 
@@ -195,26 +176,25 @@ void GenerateRoom::generateInteractableLayer(QHash<TileType::Enum, TileType::Enu
         }
         doorTile = new InteractableTile(description, traversable, i.key(), state, i.value());
         interactables->insert(std::make_pair(row,col), doorTile);
-
     }
 }
 
-QHash<std::pair<int, int>, Tile *> * GenerateRoom::getFloor()
+QHash<std::pair<int, int>, Tile *> * GenerateRoom::getFloor()  const
 {
     return this->floor;
 }
 
-QHash<std::pair<int, int>, Tile *> * GenerateRoom::getWalls()
+QHash<std::pair<int, int>, Tile *> * GenerateRoom::getWalls()  const
 {
     return this->walls;
 }
 
-QHash<std::pair<int, int>, Tile *> *GenerateRoom::getInteractables()
+QHash<std::pair<int, int>, Tile *> *GenerateRoom::getInteractables()  const
 {
     return this->interactables;
 }
 
-std::pair<int, int> GenerateRoom::getTileCoords(TileType::Enum tileName)
+std::pair<int, int> GenerateRoom::getTileCoords(TileType::Enum tileName)  const
 {
     QHash<std::pair<int, int>, Tile*>::iterator i;
     for (i = interactables->begin(); i != interactables->end(); ++i){

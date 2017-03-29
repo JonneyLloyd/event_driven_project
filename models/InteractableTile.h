@@ -11,12 +11,12 @@ public:
     InteractableTile(QString description, bool traversable, TileType::Enum id, bool state);
     InteractableTile(QString description, bool traversable, TileType::Enum id);
     ~InteractableTile();
-    QString getDescription();
+    QString getDescription()  const;
     void setDescription(QString value);
     void setState(bool state);
-    bool getState();
+    bool getState()  const;
     void setKey(TileType::Enum value);
-    TileType::Enum getKey();
+    TileType::Enum getKey()  const;
     QString interact();
     QString interact(TileType::Enum item);
 
