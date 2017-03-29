@@ -11,10 +11,12 @@ TileLoader &TileLoader::getInstance()
 
 GraphicsTile * TileLoader::get(TileType::Enum tileType) const
 {
+    AnimatedGraphicsTile * temp;
     switch(tileType) {
     case TileType::PLAYER:  return new PlayerSprite(spriteSheet);
 
     case TileType::DOOR:    return new AnimatedGraphicsTile(textureSheet, 7, 4, 4);
+    case TileType::GATE:    return new AnimatedGraphicsTile(textureSheet, 6, 0, 5);
     case TileType::CHEST:   return new AnimatedGraphicsTile(textureSheet, 7, 8, 6);
     case TileType::SWITCH:  return new AnimatedGraphicsTile(textureSheet, 5, 0, 7);
 
@@ -58,6 +60,25 @@ GraphicsTile * TileLoader::get(TileType::Enum tileType) const
     case TileType::ORB_GREEN:   return new GraphicsTile(textureSheet, 6, 21);
     case TileType::ORB_PINK:    return new GraphicsTile(textureSheet, 6, 22);
     case TileType::ORB_GREY:    return new GraphicsTile(textureSheet, 6, 23);
+
+    case TileType::NPC_BLUE:    return new GraphicsTile(textureSheet, 7, 19);
+    case TileType::NPC_ORANGE:  return new GraphicsTile(textureSheet, 7, 20);
+    case TileType::NPC_GREEN:   return new GraphicsTile(textureSheet, 7, 21);
+    case TileType::NPC_PINK:    return new GraphicsTile(textureSheet, 7, 22);
+    case TileType::NPC_GREY:    return new GraphicsTile(textureSheet, 7, 23);
+
+    case TileType::LAMP_BLUE:    temp = new AnimatedGraphicsTile(textureSheet, 6, 8, 4);
+                                 temp->setLoopCount(0);
+                                 temp->start();
+                                 return temp;
+    case TileType::LAMP_ORANGE:  temp = new AnimatedGraphicsTile(textureSheet, 6, 13, 3);
+                                 temp->setLoopCount(0);
+                                 temp->start();
+                                 return temp;
+    case TileType::LAMP_GREEN:   temp = new AnimatedGraphicsTile(textureSheet, 6, 17, 3);
+                                 temp->setLoopCount(0);
+                                 temp->start();
+                                 return temp;
 
     case TileType::DOOR_EAST:   return new GraphicsTile(textureSheet, 2, 6);
     case TileType::DOOR_WEST:   return new GraphicsTile(textureSheet, 2, 6);

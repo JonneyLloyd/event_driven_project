@@ -9,6 +9,7 @@ GraphicsText::GraphicsText(const QString &text, QSize size, QGraphicsItem *paren
     setGraphicsItem(this);
     setDefaultTextColor(QColor(200,60,78));
     setFont(QFont("calibri", 5));
+    setTextWidth(size.width());
 }
 
 QRectF GraphicsText::boundingRect() const

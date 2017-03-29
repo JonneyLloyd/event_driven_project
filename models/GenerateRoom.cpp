@@ -148,6 +148,11 @@ void GenerateRoom::generateInteractableLayer(QHash<TileType::Enum, TileType::Enu
                 row = getRows()/2;
                 col = 0;
                 break;
+            case TileType::GATE :
+                row = getRows()/2;
+                col = 0;
+                description = "A heavy iron gate";
+                break;
             case TileType::DOOR_WEST :
                 row = 0;
                 col = getColumns()/2;
@@ -171,8 +176,28 @@ void GenerateRoom::generateInteractableLayer(QHash<TileType::Enum, TileType::Enu
                col = getColumns()/3;
                description = "A switchable lever...";
                break;
+            case TileType::Enum::NPC_GREEN :
+               row = getRows()/2;
+               col = getColumns()/2;
+               description = "Want to be friends?\n\nFriends can touch your private parts...";
+               break;
+            case TileType::Enum::LAMP_BLUE :
+                row = getRows()/2 + 1;
+                col = 1;
+                description = "What a nice light!";
+                break;
+            case TileType::Enum::LAMP_ORANGE :
+                row = getRows()/2 - 1;
+                col = 1;
+                description = "Cool!";
+                break;
+            case TileType::Enum::LAMP_GREEN :
+               row = getRows()/4;
+               col = getColumns()/4;
+               description = "What a nice light!";
+               break;
 
-            default: ; break;
+            default: break;
         }
         doorTile = new InteractableTile(description, traversable, i.key(), state, i.value());
         interactables->insert(std::make_pair(row,col), doorTile);
