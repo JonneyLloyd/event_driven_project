@@ -165,7 +165,7 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
         tile->setZValue(Layer::INTERACTABLE);
         tile->setGridPos(i.key().first, i.key().second);
         scene.addItem(tile);
-       // interactables->insert(std::make_pair(i.key().first, i.key().second), tile);
+        interactables->insert(std::make_pair(i.key().first, i.key().second), tile);
     }
 }
 

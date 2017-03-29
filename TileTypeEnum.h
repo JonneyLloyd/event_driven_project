@@ -2,7 +2,7 @@
 #define TILETYPE_H
 
 namespace TileType {
-    enum Enum     { PLAYER, DOOR, CHEST, SWITCH,
+    enum Enum     { PLAYER, DOOR, GATE, CHEST, SWITCH,
                     WALL_N_L,
                     WALL_N_U,
                     WALL_E_U,
@@ -36,7 +36,10 @@ namespace TileType {
 
                     PILLAR_L, PILLAR_U,
                     CRATE,
-                    ORB_BLUE, ORB_ORANGE, ORB_GREEN, ORB_PINK, ORB_GREY, FLOOR,
+                    ORB_BLUE, ORB_ORANGE, ORB_GREEN, ORB_PINK, ORB_GREY,
+                    NPC_BLUE, NPC_ORANGE, NPC_GREEN, NPC_PINK, NPC_GREY,
+                    LAMP_BLUE, LAMP_ORANGE, LAMP_GREEN,
+                    FLOOR,
                     DOOR_WEST, DOOR_EAST, DOOR_SOUTH, EMPTY
 
                   };

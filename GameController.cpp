@@ -16,6 +16,8 @@ GameController::GameController(GameModel *gameModel, GameView *gameView, QObject
                                         QHash<std::pair<int, int>, Tile *>*,
                                         QHash<std::pair<int, int>, Tile *>*)));
 
+    connect(gameModel, SIGNAL(setInteractableItemState(std::pair<int,int>,bool,int)), gameView, SLOT(setInteractableItemState(std::pair<int,int>,bool,int)));
+
     connect(gameView, SIGNAL(inventoryClickEvent(int)), gameModel, SLOT(inventoryClick(int)));
     connect(gameModel, SIGNAL(addInventoryItemEvent(int,TileType::Enum)), gameView, SLOT(addInventoryItem(int,TileType::Enum)));
     connect(gameModel, SIGNAL(removeInventoryItemEvent(int)), gameView, SLOT(removeInventoryItem(int)));
@@ -27,6 +29,9 @@ GameController::GameController(GameModel *gameModel, GameView *gameView, QObject
     connect(gameView, SIGNAL(menuClickEvent(int)), gameModel, SLOT(menuClick(int)));
     connect(gameModel, SIGNAL(displayMenuEvent(bool)), gameView, SLOT(displayMenu(bool)));
     connect(gameModel, SIGNAL(addMenuItemEvent(int, QString)), gameView, SLOT(addMenuItem(int, QString)));
+
+    connect(gameModel, SIGNAL(displayDialogEvent(QString)), gameView, SLOT(displayDialog(QString)));
+
     connect(this, SIGNAL(generateNewRoom()), gameModel, SLOT(generateNewRoom()));
     emit generateNewRoom();
 }

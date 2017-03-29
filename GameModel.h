@@ -57,11 +57,13 @@ signals:
     void displayFloorEvent(QHash<std::pair<int, int>, Tile *> * floor,
                            QHash<std::pair<int, int>, Tile *> * walls,
                            QHash<std::pair<int, int>, Tile *> * doors);
+    void setInteractableItemState(const std::pair<int, int> & position, bool activated, int loopCount);
     void addInventoryItemEvent(int index, TileType::Enum type);
     void removeInventoryItemEvent(int index);
     void setPlayerLocationEvent(int x, int y);
     void setPlayerHeadingEvent(Direction::Enum);
     void displayMenuEvent(bool visible);
+    void displayDialogEvent(QString text);
     void addMenuItemEvent(int index, QString text);
 
 public slots:

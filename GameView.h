@@ -80,7 +80,7 @@ public slots:
     void setPlayerLocation(int x, int y);
     void setPlayerHeading(Direction::Enum direction);
     void displayMenu(bool visible);
-    void displayDialog(QString text); // TODO
+    void displayDialog(QString text);
     void addMenuItem(int index, QString text);
 
 private slots:
