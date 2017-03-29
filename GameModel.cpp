@@ -97,6 +97,7 @@ void GameModel::generateAllRoomStates(){
     interactableState.insert(TileType::DOOR_SOUTH, false);
     interactableState.insert(TileType::SWITCH, false);
     roomState = new State(std::make_pair(3,0), 10, 6, interactableContent, interactableState);
+//    roomState = new State(std::make_pair(0,0), 12, 12, interactableContent, interactableState);
     world->insert(roomState->getRoomLocation(), roomState);
 
     //Setting end of map
@@ -130,11 +131,11 @@ void GameModel::generateNewRoom(std::pair<int, int> roomLocation)
     for (i = interactables->begin(); i != interactables->end(); ++i) {
         InteractableTile * tile = (InteractableTile*) i.value();
         bool state = tile->getState();
-//        if (tile->getKey() == TileType::EMPTY)  // TODO check
         if (state)  // TODO check
             emit setInteractableItemState(i.key(), true, 1);
     }
 
+    // TODO tidy
     emit addMenuItemEvent(0, QString("Resume"));
     emit addMenuItemEvent(1, QString("Options"));
     emit addMenuItemEvent(2, QString("Quit"));
@@ -198,12 +199,11 @@ void GameModel::movePlayer(Direction::Enum direction)
         coordinates = std::make_pair (player->getX(), player->getY()+1);
         break;
 
-        default:            qDebug() << "NO MOVEMENT"; return;
+        default: return;
     }
 
     //query player pos and qHash to check if move is valid
     i = all->find(coordinates);
-    qDebug() << "key "<< i.key() << "Traversable " << i.value()->getTraversable();
     if (i.value()->getTraversable() == true){
         emit movePlayerEvent(direction);
         player->setXY(coordinates.first, coordinates.second);
@@ -249,6 +249,7 @@ void GameModel::inventoryClick(int index)
             emit displayDialogEvent(msg);
             world->value(getRoomLocation())->changeInteractableContent(i->getId(),TileType::EMPTY);
             world->value(getRoomLocation())->changeInteractableContent(i->getId(),true);
+            emit setInteractableItemState(coordinates, i->getState(), 1);
             remove(inventory,index);
             emit removeInventoryItemEvent(index);
         }
@@ -308,7 +309,7 @@ void GameModel::interact()
             emit setPlayerLocationEvent(getCurrentRoom()->getRows()-2,getCurrentRoom()->getColumns()/2);
             //signal for animation
         }
-        else if (i->getId() == TileType::DOOR &&
+        else if ((i->getId() == TileType::DOOR || i->getId() == TileType::GATE) &&
                  i->getState() == true){
             setRoomLocation(std::make_pair(x+1,y));
             generateNewRoom();
@@ -327,7 +328,7 @@ void GameModel::interact()
             //signal for animation
         }
         else {
-            QString msg = i->interact();
+            QString msg = i->getDescription();
             if (i->getId() == TileType::CHEST &&
                      i->getKey() != TileType::EMPTY){
                 inventory.push_back(i->getKey());
@@ -337,7 +338,6 @@ void GameModel::interact()
                 world->value(getRoomLocation())->changeInteractableContent(i->getId(),true);
                 msg = QString("You found an odd shaped key in the chest...");  // TODO toggle msg when state changes (in interactable code?)
                 emit setInteractableItemState(coordinates, true, 1);
-                // TODO set door animation
             }
             else if (i->getId() == TileType::SWITCH){
                 msg = QString("You switched the lever...");
@@ -350,6 +350,15 @@ void GameModel::interact()
 
                 emit setInteractableItemState(coordinates, i->getState(), 1);  // switch
                 emit setInteractableItemState(doorCoords, t->getState(), 1);
+            }
+            else {
+                msg = i->interact();
+                if (i->getId() == TileType::DOOR) {
+                    if (i->getState())
+                        emit setInteractableItemState(coordinates, i->getState(), 1);
+                    world->value(getRoomLocation())->changeInteractableContent(i->getId(),TileType::DOOR);
+                    world->value(getRoomLocation())->changeInteractableContent(i->getId(),true);
+                }
             }
 
             emit displayDialogEvent(msg);

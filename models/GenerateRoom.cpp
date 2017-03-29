@@ -145,9 +145,13 @@ void GenerateRoom::generateInteractableLayer(QHash<TileType::Enum, TileType::Enu
             description = "This door has a strange key hole!";
         switch (i.key()){
             case TileType::DOOR :
+                row = getRows()/2;
+                col = 0;
+                break;
             case TileType::GATE :
                 row = getRows()/2;
                 col = 0;
+                description = "A heavy iron gate";
                 break;
             case TileType::DOOR_WEST :
                 row = 0;
