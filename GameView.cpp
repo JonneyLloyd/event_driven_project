@@ -75,7 +75,7 @@ void GameView::initPlayer()
 void GameView::initInventory()
 {
     inventory = new GraphicsMenu(Qt::Orientation::Horizontal, QSize(16, 16));
-    inventory->setPos(16*5, 16*14);
+    inventory->setPos(16*4+6, 16*12);
     inventory->setScale(1.2);
     inventory->setZValue(Layer::GUI_BACKGROUND);
     scene.addItem(inventory);
@@ -86,7 +86,7 @@ void GameView::initMenu()
 {
     menu = new GraphicsMenu(Qt::Orientation::Vertical, QSize(40, 10), 2, 8);
     menu->hide();
-    menu->setPos(16*7, 16*3);
+    menu->setPos(16*5+5, 16*2);
     menu->setScale(1.5);
     menu->setZValue(Layer::GUI_FOREGROUND);
     scene.addItem(menu);
@@ -126,10 +126,9 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
 
     initScene();
     TileLoader tileLoader = TileLoader::getInstance();
-    GraphicsTile * tile;
     QHash<std::pair<int, int>, Tile*>::iterator i;
     for (i = floor->begin(); i != floor->end(); ++i){
-        tile = tileLoader.get(i.value()->getId());
+        auto tile = tileLoader.get(i.value()->getId());
         //z value shows previous layers when moving room. Working on fix
 
         tile->setZValue(Layer::BACKGROUND);  // temp, everything may be added to a 'layer/group' (maybe use enums rather than numbers?): http://stackoverflow.com/questions/18074798/layers-on-qgraphicsview
@@ -138,14 +137,31 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
     }
 
     for (i = walls->begin(); i != walls->end(); ++i){
-        tile = tileLoader.get(i.value()->getId());
+        auto tile = tileLoader.get(i.value()->getId());
         tile->setZValue(Layer::MIDDLEGROUND);
         tile->setGridPos(i.key().first, i.key().second);
         scene.addItem(tile);
+
+        GraphicsTile * tileDeco = nullptr;
+        if (i.value()->getId() == TileType::WALL_N_L) {
+            tileDeco = tileLoader.get(TileType::WALL_N_U);
+        }
+        else if (i.value()->getId() == TileType::WALL_NE_CORNER_L) {
+            tileDeco = tileLoader.get(TileType::WALL_NE_CORNER_U);
+        }
+        else if (i.value()->getId() == TileType::WALL_NW_CORNER_L) {
+            tileDeco = tileLoader.get(TileType::WALL_NW_CORNER_U);
+        }
+
+        if (tileDeco != nullptr) {
+            tileDeco->setZValue(Layer::MIDDLEGROUND);
+            tileDeco->setGridPos(i.key().first, i.key().second - 1);
+            scene.addItem(tileDeco);
+        }
     }
 
     for (i = doors->begin(); i != doors->end(); ++i) {
-        tile = tileLoader.get(i.value()->getId());
+        auto tile = tileLoader.get(i.value()->getId());
         tile->setZValue(Layer::INTERACTABLE);
         tile->setGridPos(i.key().first, i.key().second);
         scene.addItem(tile);
@@ -153,11 +169,20 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
     }
 }
 
-void GameView::removeInteractableItem(const std::pair<int, int> & key)
+void GameView::removeInteractableItem(const std::pair<int, int> & position)
 {
-    auto tile = interactables->value(key);
-    interactables->remove(key);
+    auto tile = interactables->value(position);
+    interactables->remove(position);
     delete tile;
+}
+
+void GameView::setInteractableItemState(const std::pair<int, int> & position, bool activated, int loopCount)
+{
+    auto tile = interactables->value(position);
+    if (AnimatedGraphicsTile * x = dynamic_cast<AnimatedGraphicsTile*>(tile)) {
+        x->setLoopCount(loopCount);
+        x->start(!activated);
+    }
 }
 
 void GameView::addInventoryItem(int index, TileType::Enum type)
@@ -189,6 +214,22 @@ void GameView::displayMenu(bool visible)
         menu->show();
     else
         menu->hide();
+}
+
+void GameView::displayDialog(QString text)
+{
+    GraphicsMenuItem * dialogBox = new GraphicsMenuItem(QSize(100, 40), 2);
+    GraphicsText * dialogText = new GraphicsText(text, QSize(100, 40));
+    dialogBox->setGraphicsLayoutItem(dialogText);
+    dialogBox->setPos(16*5, 16*8);
+    dialogBox->setZValue(Layer::GUI_BACKGROUND);
+    scene.addItem(dialogBox);
+    connect(dialogBox, SIGNAL(itemClickedEvent(GraphicsMenuItem*)), SLOT(removeDialog(GraphicsMenuItem*)));
+}
+
+void GameView::removeDialog(GraphicsMenuItem* dialog)
+{
+    delete dialog;  // Children are deleted by its destructor
 }
 
 void GameView::addMenuItem(int index, QString text)
