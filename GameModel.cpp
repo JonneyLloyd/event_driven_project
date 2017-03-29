@@ -100,6 +100,8 @@ void GameModel::generateAllRoomStates(){
     interactableState.insert(TileType::SWITCH, false);
     roomState = new State(std::make_pair(3,0), 10, 6, interactableContent, interactableState);
     world->insert(roomState->getRoomLocation(), roomState);
+
+    winCondition = std::make_pair(4,0);
 }
 
 void GameModel::generateNewRoom()
@@ -353,7 +355,12 @@ void GameModel::interact()
 
 void GameModel::setRoomLocation(std::pair<int, int> roomLocation)
 {
-    this->roomLocation = roomLocation;
+    if (roomLocation == winCondition){
+        //TODO OLIVER pop up win screen here
+
+    }
+    else
+        this->roomLocation = roomLocation;
 }
 
 std::pair<int, int> GameModel::getRoomLocation()
