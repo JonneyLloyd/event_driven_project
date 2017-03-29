@@ -43,7 +43,8 @@ private:
     void initInventory();
     void initMenu();
 
-    QHash<std::pair<int, int>, GraphicsTile *> * interactables = new QHash<std::pair<int, int>, GraphicsTile *>();
+    QHash<std::pair<int, int>, GraphicsTile *> * interactables;
+
 
     // temp
     GraphicsTile * testTile;

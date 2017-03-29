@@ -20,12 +20,10 @@ public:
     QString interact();
     QString interact(TileType::Enum item);
 
-
 protected:
    QString description;
    bool state;
    TileType::Enum key;
-
 };
 
 #endif // INTERACTABLETILE_H

@@ -8,6 +8,7 @@
 
 GameView::GameView(QWidget *parent) : QGraphicsView(parent)
 {
+    interactables = new QHash<std::pair<int, int>, GraphicsTile *>();
     setScene(&scene);
 //    scene.setSceneRect(0, 0, 16*30, 9*30);
     initScene();
@@ -15,6 +16,7 @@ GameView::GameView(QWidget *parent) : QGraphicsView(parent)
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setBackgroundBrush(QBrush(QColor(47,40,58), Qt::SolidPattern));
+
 
     // Note: the above classes are only visual representations, all logic should reside in models
 
@@ -51,7 +53,7 @@ void GameView::initScene()
     initMenu();
 
     // temp
-    testInitAnimation();
+    //testInitAnimation();
 }
 
 GameView::~GameView()
@@ -114,7 +116,7 @@ void GameView::movePlayer(Direction::Enum direction)
     player->move(direction);
 
     // temp
-    testAnimation();
+    //testAnimation();
 }
 
 void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
@@ -147,7 +149,7 @@ void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
         tile->setZValue(Layer::INTERACTABLE);
         tile->setGridPos(i.key().first, i.key().second);
         scene.addItem(tile);
-        interactables->insert(std::make_pair(i.key().first, i.key().second), tile);
+       // interactables->insert(std::make_pair(i.key().first, i.key().second), tile);
     }
 }
 

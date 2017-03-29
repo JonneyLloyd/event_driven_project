@@ -8,7 +8,6 @@ Tile::Tile(bool traversable, TileType::Enum id){
 
 Tile::~Tile()
 {
-
 }
 
 void Tile::setTraversabe(bool traversable){

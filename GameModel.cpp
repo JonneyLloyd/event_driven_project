@@ -7,9 +7,11 @@
 #include <QApplication>
 #include <QDebug>
 
+
+
 GameModel::GameModel(QObject *parent) : QObject(parent)
 {
-
+    world = new QHash<std::pair<int, int>,State*>;
     setRoomLocation(std::make_pair(0,0));
     generateAllRoomStates();
     gameLoop = new QTimeLine(600);
@@ -19,33 +21,76 @@ GameModel::GameModel(QObject *parent) : QObject(parent)
     gameLoop->start();
     gameLoop->setLoopCount(0);  // forever
 }
+/*
+void GameModel::newGame()
+{
+    setRoomLocation(std::make_pair(0,0));
+    generateAllRoomStates();
+    generateNewRoom();
+}*/
 
 void GameModel::generateAllRoomStates(){
-    QHash<TileType::Enum, TileType::Enum> interactables;
-    interactables.insert(TileType::Enum::DOOR, TileType::Enum::EMPTY);
-    interactables.insert(TileType::Enum::DOOR_EAST, TileType::Enum::EMPTY);
-    roomState = new State(std::make_pair(0,0), 16, 10, interactables);
-    world.insert(roomState->getRoomLocation(), roomState);
+    QHash<TileType::Enum, TileType::Enum> interactableContent;
+    QHash<TileType::Enum, bool> interactableState;
+    interactableContent.insert(TileType::Enum::DOOR, TileType::Enum::ORB_GREEN);
+    interactableContent.insert(TileType::Enum::DOOR_EAST, TileType::Enum::EMPTY);
+    interactableContent.insert(TileType::Enum::CHEST, TileType::Enum::ORB_BLUE);
+    interactableState.insert(TileType::Enum::DOOR, false);
+    interactableState.insert(TileType::Enum::DOOR_EAST, false);
+    interactableState.insert(TileType::Enum::CHEST, false);
+    roomState = new State(std::make_pair(0,0), 16, 10, interactableContent, interactableState);
+    world->insert(roomState->getRoomLocation(), roomState);
 
-    interactables.clear();
-    interactables.insert(TileType::Enum::DOOR, TileType::Enum::EMPTY);
-    interactables.insert(TileType::Enum::DOOR_WEST, TileType::Enum::EMPTY);
-    roomState = new State(std::make_pair(0,1), 16, 10, interactables);
-    world.insert(roomState->getRoomLocation(), roomState);
+    interactableContent.clear();
+    interactableContent.insert(TileType::Enum::DOOR, TileType::Enum::EMPTY);
+    interactableContent.insert(TileType::Enum::DOOR_WEST, TileType::Enum::EMPTY);
+    interactableState.insert(TileType::Enum::DOOR, false);
+    interactableState.insert(TileType::Enum::DOOR_WEST, false);
+    roomState = new State(std::make_pair(0,1), 14, 10, interactableContent, interactableState);
+    world->insert(roomState->getRoomLocation(), roomState);
 
-    interactables.clear();
-    interactables.insert(TileType::Enum::DOOR_SOUTH, TileType::Enum::EMPTY);
-    interactables.insert(TileType::Enum::DOOR_WEST, TileType::Enum::EMPTY);
-    roomState = new State(std::make_pair(1,1), 16, 10, interactables);
-    world.insert(roomState->getRoomLocation(), roomState);
+    interactableContent.clear();
+    interactableContent.insert(TileType::Enum::DOOR, TileType::Enum::ORB_BLUE);
+    interactableContent.insert(TileType::Enum::DOOR_SOUTH, TileType::Enum::EMPTY);
+    interactableState.insert(TileType::Enum::DOOR, false);
+    interactableState.insert(TileType::Enum::DOOR_SOUTH, false);
+    roomState = new State(std::make_pair(1,0), 16, 10, interactableContent, interactableState);
+    world->insert(roomState->getRoomLocation(), roomState);
 
-    interactables.clear();
-    interactables.insert(TileType::Enum::DOOR_SOUTH, TileType::Enum::EMPTY);
-    interactables.insert(TileType::Enum::DOOR_EAST, TileType::Enum::EMPTY);
-    roomState = new State(std::make_pair(1,0), 16, 10, interactables);
-    world.insert(roomState->getRoomLocation(), roomState);
+    interactableContent.clear();
+    interactableContent.insert(TileType::Enum::DOOR_SOUTH, TileType::Enum::EMPTY);
+    interactableContent.insert(TileType::Enum::CHEST, TileType::Enum::ORB_GREEN);
+    interactableState.insert(TileType::Enum::DOOR_SOUTH, false);
+    interactableState.insert(TileType::Enum::CHEST, false);
+    roomState = new State(std::make_pair(1,1), 10, 6, interactableContent, interactableState);
+    world->insert(roomState->getRoomLocation(), roomState);
+
+    interactableContent.clear();
+    interactableContent.insert(TileType::Enum::DOOR, TileType::Enum::ORB_PINK);
+    interactableContent.insert(TileType::Enum::DOOR_SOUTH, TileType::Enum::EMPTY);
+    interactableContent.insert(TileType::Enum::DOOR_EAST, TileType::Enum::EMPTY);
+    interactableState.insert(TileType::Enum::DOOR, false);
+    interactableState.insert(TileType::Enum::DOOR_SOUTH, false);
+    interactableState.insert(TileType::Enum::DOOR_EAST, false);
+    roomState = new State(std::make_pair(2,0), 12, 8, interactableContent, interactableState);
+    world->insert(roomState->getRoomLocation(), roomState);
+
+    interactableContent.clear();
+    interactableContent.insert(TileType::Enum::DOOR_WEST, TileType::Enum::EMPTY);
+    interactableContent.insert(TileType::Enum::DOOR_EAST, TileType::Enum::EMPTY);
+    interactableState.insert(TileType::Enum::DOOR_WEST, false);
+    interactableState.insert(TileType::Enum::DOOR_EAST, false);
+    roomState = new State(std::make_pair(2,1), 14, 6, interactableContent, interactableState);
+    world->insert(roomState->getRoomLocation(), roomState);
+
+    interactableContent.clear();
+    interactableContent.insert(TileType::Enum::DOOR_WEST, TileType::Enum::EMPTY);
+    interactableContent.insert(TileType::Enum::CHEST, TileType::Enum::ORB_PINK);
+    interactableState.insert(TileType::Enum::DOOR_WEST, false);
+    interactableState.insert(TileType::Enum::CHEST, false);
+    roomState = new State(std::make_pair(2,1), 8, 6, interactableContent, interactableState);
+    world->insert(roomState->getRoomLocation(), roomState);
 }
-
 
 void GameModel::generateNewRoom()
 {
@@ -54,28 +99,27 @@ void GameModel::generateNewRoom()
 
 void GameModel::generateNewRoom(std::pair<int, int> roomLocation)
 {
-    roomState = world.value(roomLocation);
+    roomState = world->value(roomLocation);
     currentRoom = new GenerateRoom(1, roomState->getRows(),roomState->getCols());
     currentRoom->generateFloor();
     currentRoom->generateRoom();
-    currentRoom->generateDoors(roomState->getInteractables());
+    currentRoom->generateInteractableLayer(roomState->getInteractableContent());
     player = new Player(10,4);
-    emit displayFloorEvent(currentRoom->getFloor(), currentRoom->getWalls(), currentRoom->getDoors());
+    emit displayFloorEvent(currentRoom->getFloor(),
+                           currentRoom->getWalls(), currentRoom->getInteractables());
 
-    emit addInventoryItemEvent(0, TileType::ORB_BLUE);
-    emit addInventoryItemEvent(1, TileType::ORB_ORANGE);
-    emit addInventoryItemEvent(2, TileType::ORB_GREEN);
-    emit addInventoryItemEvent(3, TileType::CHEST);
-    emit addInventoryItemEvent(4, TileType::CHEST);
+    for(int i = 0; i < inventory.size(); i++)
+        emit addInventoryItemEvent(i, inventory[i]);
+    //TODO vector of TileType in header
+    //iterate vector to emit to view
+
+    //also get working with locked doors
 
     // TODO: enum or vector
     emit addMenuItemEvent(0, QString("Resume"));
     emit addMenuItemEvent(1, QString("Options"));
     emit addMenuItemEvent(2, QString("Quit"));
 }
-
-
-
 
 GenerateRoom *GameModel::getCurrentRoom()
 {
@@ -108,7 +152,7 @@ void GameModel::move(Direction::Enum direction)
 void GameModel::movePlayer(Direction::Enum direction)
 {
     QHash<std::pair<int, int>, Tile*> * walls = currentRoom->getWalls();
-    QHash<std::pair<int, int>, Tile*> * doors = currentRoom->getDoors();
+    QHash<std::pair<int, int>, Tile*> * doors = currentRoom->getInteractables();
     QHash<std::pair<int, int>, Tile*> * all = currentRoom->getFloor();
     all->unite(*walls);
     all->unite(*doors);
@@ -152,13 +196,47 @@ void GameModel::movePlayer(Direction::Enum direction)
 
 void GameModel::inventoryClick(int index)
 {
-    // TODO: some logic
-    emit removeInventoryItemEvent(index);
+    interactables = currentRoom->getInteractables();
+    std::pair<int, int> coordinates;
+    Direction::Enum heading = player->getHeading();
+    switch (heading){
+        case Direction::WEST:
+        coordinates = std::make_pair (player->getX()-1, player->getY());
+        break;
+
+        case Direction::EAST:
+        coordinates = std::make_pair (player->getX()+1, player->getY());
+        break;
+
+        case Direction::NORTH:
+        coordinates = std::make_pair (player->getX(), player->getY()-1);
+        break;
+
+        case Direction::SOUTH:
+        coordinates = std::make_pair (player->getX(), player->getY()+1);
+        break;
+
+        default:            qDebug() << "NO Interacable detected"; return;
+    }
+
+    if (interactables->contains(coordinates)){
+    QHash<std::pair<int, int>, Tile*>::iterator i;
+    i = interactables->find(coordinates);
+    if(((InteractableTile*)(i.value()))->getKey() == inventory[index]){
+        //TODO OLIVER - change to dialog box
+        qDebug() << ((InteractableTile*)(i.value()))->interact(inventory[index]);
+        world->value(getRoomLocation())->changeInteractableContent(((InteractableTile*)(i.value()))->getId(),TileType::EMPTY);
+        world->value(getRoomLocation())->changeInteractableContent(((InteractableTile*)(i.value()))->getId(),true);
+        remove(inventory,index);
+        emit removeInventoryItemEvent(index);
+        }
+    }
 }
+
 
 void GameModel::interact()
 {
-    QHash<std::pair<int, int>, Tile*> * doors = currentRoom->getDoors();
+    interactables = currentRoom->getInteractables();
     std::pair<int, int> coordinates;
     QHash<std::pair<int, int>, Tile*>::iterator i;
     Direction::Enum heading = player->getHeading();
@@ -188,40 +266,60 @@ void GameModel::interact()
      * */
     int x = getRoomLocation().first;
     int y = getRoomLocation().second;
-    int playerX = 0;
-    int playerY = 0;
-    if (doors->contains(coordinates)){
-        i = doors->find(coordinates);
+    Direction::Enum direction = Direction::UNKNOWN;
+    if (interactables->contains(coordinates)){
+        i = interactables->find(coordinates);
+        //TODO OLIVER - change to dialog box
         qDebug() << ((InteractableTile*)(i.value()))->interact();
-        if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_EAST)
+        if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_EAST &&
+                ((InteractableTile*)(i.value()))->getState() == true)
         {
             setRoomLocation(std::make_pair(x,y+1));
             generateNewRoom();
             player->setXY(1,getCurrentRoom()->getColumns()/2);
+            direction = (Direction::EAST);
             emit setPlayerLocationEvent(1,getCurrentRoom()->getColumns()/2);
+            //signal for animation
         }
-        else if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_WEST){
+        else if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_WEST &&
+                 ((InteractableTile*)(i.value()))->getState() == true){
             setRoomLocation(std::make_pair(x,y-1));
             generateNewRoom();
             player->setXY(getCurrentRoom()->getRows()-2,getCurrentRoom()->getColumns()/2);
+            direction = (Direction::WEST);
             emit setPlayerLocationEvent(getCurrentRoom()->getRows()-2,getCurrentRoom()->getColumns()/2);
+            //signal for animation
         }
-        else if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR){
+        else if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR &&
+                 ((InteractableTile*)(i.value()))->getState() == true){
             setRoomLocation(std::make_pair(x+1,y));
             generateNewRoom();
             player->setXY(getCurrentRoom()->getRows() /2,getCurrentRoom()->getColumns()-2);
+            direction = (Direction::NORTH);
             emit setPlayerLocationEvent(getCurrentRoom()->getRows() /2,getCurrentRoom()->getColumns()-2);
-
+            //signal for animation
         }
-        else if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_SOUTH){
+        else if (((InteractableTile*)(i.value()))->getId() == TileType::DOOR_SOUTH &&
+                 ((InteractableTile*)(i.value()))->getState() == true){
             setRoomLocation(std::make_pair(x-1,y));
             generateNewRoom();
             player->setXY(getCurrentRoom()->getRows() /2,1);
+            direction = (Direction::SOUTH);
             emit setPlayerLocationEvent(getCurrentRoom()->getRows() /2,1);
+            //signal for animation
         }
-
-
-
+        else if (((InteractableTile*)(i.value()))->getId() == TileType::CHEST &&
+                 ((InteractableTile*)(i.value()))->getKey() != TileType::EMPTY){
+            inventory.push_back(((InteractableTile*)(i.value()))->getKey());
+            emit addInventoryItemEvent(inventory.size(), ((InteractableTile*)(i.value()))->getKey());
+            ((InteractableTile*)(i.value()))->setKey(TileType::EMPTY);
+            world->value(getRoomLocation())->changeInteractableContent(((InteractableTile*)(i.value()))->getId(),TileType::EMPTY);
+            world->value(getRoomLocation())->changeInteractableContent(((InteractableTile*)(i.value()))->getId(),true);
+            qDebug() << "You found an odd shaped key in the chest...";
+        }
+        if (direction != Direction::UNKNOWN){
+            emit setPlayerHeadingEvent(direction);
+        }
     }
 }
 
