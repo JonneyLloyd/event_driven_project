@@ -23,10 +23,12 @@ public:
     void generateRoom();
     void generateFloor();
     void generateDoors();
-    void generateInteractableLayer(QHash<TileType::Enum, TileType::Enum> interactableList);
+    void generateInteractableLayer(QHash<TileType::Enum, TileType::Enum> interactableList,
+                                   QHash<TileType::Enum, bool> interactableState);
     QHash<std::pair<int, int>, Tile*> * getFloor();
     QHash<std::pair<int, int>, Tile*> * getWalls();
     QHash<std::pair<int, int>, Tile*> * getInteractables();
+    std::pair<int, int> getTileCoords(TileType::Enum tileName);
 
 private:
     int preset;

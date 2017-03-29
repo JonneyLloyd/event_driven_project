@@ -88,6 +88,7 @@ private:
     QHash<std::pair<int, int>, Tile*> * interactables;
     vector<TileType::Enum> inventory;
     void movePlayer(Direction::Enum direction);
+    std::pair<int, int> winCondition;
 
 private slots:
     void nextGameLoop(int);
