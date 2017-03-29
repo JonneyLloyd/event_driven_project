@@ -18,11 +18,11 @@ void Tile::setId(TileType::Enum id){
     this->id = id;
 }
 
-bool Tile::getTraversable(){
+bool Tile::getTraversable() const{
     return this->traversable;
 }
 
-TileType::Enum Tile::getId(){
+TileType::Enum Tile::getId() const{
     return this->id;
 }
 

@@ -31,7 +31,7 @@ InteractableTile::~InteractableTile()
 }
 
 
-QString InteractableTile::getDescription()
+QString InteractableTile::getDescription()  const
 {
     return this->description;
 }
@@ -47,7 +47,7 @@ void InteractableTile::setState(bool state)
     this->state = state;
 }
 
-bool InteractableTile::getState()
+bool InteractableTile::getState()  const
 {
     return this->state;
 }
@@ -57,7 +57,7 @@ void InteractableTile::setKey(TileType::Enum value)
     this->key = value;
 }
 
-TileType::Enum InteractableTile::getKey()
+TileType::Enum InteractableTile::getKey()  const
 {
     return this->key;
 }
@@ -74,6 +74,7 @@ QString InteractableTile::interact(TileType::Enum item)
     QString result = "";
     if (this->key == item)
     {
+        //interaction successful so switch state
         this->state = !state;
         if(!state)
             result = "That closed it";

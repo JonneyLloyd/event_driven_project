@@ -14,8 +14,8 @@ public:
 
     void setTraversabe(bool traversable);
     void setId(TileType::Enum id);
-    bool getTraversable();
-    TileType::Enum getId();
+    bool getTraversable() const;
+    TileType::Enum getId() const;
 
 private:
     bool traversable;
