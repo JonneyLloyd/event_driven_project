@@ -27,11 +27,7 @@ void PlayerSprite::setHeading(Direction::Enum direction)
 
 void PlayerSprite::onFrameChanged(int frame)
 {
-
-//    qDebug() << "Frame: " << frame << "  " << frame % numberOfFrames;
-//    int moveAmt = spriteSize / spriteFramesPerAnimation;    // i.e. moving 32px with 8 frames
-    int moveAmt = 16 / 4;    // i.e. moving 32px with 8 frames
-                                                            // => move 32/8=4 pixels per frame
+    int moveAmt = 16 / 4;    // i.e. moving 16px with 4 frames
     switch (spriteDirection) {
         case Direction::NORTH:  setPos(x(),             y() - moveAmt); break;
         case Direction::EAST:   setPos(x() + moveAmt,   y());           break;

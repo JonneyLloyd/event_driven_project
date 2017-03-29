@@ -9,10 +9,6 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowTitle(QString("Don't Take The Rabbit"));
     this->setCentralWidget(&gameView);
 
-//    this->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
-//    this->showFullScreen();
-//    this->showMaximized();
-
 }
 
 MainWindow::~MainWindow()

@@ -41,8 +41,6 @@ void GraphicsTile::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-//    painter->drawRect(this->geometry());
-//    painter->drawRect(this->boundingRect());
     painter->drawPixmap(0, 0, this->geometry().width(), this->geometry().height(), *textureSheet,    // x, y position, sprite sheet
                         tileCol*tileSize,       // col,
                         tileRow*tileSize,       // row of sprite sheet

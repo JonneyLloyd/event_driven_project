@@ -4,7 +4,7 @@
 
 #include "views/TileLoader.h"
 
-
+// TODO: Oliver operator overloading?
 GraphicsMenu::GraphicsMenu(Qt::Orientation orientation, QSize childSize, int minSize, int margin, int childMargin, QGraphicsItem *parent)
     : QGraphicsWidget(parent),
       minSize{minSize},

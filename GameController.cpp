@@ -30,6 +30,9 @@ GameController::GameController(GameModel *gameModel, GameView *gameView, QObject
     connect(gameModel, SIGNAL(displayMenuEvent(bool)), gameView, SLOT(displayMenu(bool)));
     connect(gameModel, SIGNAL(addMenuItemEvent(int, QString)), gameView, SLOT(addMenuItem(int, QString)));
 
+    connect(gameModel, SIGNAL(displayGameOverMenuEvent()), gameView, SLOT(displayGameOverMenu()));
+    connect(gameView, SIGNAL(gameOverMenuClickEvent()), gameModel, SLOT(gameOverMenuClick()));
+
     connect(gameModel, SIGNAL(displayDialogEvent(QString)), gameView, SLOT(displayDialog(QString)));
 
     connect(this, SIGNAL(generateNewRoom()), gameModel, SLOT(generateNewRoom()));
