@@ -10,7 +10,6 @@ public:
     InteractableTile(QString description, bool traversable, TileType::Enum id, bool state, TileType::Enum key);
     InteractableTile(QString description, bool traversable, TileType::Enum id, bool state);
     InteractableTile(QString description, bool traversable, TileType::Enum id);
-    ~InteractableTile();
     QString getDescription()  const;
     void setDescription(QString value);
     void setState(bool state);

@@ -356,7 +356,7 @@ void GameModel::interact()
             }
             else {
                 msg = i->interact();
-                if (i->getId() == TileType::DOOR) {
+                if (i->getId() == TileType::DOOR && i->getKey() == TileType::EMPTY) {
                     if (i->getState())
                         emit setInteractableItemState(coordinates, i->getState(), 1);
                     world->value(getRoomLocation())->changeInteractableContent(i->getId(),TileType::DOOR);

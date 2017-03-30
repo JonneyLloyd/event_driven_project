@@ -10,7 +10,6 @@ class Tile
 
 public:
     Tile(bool traversable, TileType::Enum id);
-    ~Tile();
 
     void setTraversabe(bool traversable);
     void setId(TileType::Enum id);

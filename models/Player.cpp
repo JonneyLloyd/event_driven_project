@@ -8,11 +8,6 @@ Player::Player(int x, int y)
 }
 
 
-Player::~Player()
-{
-}
-
-
 void Player::setX(int x)
 {
     this->x = x;

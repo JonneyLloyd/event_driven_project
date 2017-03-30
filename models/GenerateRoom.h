@@ -8,9 +8,6 @@
 class GenerateRoom
 {
 public:
-    /*
-     * Constructor
-     */
     GenerateRoom(int rows = 16, int columns = 16);
     ~GenerateRoom();
     void setRows(int rows);

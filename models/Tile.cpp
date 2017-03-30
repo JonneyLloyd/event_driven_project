@@ -6,10 +6,6 @@ Tile::Tile(bool traversable, TileType::Enum id){
     this->id = id;
 }
 
-Tile::~Tile()
-{
-}
-
 void Tile::setTraversabe(bool traversable){
     this->traversable = traversable;
 }

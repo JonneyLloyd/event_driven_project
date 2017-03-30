@@ -25,12 +25,6 @@ InteractableTile::InteractableTile(QString description, bool traversable, TileTy
 {
 }
 
-
-InteractableTile::~InteractableTile()
-{
-}
-
-
 QString InteractableTile::getDescription()  const
 {
     return this->description;
