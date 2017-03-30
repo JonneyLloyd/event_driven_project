@@ -4,7 +4,6 @@
 
 #include "views/TileLoader.h"
 
-// TODO: Oliver operator overloading?
 GraphicsMenu::GraphicsMenu(Qt::Orientation orientation, QSize childSize, int minSize, int margin, int childMargin, QGraphicsItem *parent)
     : QGraphicsWidget(parent),
       minSize{minSize},
@@ -55,7 +54,7 @@ void GraphicsMenu::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 void GraphicsMenu::addInventoryItem(int index, QGraphicsLayoutItem * layoutItem)
 {
     auto widgetItem = new GraphicsMenuItem(getChildBoundingSize(), getChildLayoutMargin(), this);
-    connect(widgetItem, SIGNAL(itemClickedEvent(GraphicsMenuItem*)), SLOT(itemClicked(GraphicsMenuItem*)));
+    connect(widgetItem, SIGNAL(itemClickedEvent(const GraphicsMenuItem*)), SLOT(itemClicked(const GraphicsMenuItem*)));
     widgetItem->setGraphicsLayoutItem(layoutItem);
     layout->insertItem(index, widgetItem);
 }
@@ -67,7 +66,7 @@ void GraphicsMenu::removeInventoryItem(int index)
     update();
 }
 
-void GraphicsMenu::itemClicked(GraphicsMenuItem *child)
+void GraphicsMenu::itemClicked(const GraphicsMenuItem *child)
 {
     for(int i = 0; i < layout->count(); i++) {
         if (layout->itemAt(i) == child) {

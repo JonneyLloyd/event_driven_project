@@ -31,7 +31,7 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
 signals:
-    void itemClickedEvent(GraphicsMenuItem * child);
+    void itemClickedEvent(const GraphicsMenuItem * child);
 
 private:
     QSize size;

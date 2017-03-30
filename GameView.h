@@ -69,12 +69,12 @@ public slots:
     void setPlayerLocation(int x, int y);
     void setPlayerHeading(Direction::Enum direction);
     void displayMenu(bool visible);
-    void displayDialog(QString text);
-    void addMenuItem(int index, QString text);
+    void displayDialog(const QString &text);
+    void addMenuItem(int index, const QString &text);
     void displayGameOverMenu();
 
 private slots:
-    void removeDialog(GraphicsMenuItem *dialog);
+    void removeDialog(const GraphicsMenuItem *dialog);
 
 };
 

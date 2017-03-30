@@ -44,7 +44,7 @@ GameView::~GameView()
 
 void GameView::initPlayer()
 {
-    TileLoader tileLoader = TileLoader::getInstance();
+    TileLoader & tileLoader = TileLoader::getInstance();
     player = qgraphicsitem_cast<PlayerSprite*>(tileLoader.get(TileType::PLAYER));
     scene.addItem(player);
     player->setGridPos(10, 4);
@@ -97,16 +97,14 @@ void GameView::movePlayer(Direction::Enum direction)
 
 void GameView::displayFloor(QHash<std::pair<int, int>, Tile *> * floor,
                             QHash<std::pair<int, int>, Tile *> * walls,
-                            QHash<std::pair<int, int>, Tile *> * doors)// TODO: Oliver const?
+                            QHash<std::pair<int, int>, Tile *> * doors)
 {
 
     initScene();
-    TileLoader tileLoader = TileLoader::getInstance();
+    TileLoader & tileLoader = TileLoader::getInstance();
     QHash<std::pair<int, int>, Tile*>::iterator i;
     for (i = floor->begin(); i != floor->end(); ++i){
         auto tile = tileLoader.get(i.value()->getId());
-        //z value shows previous layers when moving room. Working on fix
-
         tile->setZValue(Layer::BACKGROUND);
         tile->setGridPos(i.key().first, i.key().second);
         scene.addItem(tile);
@@ -154,9 +152,9 @@ void GameView::setInteractableItemState(const std::pair<int, int> & position, bo
     }
 }
 
-void GameView::addInventoryItem(int index, TileType::Enum type)// TODO: Oliver const?
+void GameView::addInventoryItem(int index, TileType::Enum type)
 {
-    TileLoader tileLoader = TileLoader::getInstance();
+    TileLoader & tileLoader = TileLoader::getInstance();
     auto tile = tileLoader.get(type);
     inventory->addInventoryItem(index, tile);
 }
@@ -171,7 +169,7 @@ void GameView::setPlayerLocation(int x, int y)
     player->setGridPos(x, y);
 }
 
-void GameView::setPlayerHeading(Direction::Enum direction)// TODO: Oliver const?
+void GameView::setPlayerHeading(Direction::Enum direction)
 {
     player->setHeading(direction);
 }
@@ -184,7 +182,7 @@ void GameView::displayMenu(bool visible)
         menu->hide();
 }
 
-void GameView::displayDialog(QString text)// TODO: Oliver const?
+void GameView::displayDialog(const QString & text)
 {
     GraphicsMenuItem * dialogBox = new GraphicsMenuItem(QSize(100, 40), 2);
     GraphicsText * dialogText = new GraphicsText(text, QSize(100, 40));
@@ -192,15 +190,15 @@ void GameView::displayDialog(QString text)// TODO: Oliver const?
     dialogBox->setPos(16*5, 16*8);
     dialogBox->setZValue(Layer::GUI_BACKGROUND);
     scene.addItem(dialogBox);
-    connect(dialogBox, SIGNAL(itemClickedEvent(GraphicsMenuItem*)), SLOT(removeDialog(GraphicsMenuItem*)));
+    connect(dialogBox, SIGNAL(itemClickedEvent(const GraphicsMenuItem*)), SLOT(removeDialog(const GraphicsMenuItem*)));
 }
 
-void GameView::removeDialog(GraphicsMenuItem* dialog)
+void GameView::removeDialog(const GraphicsMenuItem* dialog)
 {
     delete dialog;  // Children are deleted by its destructor
 }
 
-void GameView::addMenuItem(int index, QString text)// TODO: Oliver const?
+void GameView::addMenuItem(int index, const QString & text)
 {
     auto item = new GraphicsText(text, QSize(40, 10));
     menu->addInventoryItem(index, item);
@@ -215,5 +213,5 @@ void GameView::displayGameOverMenu()
     dialogBox->setPos(16*2, 16*6);
     dialogBox->setZValue(Layer::GUI_BACKGROUND);
     scene.addItem(dialogBox);
-    connect(dialogBox, SIGNAL(itemClickedEvent(GraphicsMenuItem*)), SIGNAL(gameOverMenuClickEvent()));
+    connect(dialogBox, SIGNAL(itemClickedEvent(const GraphicsMenuItem*)), SIGNAL(gameOverMenuClickEvent()));
 }

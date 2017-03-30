@@ -63,8 +63,8 @@ signals:
     void setPlayerLocationEvent(int x, int y);
     void setPlayerHeadingEvent(Direction::Enum);
     void displayMenuEvent(bool visible);
-    void displayDialogEvent(QString text);
-    void addMenuItemEvent(int index, QString text);
+    void displayDialogEvent(const QString & text);
+    void addMenuItemEvent(int index, const QString & text);
     void displayGameOverMenuEvent();
 
 public slots:

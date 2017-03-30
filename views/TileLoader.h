@@ -16,8 +16,11 @@ class TileLoader
 
 public:
     static TileLoader & getInstance();
-    // TODO Oliver fix singleton
     GraphicsTile * get(const TileType::Enum & tileType) const;
+
+    // Prevent copies of the singleton
+    TileLoader(TileLoader const &) = delete;        // Delete copy constructor
+    void operator=(TileLoader const &)  = delete;   // Delete copy assignment operator
 
 private:
     TileLoader();
