@@ -22,7 +22,7 @@ public:
     void removeInventoryItem(int index);
 
 private slots:
-    void itemClicked(GraphicsMenuItem * child);
+    void itemClicked(const GraphicsMenuItem *child);
 
 signals:
     void inventoryItemClickedEvent(int index);

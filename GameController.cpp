@@ -28,15 +28,13 @@ GameController::GameController(GameModel *gameModel, GameView *gameView, QObject
     connect(gameView, SIGNAL(pauseClickEvent()), gameModel, SLOT(pauseClick()));
     connect(gameView, SIGNAL(menuClickEvent(int)), gameModel, SLOT(menuClick(int)));
     connect(gameModel, SIGNAL(displayMenuEvent(bool)), gameView, SLOT(displayMenu(bool)));
-    connect(gameModel, SIGNAL(addMenuItemEvent(int, QString)), gameView, SLOT(addMenuItem(int, QString)));
+    connect(gameModel, SIGNAL(addMenuItemEvent(int, const QString &)), gameView, SLOT(addMenuItem(int, const QString &)));
 
     connect(gameModel, SIGNAL(displayGameOverMenuEvent()), gameView, SLOT(displayGameOverMenu()));
     connect(gameView, SIGNAL(gameOverMenuClickEvent()), gameModel, SLOT(gameOverMenuClick()));
 
-    connect(gameModel, SIGNAL(displayDialogEvent(QString)), gameView, SLOT(displayDialog(QString)));
+    connect(gameModel, SIGNAL(displayDialogEvent(const QString &)), gameView, SLOT(displayDialog(const QString &)));
 
     connect(this, SIGNAL(generateNewRoom()), gameModel, SLOT(generateNewRoom()));
     emit generateNewRoom();
 }
-
-// TODO: maybe a start method to emit the first signal?

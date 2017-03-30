@@ -130,11 +130,10 @@ void GameModel::generateNewRoom(std::pair<int, int> roomLocation)
     for (i = interactables->begin(); i != interactables->end(); ++i) {
         InteractableTile * tile = (InteractableTile*) i.value();
         bool state = tile->getState();
-        if (state)  // TODO check
+        if (state)
             emit setInteractableItemState(i.key(), true, 1);
     }
 
-    // TODO tidy
     emit addMenuItemEvent(0, QString("Resume"));
     emit addMenuItemEvent(1, QString("Options"));
     emit addMenuItemEvent(2, QString("Quit"));
@@ -340,7 +339,7 @@ void GameModel::interact()
                 i->setKey(TileType::EMPTY);
                 world->value(getRoomLocation())->changeInteractableContent(i->getId(),TileType::EMPTY);
                 world->value(getRoomLocation())->changeInteractableContent(i->getId(),true);
-                msg = QString("You found an odd shaped key in the chest...");  // TODO toggle msg when state changes (in interactable code?)
+                msg = QString("You found an odd shaped key in the chest...");
                 emit setInteractableItemState(coordinates, true, 1);
             }
             else if (i->getId() == TileType::SWITCH){
@@ -391,7 +390,6 @@ std::pair<int, int> GameModel::getRoomLocation()  const
 
 void GameModel::menuClick(int index)
 {
-    // TODO: some logic
     if (index==2)
         QApplication::quit();
     emit displayMenuEvent(false);
@@ -405,7 +403,6 @@ void GameModel::gameOverMenuClick()
 
 void GameModel::pauseClick()
 {
-    // TODO: some logic
     emit displayMenuEvent(true);
 }
 
